@@ -47,12 +47,9 @@ public class WindowManager {
         if(window==NULL) {
             throw new RuntimeException("Failed to create window");
         }
+        glfwSetKeyCallback(window, KeyboardHandler::keyCallback);
 
-        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                closeWindow();
-            }
-        });
+
 
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1);
