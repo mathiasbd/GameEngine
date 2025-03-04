@@ -20,6 +20,10 @@ public class WindowManager {
     int height;
     String title;
 
+    private Scene currentScene;
+    private String currentSceneName;
+
+
     public WindowManager(int width, int height, String title) {
 
         this.height = height;
@@ -79,6 +83,23 @@ public class WindowManager {
 
         glfwTerminate();
         glfwSetErrorCallback(null).free();
+    }
+
+    // Problem making it static
+    public void changeScene(String sceneName) {
+        switch(sceneName) {
+            case "EditorScene":
+                currentScene = new LevelEditorScene();
+                currentSceneName = "EditorScene";
+                break;
+            case "GameScene":
+                currentScene = new LevelScene();
+                currentSceneName = "GameScene";
+                break;
+            default:
+                System.out.println("Invalid scene name '" + sceneName + "'");
+                break;
+        }
     }
 
     public long getWindow() {

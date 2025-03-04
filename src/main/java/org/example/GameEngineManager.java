@@ -1,6 +1,7 @@
 package org.example;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
+import util.Time;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -19,13 +20,15 @@ public class GameEngineManager {
         //Set the clear color
         glClearColor(1.0f, 0.0f, 0.3f, 1.0f);
 
-        double initialTime = glfwGetTime();
-        double timer = initialTime;
-        double limitFPS = 1.0 / 60.0;
-        double deltaTime = 0.0;
+        float initialTime = Time.getTime();
+        float timer = initialTime;
+
+        float limitFPS = 1.0f / 60.0f;
+        float deltaTime = 0;
+
         int frames = 0, updates = 0;
-        double currentTime;
-        double elapsed;
+        float currentTime;
+        float elapsed;
 
         //Loop runs until windowShouldClose is set to true
         while (!glfwWindowShouldClose(window.getWindow())) {
@@ -35,7 +38,7 @@ public class GameEngineManager {
             //Swap the color buffers
             glfwSwapBuffers(window.getWindow());
 
-            currentTime = glfwGetTime();
+            currentTime = Time.getTime();
             elapsed = (currentTime - initialTime);
             initialTime = currentTime;
 
@@ -52,7 +55,7 @@ public class GameEngineManager {
             frames++;
 
 
-            if (glfwGetTime() - timer > 1) {
+            if (Time.getTime() - timer > 1.0) {
                 timer += 1.0;
                 System.out.println("FPS: " + frames + " ticks: " + updates);
                 frames = 0;
