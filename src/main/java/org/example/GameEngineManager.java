@@ -22,51 +22,35 @@ public class GameEngineManager {
     public void loop() {
         //creates the GLCapabilities instance and makes the openGL bindings available for use
         GL.createCapabilities();
-        //Set the clear color
-        glClearColor(1.0f, 0.0f, 0.3f, 1.0f);
 
         float initialTime = Time.getTime();
-        float timer = initialTime;
-
-        float limitFPS = 1.0f / 60.0f;
-        float deltaTime = 0;
-
+        float endTime;
+        float deltaTime = -1.0f;
         int frames = 0, updates = 0;
-        float currentTime;
-        float elapsed;
 
         //Loop runs until windowShouldClose is set to true
         while (!glfwWindowShouldClose(window.getWindow())) {
+            //Poll for window events (Key events are invoked here)
+            glfwPollEvents();
+            //Set the clear color
+            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
             //Clear the framebuffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            //Swap the color buffers
-            glfwSwapBuffers(window.getWindow());
 
-            currentTime = Time.getTime();
-            elapsed = (currentTime - initialTime);
-            initialTime = currentTime;
-
-            deltaTime += elapsed / limitFPS;
-
-            while (deltaTime >= 1) {
-                //Poll for window events (Key events are invoked here)
-                glfwPollEvents();
-                currentScene.update(elapsed);
+            if (deltaTime >= 0) {
+                currentScene.update(deltaTime);
                 updates++;
-                deltaTime--;
             }
 
             frames++;
 
+            //Swap the color buffers
+            glfwSwapBuffers(window.getWindow());
 
-            if (Time.getTime() - timer > 1.0) {
-                timer += 1.0;
-                System.out.println("FPS: " + frames + " ticks: " + updates);
-                frames = 0;
-                updates = 0;
-            }
-
+            endTime = Time.getTime();
+            deltaTime = endTime-initialTime;
+            initialTime = endTime;
         }
     }
 

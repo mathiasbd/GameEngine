@@ -46,7 +46,7 @@ public class LevelEditorScene extends Scene {
             0.5f, -0.5f, 0.0f,      1.0f,0.0f,0.0f,1.0f,   //pos: bottom right, col: red,0
             -0.5f, 0.5f, 0.0f,      0.0f,1.0f,0.0f,1.0f,   //pos: Top Left, col: green, 1
             0.5f, 0.5f, 0.0f,       0.0f,0.0f,1.0f,1.0f,    //pos: Top Right, col: Blue, 2
-            -0.5f, 0.5f, 0.0f,      1.0f,1.0f,0.0f,1.0f,   //pos: Bottom Left, col: yellow, 3
+            -0.5f, -0.5f, 0.0f,      1.0f,1.0f,0.0f,1.0f,   //pos: Bottom Left, col: yellow, 3
     };
     private int [] elementArray={
             2,1,0, //top right triangle
@@ -168,19 +168,18 @@ public class LevelEditorScene extends Scene {
 
         glUseProgram(0);
 
-        // if (!changingScene && KeyboardHandler.isKeyPressed(KeyEvent.VK_SPACE)) { // Key to change scene
-        //            changingScene = true;
-        //            System.out.println("Changing scene");
-        //        }
-        //
-        //        if (changingScene && timeToChangeScene > 0) {
-        //            timeToChangeScene -= dt;
-        //            // Do stuff
-        //
-        //        } else if (changingScene) {
-        //            GameEngineManager.changeScene("GameScene"); // Problem making it static
-        //        }
-        //    }
+//        if (!changingScene && KeyboardHandler.isKeyPressed(KeyEvent.VK_SPACE)) { // Key to change scene
+//            changingScene = true;
+//            System.out.println("Changing scene");
+//        }
+//
+//        if (changingScene && timeToChangeScene > 0) {
+//            timeToChangeScene -= dt;
+//            // Do stuff
+//
+//        } else if (changingScene) {
+//            GameEngineManager.changeScene("GameScene"); // Problem making it static
+//        }
 
 
     }
