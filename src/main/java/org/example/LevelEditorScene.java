@@ -8,6 +8,7 @@ public class LevelEditorScene extends Scene {
     private float timeToChangeScene = 3.0f;
 
     public LevelEditorScene() {
+        System.out.println("Inside the level editing scene");
     }
 
     @Override
@@ -21,9 +22,8 @@ public class LevelEditorScene extends Scene {
             timeToChangeScene -= dt;
             // Do stuff
 
-        }
-        else if (changingScene) {
-            // WindowManager.changeScene("EditorScene"); // Problem making it static
+        } else if (changingScene) {
+            GameEngineManager.changeScene("GameScene"); // Problem making it static
         }
     }
 }

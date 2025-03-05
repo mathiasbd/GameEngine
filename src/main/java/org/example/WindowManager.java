@@ -20,9 +20,6 @@ public class WindowManager {
     int height;
     String title;
 
-    private Scene currentScene;
-    private String currentSceneName;
-
 
     public WindowManager(int width, int height, String title) {
 
@@ -51,6 +48,10 @@ public class WindowManager {
         if(window==NULL) {
             throw new RuntimeException("Failed to create window");
         }
+
+        glfwSetMouseButtonCallback(window, MouseHandler::mouseButtonCallback);
+        glfwSetCursorPosCallback(window, MouseHandler::mousePositionCallback);
+        glfwSetScrollCallback(window, MouseHandler::scrollCallback);
         glfwSetKeyCallback(window, KeyboardHandler::keyCallback);
 
 
@@ -85,22 +86,6 @@ public class WindowManager {
         glfwSetErrorCallback(null).free();
     }
 
-    // Problem making it static
-    public void changeScene(String sceneName) {
-        switch(sceneName) {
-            case "EditorScene":
-                currentScene = new LevelEditorScene();
-                currentSceneName = "EditorScene";
-                break;
-            case "GameScene":
-                currentScene = new LevelScene();
-                currentSceneName = "GameScene";
-                break;
-            default:
-                System.out.println("Invalid scene name '" + sceneName + "'");
-                break;
-        }
-    }
 
     public long getWindow() {
         return window;

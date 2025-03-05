@@ -9,8 +9,12 @@ import static org.lwjgl.opengl.GL11.*;
 public class GameEngineManager {
 
     WindowManager window;
+
+    private static Scene currentScene;
+    private static String currentSceneName;
     public GameEngineManager(WindowManager window) {
         this.window = window;
+        changeScene("EditorScene");
         loop();
     }
 
@@ -47,7 +51,7 @@ public class GameEngineManager {
             while (deltaTime >= 1) {
                 //Poll for window events (Key events are invoked here)
                 glfwPollEvents();
-
+                currentScene.update(elapsed);
                 updates++;
                 deltaTime--;
             }
@@ -62,6 +66,22 @@ public class GameEngineManager {
                 updates = 0;
             }
 
+        }
+    }
+
+    public static void changeScene(String sceneName) {
+        switch(sceneName) {
+            case "EditorScene":
+                currentScene = new LevelEditorScene();
+                currentSceneName = "EditorScene";
+                break;
+            case "GameScene":
+                currentScene = new LevelScene();
+                currentSceneName = "GameScene";
+                break;
+            default:
+                System.out.println("Invalid scene name '" + sceneName + "'");
+                break;
         }
     }
 }
