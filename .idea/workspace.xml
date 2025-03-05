@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79c287bc-84bc-485b-a479-f83e3cf44ae0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/LevelEditorScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/LevelEditorScene.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/LevelScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/LevelScene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Scene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/WindowManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/WindowManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +75,7 @@
       <option name="presentableId" value="Default" />
       <updated>1740574312033</updated>
       <workItem from="1740574313078" duration="4255000" />
-      <workItem from="1741156899895" duration="5397000" />
+      <workItem from="1741156899895" duration="7661000" />
     </task>
     <servers />
   </component>

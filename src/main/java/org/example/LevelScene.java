@@ -12,6 +12,11 @@ public class LevelScene extends Scene{
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void update(float dt) {
 
         if (!changingScene && MouseHandler.isButtonDown(0)) { // Key to change scene

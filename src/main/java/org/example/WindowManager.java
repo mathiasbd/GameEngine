@@ -22,13 +22,14 @@ public class WindowManager {
 
 
     public WindowManager(int width, int height, String title) {
-
+        //Initialize variables
         this.height = height;
         this.width = width;
         this.title = title;
-
+        //Call the window init method
         init();
     }
+
 
     public void init() {
         //Print version
@@ -40,22 +41,25 @@ public class WindowManager {
         if(!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
-
+        //While initializing the window we dont want it visible
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        //Setting the window to rezisable
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
+        //Creating the window
         window = glfwCreateWindow(width, height, title, NULL, NULL);
         if(window==NULL) {
             throw new RuntimeException("Failed to create window");
         }
 
+        //Setting up the mouse handler and keyboard handler
         glfwSetMouseButtonCallback(window, MouseHandler::mouseButtonCallback);
         glfwSetCursorPosCallback(window, MouseHandler::mousePositionCallback);
         glfwSetScrollCallback(window, MouseHandler::scrollCallback);
         glfwSetKeyCallback(window, KeyboardHandler::keyCallback);
 
 
-
+        //Allocating memory to get the screen size and set the window position to the center
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1);
             IntBuffer pHeight = stack.mallocInt(1);
@@ -68,14 +72,16 @@ public class WindowManager {
                     (vidmode.width() - pWidth.get(0)) / 2,
                     (vidmode.height() - pHeight.get(0)) / 2);
         }
-
+        //Making a context for the window
         glfwMakeContextCurrent(window);
 
+        //VSYNC i think?
         glfwSwapInterval(1);
 
         glfwShowWindow(window);
     }
 
+    //Function that closes the window
     public void closeWindow() {
         glfwSetWindowShouldClose(window, true);
 
@@ -86,7 +92,7 @@ public class WindowManager {
         glfwSetErrorCallback(null).free();
     }
 
-
+    //Window get method
     public long getWindow() {
         return window;
     }

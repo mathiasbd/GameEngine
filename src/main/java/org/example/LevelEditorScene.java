@@ -1,14 +1,25 @@
 package org.example;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class LevelEditorScene extends Scene {
 
     private boolean changingScene = false;
     private float timeToChangeScene = 3.0f;
 
+
     public LevelEditorScene() {
         System.out.println("Inside the level editing scene");
+    }
+
+    @Override
+    public void init() {
+        //Read vertex and shader file
+        //Initialize openGL and link shader
+        //Write vertex array for simple triangle/rectangle
     }
 
     @Override
