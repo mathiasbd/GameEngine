@@ -8,7 +8,7 @@ public class LevelScene extends Scene{
     private float timeToChangeScene = 3.0f;
 
     public LevelScene() {
-        System.out.println("Inside the level scene");
+        System.out.println("Inside the game scene");
     }
 
     @Override
