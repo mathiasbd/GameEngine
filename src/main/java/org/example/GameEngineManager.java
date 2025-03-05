@@ -14,6 +14,7 @@ public class GameEngineManager {
     private static String currentSceneName;
     public GameEngineManager(WindowManager window) {
         this.window = window;
+        GL.createCapabilities();
         changeScene("EditorScene");
         loop();
     }
@@ -73,6 +74,7 @@ public class GameEngineManager {
         switch(sceneName) {
             case "EditorScene":
                 currentScene = new LevelEditorScene();
+                currentScene.init();
                 currentSceneName = "EditorScene";
                 break;
             case "GameScene":

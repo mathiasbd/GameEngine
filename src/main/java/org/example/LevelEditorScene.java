@@ -46,7 +46,6 @@ public class LevelEditorScene extends Scene {
         //Initialize openGL and link shader
         //Write vertex array for simple triangle/rectangle
 
-
         // this is for the vertex shader
         vertexID = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexID, vertexShaderSource);
@@ -57,7 +56,9 @@ public class LevelEditorScene extends Scene {
             int len = glGetShaderi(vertexID, GL_INFO_LOG_LENGTH);
             System.out.println("ERROR: 'defaultShader.glsl' vertex shader compilation failed.");
             System.out.println(glGetShaderInfoLog(vertexID, len));
-            assert false : ""; // maybe change this line to something else that does the same.
+            throw new RuntimeException("Vertex shader failed to compile.");
+        } else {
+            System.out.println("Vertex shader compiled successfully.");
         }
 
         // same as above but for the fragment shader
@@ -70,7 +71,9 @@ public class LevelEditorScene extends Scene {
             int len = glGetShaderi(fragmentID, GL_INFO_LOG_LENGTH);
             System.out.println("ERROR: 'defaultShader.glsl' fragment shader compilation failed.");
             System.out.println(glGetShaderInfoLog(fragmentID, len));
-            assert false : "";
+            throw new RuntimeException("Fragment shader failed to compile.");
+        } else {
+            System.out.println("Fragment shader compiled successfully.");
         }
 
         // linking the shaders
@@ -84,11 +87,11 @@ public class LevelEditorScene extends Scene {
             int len = glGetProgrami(shaderProgram, GL_INFO_LOG_LENGTH);
             System.out.println("ERROR: 'defaultShader.glsl' shader linking failed.");
             System.out.println(glGetProgramInfoLog(shaderProgram, len));
-            assert false : "";
+            throw new RuntimeException("Shader linking failed.");
+        } else {
+            System.out.println("Shaders linked successfully.");
         }
-
     }
-
     @Override
     public void update(float dt) {
         if (!changingScene && KeyboardHandler.isKeyPressed(KeyEvent.VK_SPACE)) { // Key to change scene

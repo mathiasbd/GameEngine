@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/00000000000.xd" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/00000000000.xd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/GameEngineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/GameEngineManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/LevelEditorScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/LevelEditorScene.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
