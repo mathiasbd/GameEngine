@@ -1,4 +1,4 @@
-package org.example;
+package rendering;
 
 import java.io.IOException;
 import java.nio.file.Files;

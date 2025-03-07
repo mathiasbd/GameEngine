@@ -1,9 +1,10 @@
 package org.example;
-import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
+import scenes.LevelEditorScene;
+import scenes.LevelScene;
+import scenes.Scene;
 import util.Time;
 
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 public class GameEngineManager {
@@ -20,8 +21,7 @@ public class GameEngineManager {
     }
 
     public void loop() {
-        //creates the GLCapabilities instance and makes the openGL bindings available for use
-        GL.createCapabilities();
+
 
         float initialTime = Time.getTime();
         float endTime;

@@ -1,8 +1,10 @@
-package org.example;
+package scenes;
 
-import java.awt.event.KeyEvent;
+import input.MouseHandler;
+import org.example.GameEngineManager;
+import scenes.Scene;
 
-public class LevelScene extends Scene{
+public class LevelScene extends Scene {
 
     private boolean changingScene = false;
     private float timeToChangeScene = 3.0f;

@@ -1,10 +1,6 @@
-package org.example;
-import org.lwjgl.Version;
-import org.lwjgl.opengl.GL;
+package input;
 
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 
 public class KeyboardHandler {
     //ensures only one instance of KeyboardHandler exists

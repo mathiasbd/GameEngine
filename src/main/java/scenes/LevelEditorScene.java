@@ -1,17 +1,16 @@
-package org.example;
+package scenes;
 
 
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
+import input.KeyboardHandler;
+import org.example.GameEngineManager;
+import rendering.Shader;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.Version;
+
 import static org.lwjgl.opengl.GL30.*;
 import java.nio.IntBuffer;
 import java.nio.FloatBuffer;
-import org.lwjgl.BufferUtils;
-import static org.lwjgl.opengl.GL20.*;
 
 public class LevelEditorScene extends Scene {
 
