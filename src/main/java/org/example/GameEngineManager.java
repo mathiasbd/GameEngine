@@ -21,8 +21,6 @@ public class GameEngineManager {
     }
 
     public void loop() {
-
-
         float initialTime = Time.getTime();
         float endTime;
         float deltaTime = -1.0f;

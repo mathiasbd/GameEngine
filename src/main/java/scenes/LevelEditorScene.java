@@ -4,7 +4,9 @@ package scenes;
 import java.awt.event.KeyEvent;
 
 import input.KeyboardHandler;
+import org.example.Camera;
 import org.example.GameEngineManager;
+import org.joml.Vector2f;
 import rendering.Shader;
 import org.lwjgl.BufferUtils;
 
@@ -40,6 +42,7 @@ public class LevelEditorScene extends Scene {
     public void init() {
         shader = new Shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
         shader.compileAndLinkShaders();
+        this.camera = new Camera(new Vector2f());
 
         //Our VAO, VBO and EBO buffer Objects.
         //ved ikke om det her er rigtigt
@@ -77,12 +80,12 @@ public class LevelEditorScene extends Scene {
         glVertexAttribPointer(1,colorSize,GL_FLOAT,false,vertexSizeBytes,positionsSize*floatSizeBytes);
         glEnableVertexAttribArray(1);
 
-
-
     }
     @Override
     public void update(float dt) {
         shader.useProgram();
+        shader.uploadMat4f("uProjection", camera.getProjectionMatrix());
+        shader.uploadMat4f("uView", camera.getViewMatrix());
         //bind the vao that we are using
         glBindVertexArray(vaoID);
 

@@ -1,6 +1,9 @@
 package rendering;
 
+import org.joml.Matrix4f;
+
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -79,6 +82,13 @@ public class Shader {
         }
     }
 
+    public void uploadMat4f(String name, Matrix4f mat4) {
+        int location = glGetUniformLocation(shaderProgram, name);
+        FloatBuffer buffer = FloatBuffer.allocate(16);
+        mat4.get(buffer);
+        glUniformMatrix4fv(location, false, buffer);
+    }
+
     public void useProgram() {
         //bind shade Program
         glUseProgram(shaderProgram);
@@ -87,4 +97,6 @@ public class Shader {
     public void detach() {
         glUseProgram(0);
     }
+
+
 }
