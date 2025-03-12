@@ -23,9 +23,9 @@ public class LevelEditorScene extends Scene {
 
     private float [] vertexArray={
             //postion              //color
-            0.5f, -0.5f, 0.0f,      1.0f,0.0f,0.0f,1.0f,   //pos: bottom right, col: red,0
-            -0.5f, 0.5f, 0.0f,      0.0f,1.0f,0.0f,1.0f,   //pos: Top Left, col: green, 1
-            0.5f, 0.5f, 0.0f,       0.0f,0.0f,1.0f,1.0f,    //pos: Top Right, col: Blue, 2
+            100.5f, -0.5f, 0.0f,      1.0f,0.0f,0.0f,1.0f,   //pos: bottom right, col: red,0
+            -0.5f, 100.5f, 0.0f,      0.0f,1.0f,0.0f,1.0f,   //pos: Top Left, col: green, 1
+            100.5f, 100.5f, 0.0f,       0.0f,0.0f,1.0f,1.0f,    //pos: Top Right, col: Blue, 2
             -0.5f, -0.5f, 0.0f,      1.0f,1.0f,0.0f,1.0f,   //pos: Bottom Left, col: yellow, 3
     };
     private int [] elementArray={
