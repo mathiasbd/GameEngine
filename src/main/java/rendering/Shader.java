@@ -1,6 +1,6 @@
 package rendering;
 
-import org.joml.Matrix4f;
+import org.joml.*;
 import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
@@ -12,12 +12,12 @@ import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 
 public class Shader {
-
-
     private int vertexId, fragmentId;
     private String vertexSource;
     private String fragmentSource;
     private int shaderProgram;
+
+    private boolean beingUsed = false;
     public Shader(String vertexFilepath, String fragmentFilepath) {
         getShaderSource(vertexFilepath);
         getShaderSource(fragmentFilepath);
@@ -85,19 +85,73 @@ public class Shader {
 
     public void useProgram() {
         //bind shade Program
-        glUseProgram(shaderProgram);
+        if (!beingUsed) {
+            glUseProgram(shaderProgram);
+            beingUsed = true;
+        }
     }
 
     public void detach() {
         glUseProgram(0);
+        beingUsed = false;
     }
 
     public void uploadMat4f(String name, Matrix4f mat4) {
         int location = glGetUniformLocation(shaderProgram, name);
+        useProgram(); // just to make sure the shader is being used (not completely necessary)
         FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
         mat4.get(buffer);
         glUniformMatrix4fv(location, false, buffer);
     }
+
+    // Following method is similar to uploadMat4f, but for Matrix3f
+
+    public void uploadMat3f(String name, Matrix3f mat3) {
+        int location = glGetUniformLocation(shaderProgram, name);
+        useProgram();
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(9);
+        mat3.get(buffer);
+        glUniformMatrix3fv(location, false, buffer);
+    }
+
+    public void uploadVec4f(String name, Vector4f vec4f) {
+        int location = glGetUniformLocation(shaderProgram, name);
+        useProgram();
+        glUniform4f(location, vec4f.x, vec4f.y, vec4f.z, vec4f.w);
+    }
+
+    // Following methods are similar to uploadVec4f, but for Vector3f and Vector2f
+
+    public void uploadVec3f(String name, Vector3f vec3f) {
+        int location = glGetUniformLocation(shaderProgram, name);
+        useProgram();
+        glUniform3f(location, vec3f.x, vec3f.y, vec3f.z);
+    }
+
+    public void uploadVec2f(String name, Vector2f vec2f) {
+        int location = glGetUniformLocation(shaderProgram, name);
+        useProgram();
+        glUniform2f(location, vec2f.x, vec2f.y);
+    }
+
+    public void uploadFloat(String name, float value) {
+        int location = glGetUniformLocation(shaderProgram, name);
+        useProgram();
+        glUniform1f(location, value);
+    }
+
+    public void uploadInt(String name, int value) {
+        int location = glGetUniformLocation(shaderProgram, name);
+        useProgram();
+        glUniform1i(location, value);
+    }
+
+    // same methods but for vec3 and vec2 and matrix3f
+
+
+
+
+
 
     public void uploadTexture(String name, int slot) {
         int location = glGetUniformLocation(shaderProgram, name);

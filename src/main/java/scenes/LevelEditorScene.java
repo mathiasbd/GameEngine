@@ -10,6 +10,7 @@ import org.joml.Vector2f;
 import rendering.Shader;
 import org.lwjgl.BufferUtils;
 import rendering.Texture;
+import util.Time;
 
 import static org.lwjgl.opengl.GL30.*;
 import java.nio.IntBuffer;
@@ -97,6 +98,7 @@ public class LevelEditorScene extends Scene {
         //Upload projection matrix
         shader.uploadMat4f("uProjection", camera.getProjectionMatrix());
         shader.uploadMat4f("uView", camera.getViewMatrix());
+        shader.uploadFloat("uTime", Time.getTime());
         //bind the vao that we are using
         glBindVertexArray(vaoID);
 
