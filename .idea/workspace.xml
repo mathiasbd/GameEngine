@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79c287bc-84bc-485b-a479-f83e3cf44ae0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/rendering/Texture.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/shaders/fragment.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/assets/shaders/fragment.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/shaders/vertex.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/assets/shaders/vertex.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Camera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/rendering/Shader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/rendering/Shader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scenes/LevelEditorScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scenes/LevelEditorScene.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

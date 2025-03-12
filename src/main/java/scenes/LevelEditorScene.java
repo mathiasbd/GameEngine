@@ -9,6 +9,7 @@ import org.example.GameEngineManager;
 import org.joml.Vector2f;
 import rendering.Shader;
 import org.lwjgl.BufferUtils;
+import rendering.Texture;
 
 import static org.lwjgl.opengl.GL30.*;
 import java.nio.IntBuffer;
@@ -22,18 +23,18 @@ public class LevelEditorScene extends Scene {
     private Shader shader;
 
     private float [] vertexArray={
-            //postion              //color
-            100.5f, -0.5f, 0.0f,      1.0f,0.0f,0.0f,1.0f,   //pos: bottom right, col: red,0
-            -0.5f, 100.5f, 0.0f,      0.0f,1.0f,0.0f,1.0f,   //pos: Top Left, col: green, 1
-            100.5f, 100.5f, 0.0f,       0.0f,0.0f,1.0f,1.0f,    //pos: Top Right, col: Blue, 2
-            -0.5f, -0.5f, 0.0f,      1.0f,1.0f,0.0f,1.0f,   //pos: Bottom Left, col: yellow, 3
+            //postion              //color                   //UV coordinates
+            200.5f, -0.5f, 0.0f,      1.0f,0.0f,0.0f,1.0f,     0,1,    //pos: bottom right, col: red,0
+            -0.5f, 200.5f, 0.0f,      0.0f,1.0f,0.0f,1.0f,     1,0,    //pos: Top Left, col: green, 1
+            200.5f, 200.5f, 0.0f,       0.0f,0.0f,1.0f,1.0f,   0,0,       //pos: Top Right, col: Blue, 2
+            -0.5f, -0.5f, 0.0f,      1.0f,1.0f,0.0f,1.0f,      1,1   //pos: Bottom Left, col: yellow, 3
     };
     private int [] elementArray={
             2,1,0, //top right triangle
             0,1,3  //bottom left triangle
     };
     private int vaoID, vboID, eboID;
-
+    private Texture testTexture;
     public LevelEditorScene() {
         System.out.println("Inside the level editing scene");
     }
@@ -44,6 +45,8 @@ public class LevelEditorScene extends Scene {
         shader.compileAndLinkShaders();
         this.camera = new Camera(new Vector2f());
 
+        //Init texture
+        testTexture = new Texture("assets/textures/tom_and_jerry.jpg");
         //Our VAO, VBO and EBO buffer Objects.
         //ved ikke om det her er rigtigt
         vaoID = glGenVertexArrays();
@@ -70,18 +73,28 @@ public class LevelEditorScene extends Scene {
         //Pointers to the vertex attributes
         int positionsSize =3;
         int colorSize =4;
-        int floatSizeBytes=4;                        //a size of a float is 4 bytes
-        int vertexSizeBytes=(positionsSize+colorSize)*floatSizeBytes;
+        int uvSize = 2;
+        int vertexSizeBytes=(positionsSize+colorSize+uvSize)*Float.BYTES;
 
         glVertexAttribPointer(0,positionsSize,GL_FLOAT,false,vertexSizeBytes,0);
         glEnableVertexAttribArray(0);
 
-        glVertexAttribPointer(1,colorSize,GL_FLOAT,false,vertexSizeBytes,positionsSize*floatSizeBytes);
+        glVertexAttribPointer(1,colorSize,GL_FLOAT,false,vertexSizeBytes,positionsSize*Float.BYTES);
         glEnableVertexAttribArray(1);
+
+        glVertexAttribPointer(2,uvSize,GL_FLOAT, false,vertexSizeBytes, (positionsSize+colorSize)*Float.BYTES);
+        glEnableVertexAttribArray(2);
     }
     @Override
     public void update(float dt) {
         shader.useProgram();
+        //Upload texture
+        shader.uploadTexture("TEX_SAMPLER", 0);
+        glActiveTexture(GL_TEXTURE0);
+        testTexture.bind();
+
+
+        //Upload projection matrix
         shader.uploadMat4f("uProjection", camera.getProjectionMatrix());
         shader.uploadMat4f("uView", camera.getViewMatrix());
         //bind the vao that we are using

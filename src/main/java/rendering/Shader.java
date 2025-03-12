@@ -99,4 +99,9 @@ public class Shader {
         glUniformMatrix4fv(location, false, buffer);
     }
 
+    public void uploadTexture(String name, int slot) {
+        int location = glGetUniformLocation(shaderProgram, name);
+        glGetUniformi(slot, location);
+    }
+
 }
