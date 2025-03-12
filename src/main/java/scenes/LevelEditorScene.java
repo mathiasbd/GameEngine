@@ -76,10 +76,8 @@ public class LevelEditorScene extends Scene {
         glVertexAttribPointer(0,positionsSize,GL_FLOAT,false,vertexSizeBytes,0);
         glEnableVertexAttribArray(0);
 
-
         glVertexAttribPointer(1,colorSize,GL_FLOAT,false,vertexSizeBytes,positionsSize*floatSizeBytes);
         glEnableVertexAttribArray(1);
-
     }
     @Override
     public void update(float dt) {

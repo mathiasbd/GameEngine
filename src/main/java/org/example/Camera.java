@@ -10,8 +10,8 @@ public class Camera {
 
     public Camera(Vector2f position) {
         this.position = position;
-        projectionMatrix = new Matrix4f();
-        viewMatrix = new Matrix4f();
+        this.projectionMatrix = new Matrix4f();
+        this.viewMatrix = new Matrix4f();
     }
 
     public void adjustProjection() {
@@ -25,7 +25,7 @@ public class Camera {
         this.viewMatrix.identity();
         this.viewMatrix.lookAt(new Vector3f(position.x, position.y, 20.0f),
                 cameraFront.add(position.x, position.y, 0.0f), cameraUp);
-        return viewMatrix;
+        return this.viewMatrix;
     }
 
     public Matrix4f getProjectionMatrix() {
