@@ -6,6 +6,14 @@ import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.system.*;
 
+import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.glGetString;
+import org.lwjgl.opengl.GL;
+import static org.lwjgl.opengl.GL11.GL_VERSION;
+import org.lwjgl.opengl.GL;
+import static org.lwjgl.opengl.GL11.glGetString;
+import static org.lwjgl.opengl.GL11.GL_VERSION;
+
 import java.nio.*;
 
 import static org.lwjgl.glfw.Callbacks.*;
@@ -41,6 +49,14 @@ public class WindowManager {
         if(!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
+
+        // Request OpenGL 3.3 Core Profile: these lines are important for mac
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Required on macOS
+
+
         //While initializing the window we dont want it visible
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         //Setting the window to rezisable
@@ -75,6 +91,8 @@ public class WindowManager {
         //Making a context for the window
         glfwMakeContextCurrent(window);
 
+        // Load OpenGL functions important for macs
+        GL.createCapabilities();
         //VSYNC i think?
         glfwSwapInterval(1);
 
