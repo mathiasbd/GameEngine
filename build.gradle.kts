@@ -1,17 +1,12 @@
 plugins {
     id("java")
-    id("application")
 }
 
 group = "org.example"
 version = "1.0-SNAPSHOT"
 val lwjglVersion = "3.3.6"
 val jomlVersion = "1.10.7"
-val lwjglNatives = listOf(
-    "natives-windows",
-    "natives-macos",
-    "natives-macos-arm64"
-)
+val lwjglNatives = "natives-windows"
 repositories {
     mavenCentral()
 }
@@ -26,21 +21,11 @@ dependencies {
     implementation("org.lwjgl", "lwjgl-openal")
     implementation("org.lwjgl", "lwjgl-opengl")
 
-    lwjglNatives.forEach { native ->
-        runtimeOnly("org.lwjgl", "lwjgl", classifier = native)
-        runtimeOnly("org.lwjgl", "lwjgl-glfw", classifier = native)
-        runtimeOnly("org.lwjgl", "lwjgl-openal", classifier = native)
-        runtimeOnly("org.lwjgl", "lwjgl-opengl", classifier = native)
-        runtimeOnly("org.lwjgl", "lwjgl-stb", classifier = native)
-    }
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-application {
-    mainClass.set("org.example.Main")
-}
-tasks.withType<JavaExec> {
-    jvmArgs = listOf("-XstartOnFirstThread")
+    implementation("org.lwjgl", "lwjgl-stb")
+    runtimeOnly("org.lwjgl", "lwjgl", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-glfw", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-openal", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-opengl", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-stb", classifier = lwjglNatives)
+    implementation("org.joml", "joml", jomlVersion)
 }
