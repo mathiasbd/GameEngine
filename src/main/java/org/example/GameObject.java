@@ -1,4 +1,5 @@
 package org.example;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameObject {
@@ -9,6 +10,7 @@ public class GameObject {
 
     public GameObject(String Name) {
         this.name = name;
+        this.components = new ArrayList<Component>();
     }
 
     public <T extends Component> T getComponent(Class<T> componentClass) {

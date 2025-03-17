@@ -3,9 +3,11 @@ package scenes;
 
 import java.awt.event.KeyEvent;
 
+import components.SpriteRender;
 import input.KeyboardHandler;
 import org.example.Camera;
 import org.example.GameEngineManager;
+import org.example.GameObject;
 import org.joml.Vector2f;
 import rendering.Shader;
 import org.lwjgl.BufferUtils;
@@ -22,6 +24,9 @@ public class LevelEditorScene extends Scene {
     private float timeToChangeScene = 3.0f;
 
     private Shader shader;
+
+    GameObject testObj;
+    private boolean FirstTime = false;
 
     private float [] vertexArray={
             //postion              //color                   //UV coordinates
@@ -42,6 +47,12 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void init() {
+        System.out.println("creating test object");
+        this.testObj = new GameObject("test object");
+        this.testObj.addComponent(new SpriteRender());
+        this.addGameObjectToScene(this.testObj);
+
+
         shader = new Shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
         shader.compileAndLinkShaders();
         this.camera = new Camera(new Vector2f());
@@ -129,6 +140,16 @@ public class LevelEditorScene extends Scene {
             GameEngineManager.changeScene("GameScene"); // Problem making it static
         }
 
+        if (!FirstTime) {
+            System.out.println("Creatintg game object");
+            GameObject go = new GameObject("Game test2");
+            go.addComponent(new SpriteRender());
+            this.addGameObjectToScene(go);
+            FirstTime = true;
+        }
 
+        for (GameObject go : this.gameObjects) {
+            go.update(dt);
+        }
     }
 }
