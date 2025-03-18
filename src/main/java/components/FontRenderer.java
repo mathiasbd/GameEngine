@@ -1,16 +1,19 @@
 package components;
 
-import org.example.Component;
-
 public class FontRenderer extends Component {
 
+    private boolean firstTime = true;
     @Override
     public void start() {
-        if (gameObject.getComponent())
+        System.out.println("Starting font renderer");
     }
 
     @Override
-    public void uppdate(float dt) {
-
+    public void update(float dt) {
+        if(firstTime) {
+            System.out.println("Updating font renderer");
+            firstTime = false;
+        }
     }
+
 }

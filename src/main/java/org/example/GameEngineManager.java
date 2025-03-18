@@ -57,10 +57,13 @@ public class GameEngineManager {
             case "EditorScene":
                 currentScene = new LevelEditorScene();
                 currentScene.init();
+                currentScene.start();
                 currentSceneName = "EditorScene";
                 break;
             case "GameScene":
                 currentScene = new LevelScene();
+                currentScene.init();
+                currentScene.start();
                 currentSceneName = "GameScene";
                 break;
             default:

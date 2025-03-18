@@ -3,7 +3,7 @@ package scenes;
 
 import java.awt.event.KeyEvent;
 
-import components.SpriteRender;
+import components.SpriteRenderer;
 import input.KeyboardHandler;
 import org.example.Camera;
 import org.example.GameEngineManager;
@@ -49,7 +49,7 @@ public class LevelEditorScene extends Scene {
     public void init() {
         System.out.println("creating test object");
         this.testObj = new GameObject("test object");
-        this.testObj.addComponent(new SpriteRender());
+        this.testObj.addComponent(new SpriteRenderer());
         this.addGameObjectToScene(this.testObj);
 
 
@@ -143,7 +143,7 @@ public class LevelEditorScene extends Scene {
         if (!FirstTime) {
             System.out.println("Creatintg game object");
             GameObject go = new GameObject("Game test2");
-            go.addComponent(new SpriteRender());
+            go.addComponent(new SpriteRenderer());
             this.addGameObjectToScene(go);
             FirstTime = true;
         }

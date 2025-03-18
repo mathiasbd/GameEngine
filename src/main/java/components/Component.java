@@ -1,4 +1,6 @@
-package org.example;
+package components;
+
+import org.example.GameObject;
 
 public abstract class Component {
 
