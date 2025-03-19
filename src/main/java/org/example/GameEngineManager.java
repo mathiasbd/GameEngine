@@ -9,7 +9,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 public class GameEngineManager {
 
-    WindowManager window;
+    private WindowManager window;
 
     private static Scene currentScene;
     private static String currentSceneName;
@@ -31,7 +31,7 @@ public class GameEngineManager {
             //Poll for window events (Key events are invoked here)
             glfwPollEvents();
             //Set the clear color
-            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+            glClearColor(0.25f, 0.3f, 0.3f, 1.0f);
             //Clear the framebuffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -70,5 +70,9 @@ public class GameEngineManager {
                 System.out.println("Invalid scene name '" + sceneName + "'");
                 break;
         }
+    }
+
+    public static Scene getCurrentScene() {
+        return currentScene;
     }
 }

@@ -7,12 +7,20 @@ import java.util.List;
 public class GameObject {
     private String name;
     private List<Component> components;
+    public Transform transform;
 
 
 
     public GameObject(String Name) {
         this.name = name;
         this.components = new ArrayList<Component>();
+        this.transform = new Transform();
+    }
+
+    public GameObject(String name, Transform transform) {
+        this.name = name;
+        this.components = new ArrayList<Component>();
+        this.transform = transform;
     }
 
     public <T extends Component> T getComponent(Class<T> componentClass) {
@@ -54,5 +62,13 @@ public class GameObject {
         for (int i=0; i< components.size(); i++) {
             components.get(i).start();
         }
+    }
+
+    public void setTransform(Transform transform) {
+        this.transform = transform;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

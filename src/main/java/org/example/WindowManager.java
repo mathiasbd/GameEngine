@@ -24,9 +24,9 @@ import static org.lwjgl.system.MemoryUtil.*;
 public class WindowManager {
 
     private long window;
-    int width;
-    int height;
-    String title;
+    private int width;
+    private int height;
+    private String title;
 
 
     public WindowManager(int width, int height, String title) {
@@ -114,4 +114,5 @@ public class WindowManager {
     public long getWindow() {
         return window;
     }
+
 }
