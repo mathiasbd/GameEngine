@@ -37,7 +37,6 @@ public class Renderer {
             newBatch.start();
             batches.add(newBatch);
             newBatch.addSprite(sprite);
-            System.out.println("Succesfully added sprite to new batch");
         }
     }
 

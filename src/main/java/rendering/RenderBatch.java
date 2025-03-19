@@ -4,6 +4,7 @@ import components.SpriteRenderer;
 import org.example.GameEngineManager;
 import org.joml.Vector4f;
 import rendering.Shader;
+import util.AssetPool;
 import util.Time;
 
 import static org.lwjgl.opengl.GL15.*;
@@ -40,8 +41,7 @@ public class RenderBatch {
 
     private int maxBatchSize;
     public RenderBatch(int batchSize) {
-        shader = new Shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
-        shader.compileAndLinkShaders();
+        shader = AssetPool.getShader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
         this.sprites = new SpriteRenderer[batchSize];
         this.maxBatchSize = batchSize;
 

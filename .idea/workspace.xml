@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79c287bc-84bc-485b-a479-f83e3cf44ae0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Transform.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/rendering/Renderer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/util/AssetPool.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/shaders/fragment.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/assets/shaders/fragment.glsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/shaders/vertex.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/assets/shaders/vertex.glsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/components/SpriteRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/components/SpriteRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/GameEngineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/GameEngineManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/GameObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/RenderBatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/rendering/RenderBatch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/WindowManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/WindowManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scenes/LevelEditorScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scenes/LevelEditorScene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scenes/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scenes/Scene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/rendering/RenderBatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/rendering/RenderBatch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/rendering/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/rendering/Renderer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +87,7 @@
       <workItem from="1741977374636" duration="126000" />
       <workItem from="1742213557315" duration="2491000" />
       <workItem from="1742326980067" duration="4447000" />
-      <workItem from="1742370012275" duration="19826000" />
+      <workItem from="1742370012275" duration="21258000" />
     </task>
     <servers />
   </component>
