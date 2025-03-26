@@ -1,5 +1,6 @@
 package util;
 
+import components.SpriteSheet;
 import rendering.Shader;
 import rendering.Texture;
 
@@ -10,6 +11,7 @@ import java.util.Map;
 public class AssetPool {
     private static Map<String, Shader> shaders = new HashMap<>();
     private static Map<String, Texture> textures = new HashMap<>();
+    private static Map<String, SpriteSheet> spriteSheets = new HashMap<>();
 
     public static Shader getShader(String vertexResourceName, String fragmentResourceName) {
         File vertexFile = new File(vertexResourceName);
@@ -37,5 +39,20 @@ public class AssetPool {
             textures.put(file.getAbsolutePath(), texture);
             return texture;
         }
+    }
+
+    public static void addSpritesheet(String resourceName, SpriteSheet spriteSheet) {
+        File file = new File(resourceName);
+        if(!AssetPool.spriteSheets.containsKey(file.getAbsolutePath())) {
+            AssetPool.spriteSheets.put(file.getAbsolutePath(), spriteSheet);
+        }
+    }
+
+    public static SpriteSheet getSpriteSheet(String resourceName) {
+        File file = new File(resourceName);
+        if(!AssetPool.spriteSheets.containsKey(file.getAbsolutePath())) {
+            throw new RuntimeException("SpriteSheet not found: " + resourceName);
+        }
+        return AssetPool.spriteSheets.getOrDefault(file.getAbsolutePath(), null);
     }
 }
