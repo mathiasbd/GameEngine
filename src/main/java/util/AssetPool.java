@@ -26,6 +26,10 @@ public class AssetPool {
 
     public static Texture getTexture(String resourceName) {
         File file = new File(resourceName);
+        //handling error
+        if (!file.exists()) {
+            throw new RuntimeException("Texture file not found: " + resourceName);
+        }
         if(textures.containsKey(file.getAbsolutePath())) {
             return textures.get(file.getAbsolutePath());
         } else {

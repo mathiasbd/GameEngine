@@ -148,6 +148,11 @@ public class Shader {
 
     // same methods but for vec3 and vec2 and matrix3f
 
+    public void uploadIntArray(String name, int[] values) {
+        int location = glGetUniformLocation(shaderProgram, name);
+        useProgram(); // Ensure the shader is active
+        glUniform1iv(location, values);
+    }
 
 
 

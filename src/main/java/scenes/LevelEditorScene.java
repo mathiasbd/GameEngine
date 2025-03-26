@@ -11,6 +11,7 @@ import org.joml.Vector4f;
 import rendering.Shader;
 import org.lwjgl.BufferUtils;
 import rendering.Texture;
+import util.AssetPool;
 import util.Time;
 
 import static org.lwjgl.opengl.GL30.*;
@@ -28,24 +29,18 @@ public class LevelEditorScene extends Scene {
     public void init() {
 
         this.camera = new Camera(new Vector2f());
+        //test texture batching for our  images
+        GameObject obj1 =new GameObject("object 1",new Transform(new Vector2f(100,100),new Vector2f(256,256)) );
+        obj1.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/textures/test2.jpg")));
+        this.addGameObjectToScene(obj1);
 
-        int xOffset = 10;
-        int yOffset = 10;
+        GameObject obj2 =new GameObject("object 2",new Transform(new Vector2f(400,100),new Vector2f(256,256)) );
+        obj2.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/textures/tom_and_jerry.jpg")));
+        this.addGameObjectToScene(obj2);
 
-        float totalWidth = (float)(600 - xOffset*2);
-        float totalHeight = (float)(300 - yOffset*2);
-        float boxX = totalWidth/100.0f;
-        float boxY = totalHeight/100.0f;
-
-        for(int x = 0; x < 100; x++) {
-            for(int y=0; y<100; y++) {
-                float xPos = xOffset + (x*boxX);
-                float yPos = yOffset + (y*boxY);
-                GameObject go = new GameObject("Box" + x + "," + y, new Transform(new Vector2f(xPos,yPos), new Vector2f(boxX,boxY)));
-                go.addComponent(new SpriteRenderer(new Vector4f(xPos/totalWidth, yPos/totalHeight, 1, 1)));
-                this.addGameObjectToScene(go);
-            }
-        }
+        GameObject obj3 =new GameObject("object 3",new Transform(new Vector2f(700,100),new Vector2f(256,256)) );
+        obj3.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/textures/tom_and_jerry-kopi.jpg")));
+        this.addGameObjectToScene(obj3);
 
     }
     @Override
