@@ -2,6 +2,7 @@ package rendering;
 
 import components.SpriteRenderer;
 import org.example.GameEngineManager;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 import rendering.Shader;
 import util.AssetPool;
@@ -18,7 +19,7 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
-public class RenderBatch {
+public class RenderBatch implements Comparable<RenderBatch> {
     ////////////////////////////////
     //      Vertex structure     //
     //////////////////////////////
@@ -50,7 +51,9 @@ public class RenderBatch {
     private int []texSlots={0,1,2,3,4,5,6,7};
 
     private int maxBatchSize;
-    public RenderBatch(int batchSize) {
+
+    private int zIndex;
+    public RenderBatch(int batchSize, int zIndex) {
         shader = AssetPool.getShader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
         this.sprites = new SpriteRenderer[batchSize];
         this.maxBatchSize = batchSize;
@@ -61,6 +64,7 @@ public class RenderBatch {
         this.numberSprites = 0;
         this.hasRoom = true;
         this.texture = new ArrayList<>();
+        this.zIndex = zIndex;
     }
 
     public void start() {
@@ -95,9 +99,20 @@ public class RenderBatch {
     }
 
     public void render() {
-        //We rebuffer all data every frame for now
-        glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
+        boolean rebufferData = false;
+        for(int i = 0; i < numberSprites; i++) {
+            SpriteRenderer spr = sprites[i];
+            if(spr.getIsDirty()) {
+                rebufferData = true;
+                loadVertexProperties(i);
+                spr.setClean();
+            }
+        }
+        if(rebufferData) {
+            //We rebuffer all data every frame for now
+            glBindBuffer(GL_ARRAY_BUFFER, vboID);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
+        }
 
         //Use shader
         shader.useProgram();
@@ -182,7 +197,7 @@ public class RenderBatch {
                 }
             }
         }
-        System.out.println(sprite.gameObject.getName() + " - Texture ID: " + texId);
+//        System.out.println(sprite.gameObject.getName() + " - Texture ID: " + texId);
 
 
         float xs = 1.0f;
@@ -223,5 +238,14 @@ public class RenderBatch {
 
     public boolean hasTexture(Texture texture) {
         return this.texture.contains(texture);
+    }
+
+    public int getzIndex() {
+        return zIndex;
+    }
+
+    @Override
+    public int compareTo(RenderBatch o) {
+        return Integer.compare(this.getzIndex(), o.getzIndex());
     }
 }

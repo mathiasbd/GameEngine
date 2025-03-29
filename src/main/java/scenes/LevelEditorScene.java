@@ -26,30 +26,52 @@ public class LevelEditorScene extends Scene {
         System.out.println("Inside the level editing scene");
     }
 
+    private GameObject obj1;
+    private SpriteSheet sprites;
     @Override
     public void init() {
         loadResources();
         this.camera = new Camera(new Vector2f());
 
-        SpriteSheet sprites = AssetPool.getSpriteSheet("assets/spritesheets/Attack_1.png");
+        sprites = AssetPool.getSpriteSheet("assets/spritesheets/Blue_Slime/Attack_1.png");
         //test texture batching for our  images
-        GameObject obj1 =new GameObject("object 1",new Transform(new Vector2f(100,100),new Vector2f(256,256)) );
+        obj1 =new GameObject("object 1",new Transform(new Vector2f(100,100),new Vector2f(320,128)), 3);
         obj1.addComponent(new SpriteRenderer(sprites.getSprite(0)));
         this.addGameObjectToScene(obj1);
 
-        GameObject obj2 =new GameObject("object 2",new Transform(new Vector2f(400,100),new Vector2f(256,256)) );
-        obj2.addComponent(new SpriteRenderer(sprites.getSprite(1)));
-        this.addGameObjectToScene(obj2);
+        GameObject greenCube = new GameObject("green cube", new Transform(new Vector2f(500, 100), new Vector2f(100, 100)), -2);
+        greenCube.addComponent(new SpriteRenderer(new Vector4f(0,1,0,0.3f)));
+        this.addGameObjectToScene(greenCube);
+
+        GameObject redCube = new GameObject("red cube", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)), 1);
+        redCube.addComponent(new SpriteRenderer(new Vector4f(1,0,0,0.3f)));
+        this.addGameObjectToScene(redCube);
     }
 
     private void loadResources() {
         AssetPool.getShader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
-        AssetPool.addSpritesheet("assets/spritesheets/Attack_1.png",
-                new SpriteSheet(AssetPool.getTexture("assets/spritesheets/Attack_1.png"), 100, 128, 4, 160));
+        AssetPool.addSpritesheet("assets/spritesheets/Blue_Slime/Attack_1.png",
+                new SpriteSheet(AssetPool.getTexture("assets/spritesheets/Blue_Slime/Attack_1.png"), 80, 32, 4, 46, 94, 27));
     } // the spritesheet dimensions arent correct so its not working perfectly.
+
+    private float testTime = 0.1f;
+    private int index = 0;
 
     @Override
     public void update(float dt) {
+
+        testTime -= dt;
+
+        if(testTime < 0) {
+            obj1.getComponent(SpriteRenderer.class).setSprite(sprites.getSprite(index));
+            testTime = 0.1f;
+            if(index < 3) {
+                index++;
+            } else {
+                index = 0;
+            }
+        }
+
         for (GameObject go : this.gameObjects) {
             go.update(dt);
         }

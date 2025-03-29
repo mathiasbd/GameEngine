@@ -10,10 +10,10 @@ public class SpriteSheet {
     private Texture texture;
     private List<Sprite> sprites = new ArrayList<>();
 
-    public SpriteSheet(Texture texture, int spriteWidth, int spriteHeight, int numSprites, int spacing) {
+    public SpriteSheet(Texture texture, int spriteWidth, int spriteHeight, int numSprites, int xSpacing, int ySpacing, int startX) {
         this.texture = texture;
-        int currentX = 0;
-        int currentY = texture.getHeight() - spriteHeight; //Start at the top left corner
+        int currentX = startX;
+        int currentY = texture.getHeight() - spriteHeight - ySpacing; //Start at the top left corner
         for (int i = 0; i < numSprites; i++) {
             float topY = (currentY + spriteHeight) / (float) texture.getHeight();
             float rightX = (currentX + spriteWidth) / (float) texture.getWidth();
@@ -27,10 +27,10 @@ public class SpriteSheet {
                     new Vector2f(leftX, topY)
             };
             sprites.add(new Sprite(this.texture, texCoords));
-            currentX += spriteWidth + spacing;
+            currentX += spriteWidth + xSpacing;
             if (currentX >= texture.getWidth()) {
                 currentX = 0;
-                currentY -= spriteHeight + spacing;
+                currentY -= spriteHeight + ySpacing;
             } // if its finished with a row, moves to the next row
         }
     }

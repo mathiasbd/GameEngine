@@ -6,18 +6,14 @@ import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.system.*;
 
-import static org.lwjgl.opengl.GL11.GL_TRUE;
-import static org.lwjgl.opengl.GL11.glGetString;
 import org.lwjgl.opengl.GL;
-import static org.lwjgl.opengl.GL11.GL_VERSION;
 import org.lwjgl.opengl.GL;
-import static org.lwjgl.opengl.GL11.glGetString;
-import static org.lwjgl.opengl.GL11.GL_VERSION;
 
 import java.nio.*;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -93,6 +89,10 @@ public class WindowManager {
 
         // Load OpenGL functions important for macs
         GL.createCapabilities();
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         //VSYNC i think?
         glfwSwapInterval(1);
 

@@ -21,4 +21,22 @@ public class Transform {
         this.position = position;
         this.scale = scale;
     }
+
+    public Transform getTransform() {
+        return new Transform(new Vector2f(this.position), new Vector2f(this.scale));
+    }
+
+    public void getTransform(Transform to) {
+        to.position.set(this.position);
+        to.scale.set(this.scale);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        }
+        if(!(o instanceof Transform)) {return false;}
+        return ((Transform) o).position == this.position && ((Transform) o).scale == this.scale;
+    }
 }
