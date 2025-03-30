@@ -35,7 +35,7 @@ public class GameEngineManager {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             window.startImGuiFrame();
-            imGuiLayer.process();
+            imGuiLayer.process(currentScene);
             window.endImGuiFrame();
 
 

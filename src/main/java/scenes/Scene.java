@@ -40,6 +40,10 @@ public abstract class Scene {
         }
     }
 
+    public List<GameObject> getGameObjects() {
+        return gameObjects;
+    }
+
     public Camera getCamera() {
         return this.camera;
     }

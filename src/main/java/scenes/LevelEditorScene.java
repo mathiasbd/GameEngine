@@ -51,7 +51,7 @@ public class LevelEditorScene extends Scene {
     private void loadResources() {
         AssetPool.getShader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
         AssetPool.addSpritesheet("assets/spritesheets/Blue_Slime/Attack_1.png",
-                new SpriteSheet(AssetPool.getTexture("assets/spritesheets/Blue_Slime/Attack_1.png"), 80, 32, 4, 46, 94, 27));
+                new SpriteSheet(AssetPool.getTexture("assets/spritesheets/Blue_Slime/Attack_1.png"), 80, 34, 4, 46, 94, 27));
     } // the spritesheet dimensions arent correct so its not working perfectly.
 
     private float testTime = 0.1f;
