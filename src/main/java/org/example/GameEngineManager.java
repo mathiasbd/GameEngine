@@ -13,9 +13,10 @@ public class GameEngineManager {
 
     private static Scene currentScene;
     private static String currentSceneName;
+    private ImGuiLayer imGuiLayer;
     public GameEngineManager(WindowManager window) {
         this.window = window;
-        GL.createCapabilities();
+        this.imGuiLayer = new ImGuiLayer();
         changeScene("EditorScene");
         loop();
     }
@@ -28,12 +29,14 @@ public class GameEngineManager {
 
         //Loop runs until windowShouldClose is set to true
         while (!glfwWindowShouldClose(window.getWindow())) {
-            //Poll for window events (Key events are invoked here)
-            glfwPollEvents();
             //Set the clear color
             glClearColor(0.25f, 0.3f, 0.3f, 1.0f);
             //Clear the framebuffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            window.startImGuiFrame();
+            imGuiLayer.process();
+            window.endImGuiFrame();
 
 
             if (deltaTime >= 0) {
@@ -45,6 +48,9 @@ public class GameEngineManager {
 
             //Swap the color buffers
             glfwSwapBuffers(window.getWindow());
+
+            //Poll for window events (Key events are invoked here)
+            glfwPollEvents();
 
             endTime = Time.getTime();
             deltaTime = endTime-initialTime;

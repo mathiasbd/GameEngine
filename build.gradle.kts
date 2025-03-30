@@ -7,10 +7,18 @@ version = "1.0-SNAPSHOT"
 val lwjglVersion = "3.3.6"
 val jomlVersion = "1.10.7"
 val lwjglNatives = "natives-windows"
+val imguiVersion = "1.89.0"
 repositories {
     mavenCentral()
 }
 dependencies {
+
+    implementation("io.github.spair:imgui-java-binding:$imguiVersion")
+    implementation("io.github.spair:imgui-java-lwjgl3:$imguiVersion")
+
+    implementation("io.github.spair:imgui-java-natives-windows:$imguiVersion")
+
+    //LWJGL things
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))

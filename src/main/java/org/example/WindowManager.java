@@ -1,5 +1,6 @@
 package org.example;
 
+import imgui.ImGuiIO;
 import input.KeyboardHandler;
 import input.MouseHandler;
 import org.lwjgl.*;
@@ -17,12 +18,20 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
+import imgui.ImGui;
+import imgui.flag.ImGuiConfigFlags;
+import imgui.gl3.ImGuiImplGl3;
+import imgui.glfw.ImGuiImplGlfw;
+
 public class WindowManager {
 
     private long window;
     private int width;
     private int height;
     private String title;
+
+    private ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
+    private ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
 
 
     public WindowManager(int width, int height, String title) {
@@ -34,8 +43,15 @@ public class WindowManager {
         init();
     }
 
-
     public void init() {
+        initWindow();
+        initImGui();
+        imGuiGlfw.init(window, true);
+        imGuiGl3.init("#version 330");
+    }
+
+
+    public void initWindow() {
         //Print version
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
         //Setup error callback
@@ -101,6 +117,10 @@ public class WindowManager {
 
     //Function that closes the window
     public void closeWindow() {
+        imGuiGl3.shutdown();
+        imGuiGlfw.shutdown();
+        ImGui.destroyContext();
+
         glfwSetWindowShouldClose(window, true);
 
         glfwFreeCallbacks(window);
@@ -108,6 +128,33 @@ public class WindowManager {
 
         glfwTerminate();
         glfwSetErrorCallback(null).free();
+    }
+
+    private void initImGui() {
+        ImGui.createContext();
+        ImGuiIO io = ImGui.getIO();
+        io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
+    }
+
+    public void startImGuiFrame() {
+        imGuiGl3.newFrame();
+        imGuiGlfw.newFrame();
+        ImGui.newFrame();
+    }
+
+    public void endImGuiFrame() {
+        ImGui.render();
+        imGuiGl3.renderDrawData(ImGui.getDrawData());
+
+        // Update and Render additional Platform Windows
+        // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
+        //  For this specific demo app we could also call glfwMakeContextCurrent(window) directly)
+        if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
+            final long backupCurrentContext = GLFW.glfwGetCurrentContext();
+            ImGui.updatePlatformWindows();
+            ImGui.renderPlatformWindowsDefault();
+            GLFW.glfwMakeContextCurrent(backupCurrentContext);
+        }
     }
 
     //Window get method
