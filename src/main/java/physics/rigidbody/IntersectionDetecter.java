@@ -66,10 +66,10 @@ public class IntersectionDetecter {
             return true;
         }
 
-        Vector2f[] allSides = square.getAllSides();
+        Vector2f[] allSides = square.getVertices();
         for (Vector2f side : allSides) {
             Line2D sideLine = new Line2D(square.getRigidbody().getPosition(), new Vector2f(side).add(square.getRigidbody().getPosition()), null, 1);
-            System.out.println(sideLine.getFrom() + " " + sideLine.getTo());
+            // System.out.println(sideLine);
             if (line.intersectsLine(sideLine)) {
                 return true;
             }
