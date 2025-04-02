@@ -3,16 +3,16 @@ package physics.primitives;
 import org.joml.Vector2f;
 import physics.rigidbody.Rigidbody2D;
 
-public class Box2D {
+public class Square {
     private Vector2f size = new Vector2f();
     private Vector2f halfSize = new Vector2f();
     private Rigidbody2D rigidbody = null;
 
-    public Box2D() {
+    public Square() {
         this.halfSize = new Vector2f(this.size).mul(0.5f);
     }
 
-    public Box2D(Vector2f min, Vector2f max) {
+    public Square(Vector2f min, Vector2f max) {
         this.size = new Vector2f(max).sub(min);
         this.halfSize = new Vector2f(this.size).mul(0.5f);
     }
@@ -29,10 +29,10 @@ public class Box2D {
         Vector2f min = getMin();
         Vector2f max = getMax();
         Vector2f[] vertices = {
-            new Vector2f(min.x, min.y),
-            new Vector2f(max.x, min.y),
-            new Vector2f(max.x, max.y),
-            new Vector2f(min.x, max.y)
+            new Vector2f(min.x, min.y), // bottom left
+            new Vector2f(max.x, min.y), // bottom right
+            new Vector2f(max.x, max.y), // top right
+            new Vector2f(min.x, max.y) // top left
         };
 
         if (rigidbody.getRotation() != 0.0f) {
@@ -43,7 +43,24 @@ public class Box2D {
         return vertices;
     }
 
+    public Vector2f[] getAllSides() {
+        Vector2f min = getMin();
+        Vector2f max = getMax();
+        Vector2f[] vertices = getVertices();
+        Vector2f[] sides = {
+            new Vector2f(vertices[1]).sub(vertices[0]), // bottom
+            new Vector2f(vertices[2]).sub(vertices[1]), // right
+            new Vector2f(vertices[2]).sub(vertices[3]), // top
+            new Vector2f(vertices[3]).sub(vertices[0]) // left
+        };
+        return sides;
+    }
+
     public Rigidbody2D getRigidbody() {
         return rigidbody;
+    }
+
+    public void setRigidbody(Rigidbody2D rigidbody) {
+        this.rigidbody = rigidbody;
     }
 }

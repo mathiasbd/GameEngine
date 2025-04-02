@@ -8,8 +8,6 @@ public class AlignedBox {
     private Vector2f size = new Vector2f();
     private Rigidbody2D rigidbody = null;
 
-
-
     public AlignedBox() {
         this.halfSize = new Vector2f(this.size).mul(0.5f);
     }
@@ -25,5 +23,9 @@ public class AlignedBox {
 
     public Vector2f getMax() {
         return new Vector2f(this.rigidbody.getPosition()).add(this.halfSize);
+    }
+
+    public void setRigidbody(Rigidbody2D rigidbody) {
+        this.rigidbody = rigidbody;
     }
 }
