@@ -7,10 +7,6 @@
     <list default="true" id="79c287bc-84bc-485b-a479-f83e3cf44ae0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/imgui.ini" beforeDir="false" afterPath="$PROJECT_DIR$/imgui.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/GameEngineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/GameEngineManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ImGuiLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ImGuiLayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scenes/LevelEditorScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scenes/LevelEditorScene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scenes/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scenes/Scene.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +70,13 @@
       <recent name="C:\Users\gabi0\OneDrive\Skrivebord\GameEngine\assets\Spritesheets" />
     </key>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.2-azul-21.0.2-4caba194b151-38275579" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -89,7 +92,8 @@
       <workItem from="1742326980067" duration="4447000" />
       <workItem from="1742370012275" duration="21258000" />
       <workItem from="1743257711966" duration="7559000" />
-      <workItem from="1743328061616" duration="10455000" />
+      <workItem from="1743328061616" duration="10507000" />
+      <workItem from="1743579791650" duration="374000" />
     </task>
     <servers />
   </component>
