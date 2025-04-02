@@ -12,7 +12,10 @@ repositories {
     mavenCentral()
 }
 dependencies {
+    //Gson
+    implementation("com.google.code.gson:gson:2.12.1")
 
+    //ImGui
     implementation("io.github.spair:imgui-java-binding:$imguiVersion")
     implementation("io.github.spair:imgui-java-lwjgl3:$imguiVersion")
 
