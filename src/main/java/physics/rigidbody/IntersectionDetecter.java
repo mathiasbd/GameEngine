@@ -30,7 +30,7 @@ public class IntersectionDetecter {
                 <= point.y; // if the point is within the bounds of the box
     }
 
-    public static boolean pointInBox2D(Vector2f point, Square box) { // test if a point is in a box (not necessarily axis aligned)
+    public static boolean pointInBox2D(Vector2f point, AlignedBox box) { // test if a point is in a box (not necessarily axis aligned)
         // translate the point to the box's local space
         Vector2f localPoint = new Vector2f(point);
         DTUMath.rotate(localPoint, box.getRigidbody().getRotation(), box.getRigidbody().getPosition());
@@ -61,14 +61,14 @@ public class IntersectionDetecter {
         return pointInCircle(closestPoint, circle);
     }
 
-    public static boolean lineInSquare(Line2D line, Square square) {
-        if (pointInBox2D(line.getFrom(), square) || pointInBox2D(line.getTo(), square)) {
+    public static boolean lineInABox(Line2D line, AlignedBox alignedBox) {
+        if (pointInBox2D(line.getFrom(), alignedBox) || pointInBox2D(line.getTo(), alignedBox)) {
             return true;
         }
 
-        Vector2f[] allSides = square.getVertices();
+        Vector2f[] allSides = alignedBox.getVertices();
         for (Vector2f side : allSides) {
-            Line2D sideLine = new Line2D(square.getRigidbody().getPosition(), new Vector2f(side).add(square.getRigidbody().getPosition()), null, 1);
+            Line2D sideLine = new Line2D(alignedBox.getRigidbody().getPosition(), new Vector2f(side).add(alignedBox.getRigidbody().getPosition()), null, 1);
             // System.out.println(sideLine);
             if (line.intersectsLine(sideLine)) {
                 return true;

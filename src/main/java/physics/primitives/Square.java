@@ -25,26 +25,7 @@ public class Square {
         return new Vector2f(this.rigidbody.getPosition()).add(this.halfSize);
     }
 
-    public Vector2f[] getVertices() {
-        Vector2f min = getMin();
-        Vector2f max = getMax();
-        Vector2f[] vertices = {
-            new Vector2f(min.x, min.y), // bottom left
-            new Vector2f(max.x, min.y), // bottom right
-            new Vector2f(max.x, max.y), // top right
-            new Vector2f(min.x, max.y) // top left
-        };
 
-        for (Vector2f vertex : vertices) {
-            System.out.println(vertex);
-        }
-        if (rigidbody.getRotation() != 0.0f) {
-            for (Vector2f vertex : vertices) {
-                // Rotate the vertices
-            }
-        }
-        return vertices;
-    }
 
     public Rigidbody2D getRigidbody() {
         return rigidbody;
