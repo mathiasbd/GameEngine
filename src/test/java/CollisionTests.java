@@ -83,4 +83,31 @@ public class CollisionTests {
 
         assertTrue(IntersectionDetecter.lineInABox(line, alignedBox));
     }
+
+    @Test
+    public void lineOnASquare() {
+        Line2D line = new Line2D(new Vector2f(-0.5f, 0), new Vector2f(0.5f, 0), null, 1);
+        Square square = new Square(new Vector2f(-1, -1), new Vector2f(1, 1));
+        // Test rigidbody
+        Rigidbody2D rb = new Rigidbody2D();
+        rb.setPosition(new Vector2f(0, 0));
+        rb.setRotation(0); // No rotation
+        square.setRigidbody(rb);
+
+        assertTrue(IntersectionDetecter.lineInSquare(line, square));
+    }
+
+    @Test
+    public void testLineIntersectingRotatedSquare() {
+        Square square = new Square(new Vector2f(-1, -1), new Vector2f(1, 1));
+        Line2D line = new Line2D(new Vector2f(-2, 0), new Vector2f(2, 0), null, 1);
+        // Test rigidbody
+        Rigidbody2D rb = new Rigidbody2D();
+        rb.setPosition(new Vector2f(0, 0));
+        rb.setRotation((float) Math.toRadians(45)); // Rotate 45 degrees
+        square.setRigidbody(rb);
+
+        assertTrue(IntersectionDetecter.lineInSquare(line, square));
+    }
+
 }

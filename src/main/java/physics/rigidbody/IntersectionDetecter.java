@@ -76,4 +76,19 @@ public class IntersectionDetecter {
         }
         return false;
     }
+
+    public static boolean lineInSquare(Line2D line, Square square){
+        float theta = -square.getRigidbody().getRotation();
+        Vector2f center = square.getRigidbody().getPosition();
+        Vector2f localStart = new Vector2f(line.getFrom());
+        Vector2f localEnd = new Vector2f(line.getTo());
+        DTUMath.rotate(localStart, theta, center);
+        DTUMath.rotate(localEnd, theta, center);
+
+        Line2D localLine = new Line2D(localStart, localEnd,null, 1);
+        AlignedBox alignedBox = new AlignedBox(square.getMin(), square.getMax());
+        alignedBox.setRigidbody(square.getRigidbody());
+
+        return lineInABox(localLine, alignedBox);
+    }
 }
