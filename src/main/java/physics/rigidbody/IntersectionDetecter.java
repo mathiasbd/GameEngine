@@ -66,10 +66,19 @@ public class IntersectionDetecter {
             return true;
         }
 
-        Vector2f[] allSides = alignedBox.getVertices();
-        for (Vector2f side : allSides) {
-            Line2D sideLine = new Line2D(alignedBox.getRigidbody().getPosition(), new Vector2f(side).add(alignedBox.getRigidbody().getPosition()), null, 1);
+        Vector2f[] corners = alignedBox.getVertices();
+        Vector2f aBoxPosition = alignedBox.getRigidbody().getPosition();
+
+        for (int i = 0; i < corners.length; i++) {
+            // Get current corner and next corner,
+            Vector2f from = new Vector2f(corners[i]).add(aBoxPosition);
+            Vector2f to = new Vector2f(corners[(i + 1) % corners.length]).add(aBoxPosition);
+
             // System.out.println(sideLine);
+
+            // Create a line from the two corners
+            Line2D sideLine = new Line2D(from, to, null, 1);
+
             if (line.intersectsLine(sideLine)) {
                 return true;
             }
