@@ -148,5 +148,79 @@ public class CollisionTests {
         boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
         assertFalse(hit);
     }
+    @Test
+    public void testCircleCompletelyOutsideBox() {
+        Circle circle = new Circle(1f);
+        Rigidbody2D rigidbody = new Rigidbody2D();
+        rigidbody.setPosition(new Vector2f(5f, 5f));
+        circle.setRigidbody(rigidbody);
+
+        AlignedBox box = new AlignedBox(new Vector2f(0f, 0f), new Vector2f(2f, 2f));
+        Rigidbody2D boxBody = new Rigidbody2D();
+        boxBody.setPosition(new Vector2f(0f, 0f));
+        box.setRigidbody(boxBody);
+
+        assertFalse(RaycastManager.circleAndAlignedBox(circle, box));
+    }
+    @Test
+    public void testCircleFullyInsideBox() {
+        Circle circle = new Circle(0.5f);
+        Rigidbody2D circleBody = new Rigidbody2D();
+        circleBody.setPosition(new Vector2f(0f, 0f)); // center in box
+        circle.setRigidbody(circleBody);
+
+        AlignedBox box = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D boxBody = new Rigidbody2D();
+        boxBody.setPosition(new Vector2f(0f, 0f));
+        box.setRigidbody(boxBody);
+
+        assertTrue(RaycastManager.circleAndAlignedBox(circle, box));
+    }
+    @Test
+    public void testCirclePartiallyOverlappingBox() {
+        Circle circle = new Circle(1f);
+        Rigidbody2D circleBody = new Rigidbody2D();
+        circleBody.setPosition(new Vector2f(1.75f, 1f)); // Overlapping aBox
+        circle.setRigidbody(circleBody);
+
+        AlignedBox box = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D boxBody = new Rigidbody2D();
+        boxBody.setPosition(new Vector2f(0f, 0f));
+        box.setRigidbody(boxBody);
+
+        assertTrue(RaycastManager.circleAndAlignedBox(circle, box));
+    }
+    @Test
+    public void testCircleTouchingBoxEdge() {
+        Circle circle = new Circle(1.0f);
+        Rigidbody2D circleBody = new Rigidbody2D();
+        circleBody.setPosition(new Vector2f(2.0f, 0f)); // touching right edge
+        circle.setRigidbody(circleBody);
+
+        AlignedBox box = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D boxBody = new Rigidbody2D();
+        boxBody.setPosition(new Vector2f(0f, 0f));
+        box.setRigidbody(boxBody);
+
+        assertTrue(RaycastManager.circleAndAlignedBox(circle, box));
+    }
+
+    @Test
+    public void testCircleJustOutsideBox() {
+        Circle circle = new Circle(1.0f);
+        Rigidbody2D circleBody = new Rigidbody2D();
+        circleBody.setPosition(new Vector2f(2.01f, 0f)); // just outside range
+        circle.setRigidbody(circleBody);
+
+        AlignedBox box = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D boxBody = new Rigidbody2D();
+        boxBody.setPosition(new Vector2f(0f, 0f));
+        box.setRigidbody(boxBody);
+
+        assertFalse(RaycastManager.circleAndAlignedBox(circle, box));
+    }
+
+
+
 
 }

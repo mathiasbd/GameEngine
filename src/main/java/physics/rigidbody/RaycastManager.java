@@ -158,4 +158,42 @@ public class RaycastManager {
     public static boolean raycastSquare(Raycast ray, Square square, RaycastResult rayResult) {
         return false;
     }
+
+
+
+
+    //Shapes dectecter
+    //Circle vs Circle detecter
+    //// Checks for collision between a circle and an circle
+    public static boolean circleAndcircle (Circle c1, Circle c2){
+        Vector2f vecBetweenTheCenters = new Vector2f(c1.getCenter().sub(c2.getCenter()));
+        float distance = vecBetweenTheCenters.lengthSquared();
+        float radiusSum = c1.getRadius() + c2.getRadius();
+        return distance <= radiusSum*radiusSum;
+    }
+    //AlignedBox vs circle
+    //// Checks for collision between a circle and an Axis Aligned Box
+    public static boolean circleAndAlignedBox (Circle circle, AlignedBox aBox){
+
+        Vector2f circleCenter = circle.getCenter();
+        // Get the min and max corners of the AlignedBox
+        Vector2f min = aBox.getMin();
+        Vector2f max = aBox.getMax();
+        // This gives us the closest point on the AlignedBox to the circle
+        float closestX = Math.max(min.x, Math.min(circleCenter.x, max.x));
+        float closestY = Math.max(min.y, Math.min(circleCenter.y, max.y));
+
+        Vector2f closestPointToCircle = new Vector2f(closestX, closestY);
+        // Create a vector from the closest point on the box to the circle's center
+        Vector2f circleToBox = new Vector2f(circleCenter).sub(closestPointToCircle);
+
+        // Check if the distance squared is less than or equal to the circle's radius squared
+        return circleToBox.lengthSquared() <= circle.getRadius() * circle.getRadius();
+    }
+
+
+
+
+
+
 }
