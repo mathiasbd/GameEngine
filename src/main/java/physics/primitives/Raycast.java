@@ -8,8 +8,7 @@ public class Raycast {
 
     public Raycast(Vector2f start, Vector2f direction) {
         this.start = start;
-        this.direction = direction;
-        this.direction.normalize();
+        this.direction = direction.normalize();
     }
 
     public Vector2f getStart() {

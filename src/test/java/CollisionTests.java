@@ -1,14 +1,11 @@
 import org.joml.Vector2f;
 import org.junit.jupiter.api.Test;
-import physics.primitives.AlignedBox;
-import physics.primitives.Circle;
-import physics.primitives.Square;
-import physics.rigidbody.IntersectionDetecter;
+import physics.primitives.*;
+import physics.rigidbody.RaycastManager;
 import physics.rigidbody.Line2D;
 import physics.rigidbody.Rigidbody2D;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CollisionTests {
     @Test
@@ -20,7 +17,7 @@ public class CollisionTests {
         circle.setRigidbody(circleRigidbody);
 
         Line2D line = new Line2D(new Vector2f(-1f, 0f), new Vector2f(1f, 0f), null, 1);
-        assertTrue(IntersectionDetecter.lineInCircle(line, circle));
+        assertTrue(RaycastManager.lineInCircle(line, circle));
     }
 
     @Test
@@ -32,7 +29,7 @@ public class CollisionTests {
         circle.setRigidbody(circleRigidbody);
 
         Line2D line = new Line2D(new Vector2f(-1.0f, 0f), new Vector2f(-1f, 1f), null, 1);
-        assertTrue(IntersectionDetecter.lineInCircle(line, circle));
+        assertTrue(RaycastManager.lineInCircle(line, circle));
     }
 
     @Test
@@ -44,7 +41,7 @@ public class CollisionTests {
         circle.setRigidbody(circleRigidbody);
 
         Line2D line = new Line2D(new Vector2f(-1.5f, 0f), new Vector2f(-1f, 1f), null, 1);
-        assertFalse(IntersectionDetecter.lineInCircle(line, circle));
+        assertFalse(RaycastManager.lineInCircle(line, circle));
     }
 
     @Test
@@ -57,7 +54,7 @@ public class CollisionTests {
         alignedBox.setRigidbody(alignedBoxRigidbody);
 
 
-        assertTrue(IntersectionDetecter.lineInABox(line, alignedBox));
+        assertTrue(RaycastManager.lineInABox(line, alignedBox));
     }
 
     @Test
@@ -69,7 +66,7 @@ public class CollisionTests {
         alignedBoxRigidbody.setPosition(new Vector2f(0f, 0f));
         alignedBox.setRigidbody(alignedBoxRigidbody);
 
-        assertFalse(IntersectionDetecter.lineInABox(line, alignedBox));
+        assertFalse(RaycastManager.lineInABox(line, alignedBox));
     }
 
     @Test
@@ -81,7 +78,7 @@ public class CollisionTests {
         alignedBoxRigidbody.setPosition(new Vector2f(0f, 0f));
         alignedBox.setRigidbody(alignedBoxRigidbody);
 
-        assertTrue(IntersectionDetecter.lineInABox(line, alignedBox));
+        assertTrue(RaycastManager.lineInABox(line, alignedBox));
     }
 
     @Test
@@ -94,7 +91,7 @@ public class CollisionTests {
         rb.setRotation(0); // No rotation
         square.setRigidbody(rb);
 
-        assertTrue(IntersectionDetecter.lineInSquare(line, square));
+        assertTrue(RaycastManager.lineInSquare(line, square));
     }
 
     @Test
@@ -107,7 +104,49 @@ public class CollisionTests {
         rb.setRotation((float) Math.toRadians(45)); // Rotate 45 degrees
         square.setRigidbody(rb);
 
-        assertTrue(IntersectionDetecter.lineInSquare(line, square));
+        assertTrue(RaycastManager.lineInSquare(line, square));
+    }
+
+    @Test
+    public void raycastCircleDiagonalIntersection() {
+        Circle circle = new Circle(1f);
+        Rigidbody2D circleRigidbody = new Rigidbody2D();
+        circleRigidbody.setPosition(new Vector2f(2f, 2f));
+        circle.setRigidbody(circleRigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(0f, 0f), new Vector2f(1f, 1f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
+        assertTrue(hit);
+    }
+
+    @Test
+    public void raycastCircleTangentIntersection() {
+        Circle circle = new Circle(1f);
+        Rigidbody2D circleRigidbody = new Rigidbody2D();
+        circleRigidbody.setPosition(new Vector2f(0f, 1f));
+        circle.setRigidbody(circleRigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(-2f, 0f), new Vector2f(1f, 0f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
+        assertTrue(hit);
+    }
+
+    @Test
+    public void raycastCircleNoIntersection() {
+        Circle circle = new Circle(1f);
+        Rigidbody2D circleRigidbody = new Rigidbody2D();
+        circleRigidbody.setPosition(new Vector2f(2f, 2f));
+        circle.setRigidbody(circleRigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(0f, 0f), new Vector2f(0.5f, 2f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
+        assertFalse(hit);
     }
 
 }

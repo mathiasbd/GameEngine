@@ -1,12 +1,10 @@
 package physics.rigidbody;
 
 import org.joml.Vector2f;
-import physics.primitives.AlignedBox;
-import physics.primitives.Square;
-import physics.primitives.Circle;
+import physics.primitives.*;
 import util.DTUMath;
 
-public class IntersectionDetecter {
+public class RaycastManager {
 
     public static boolean pointOnLine(Vector2f point, Line2D line) { // test if a point is on a line (obviously)
         float dy = line.getTo().y - line.getFrom().y;
@@ -43,7 +41,7 @@ public class IntersectionDetecter {
                 <= localPoint.y; // if the point is within the bounds of the box
     }
 
-    public static boolean lineInCircle(Line2D line, Circle circle) {
+    public static boolean lineInCircle(Line2D line, Circle circle) { // test if a line is in a circle
         if (pointInCircle(line.getFrom(), circle) || pointInCircle(line.getTo(), circle)) {
             return true;
         }
@@ -61,7 +59,7 @@ public class IntersectionDetecter {
         return pointInCircle(closestPoint, circle);
     }
 
-    public static boolean lineInABox(Line2D line, AlignedBox alignedBox) {
+    public static boolean lineInABox(Line2D line, AlignedBox alignedBox) { // test if a line is in an AlignedBox
         if (pointInBox2D(line.getFrom(), alignedBox) || pointInBox2D(line.getTo(), alignedBox)) {
             return true;
         }
@@ -86,7 +84,7 @@ public class IntersectionDetecter {
         return false;
     }
 
-    public static boolean lineInSquare(Line2D line, Square square){
+    public static boolean lineInSquare(Line2D line, Square square){ // test if a line is in a square
         float theta = -square.getRigidbody().getRotation();
         Vector2f center = square.getRigidbody().getPosition();
         Vector2f localStart = new Vector2f(line.getFrom());
@@ -99,5 +97,65 @@ public class IntersectionDetecter {
         alignedBox.setRigidbody(square.getRigidbody());
 
         return lineInABox(localLine, alignedBox);
+    }
+
+    public static boolean cast(Raycast ray, Shape shape, RaycastResult rayResult) {
+        return shape.cast(ray, rayResult);
+    }
+
+    public static boolean raycastCircle(Raycast ray, Circle circle, RaycastResult rayResult) {
+        Vector2f rayStart = ray.getStart();
+        Vector2f rayDirection = ray.getDirection();
+        Vector2f circleCenter = circle.getCenter();
+        float circleRadius = circle.getRadius();
+
+        Vector2f centerToRay = new Vector2f(rayStart).sub(circleCenter);
+        System.out.println("centerToRay: " + centerToRay);
+
+        float a = rayDirection.dot(rayDirection);
+        float b = 2.0f * rayDirection.dot(centerToRay);
+        float c = centerToRay.dot(centerToRay) - circleRadius * circleRadius;
+        System.out.println("a: " + a);
+        System.out.println("b: " + b);
+        System.out.println("c: " + c);
+
+        float discriminant = b * b - 4.0f * a * c;
+        System.out.println("discriminant: " + discriminant);
+
+        if (discriminant < 0.0f) {
+            RaycastResult.reset(rayResult);
+            return false;
+        }
+
+        // t values tell us how far along the ray we hit the circle (length of the ray at the hit point)
+        float sqrtDiscriminant = (float) Math.sqrt(discriminant);
+        float t1 = (-b - sqrtDiscriminant) / (2.0f * a);
+        float t2 = (-b + sqrtDiscriminant) / (2.0f * a);
+        System.out.println("t1: " + t1);
+        System.out.println("t2: " + t2);
+
+        if (t1 < 0.0f && t2 < 0.0f) {
+            RaycastResult.reset(rayResult);
+            return false;
+        }
+
+        float t = t1 >= 0.0f ? t1 : t2;
+
+        Vector2f intersectionPoint = new Vector2f(rayDirection).mul(t).add(rayStart);
+        Vector2f normal = new Vector2f(intersectionPoint).sub(circleCenter);
+        if (normal.lengthSquared() > 0) {
+            normal.normalize();
+        }
+
+        rayResult.init(intersectionPoint, normal, t, true);
+        return true;
+    }
+
+    public static boolean raycastABox(Raycast ray, AlignedBox box, RaycastResult rayResult) {
+        return false;
+    }
+
+    public static boolean raycastSquare(Raycast ray, Square square, RaycastResult rayResult) {
+        return false;
     }
 }

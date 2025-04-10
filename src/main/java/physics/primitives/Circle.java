@@ -1,9 +1,10 @@
 package physics.primitives;
 
 import org.joml.Vector2f;
+import physics.rigidbody.RaycastManager;
 import physics.rigidbody.Rigidbody2D;
 
-public class Circle {
+public class Circle extends Shape {
     private float radius;
     private Rigidbody2D rigidbody = null;
 
@@ -22,4 +23,14 @@ public class Circle {
     public void setRigidbody(Rigidbody2D rigidbody) {
         this.rigidbody = rigidbody;
     }
+
+    @Override
+    public boolean cast(Raycast ray, RaycastResult rayResult) {
+        return RaycastManager.raycastCircle(ray, this, rayResult);
+    }
+
+    public Rigidbody2D getRigidbody() {
+        return rigidbody;
+    }
+
 }

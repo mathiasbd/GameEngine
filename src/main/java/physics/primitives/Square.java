@@ -1,9 +1,10 @@
 package physics.primitives;
 
 import org.joml.Vector2f;
+import physics.rigidbody.RaycastManager;
 import physics.rigidbody.Rigidbody2D;
 
-public class Square {
+public class Square extends Shape {
     private Vector2f size = new Vector2f();
     private Vector2f halfSize = new Vector2f();
     private Rigidbody2D rigidbody = null;
@@ -25,13 +26,16 @@ public class Square {
         return new Vector2f(this.rigidbody.getPosition()).add(this.halfSize);
     }
 
-
-
     public Rigidbody2D getRigidbody() {
         return rigidbody;
     }
 
     public void setRigidbody(Rigidbody2D rigidbody) {
         this.rigidbody = rigidbody;
+    }
+
+    @Override
+    public boolean cast(Raycast ray, RaycastResult rayResult) {
+        return RaycastManager.raycastSquare(ray, this, rayResult);
     }
 }
