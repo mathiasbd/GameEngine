@@ -21,7 +21,9 @@ public class Square extends Shape {
     public Vector2f getMin() {
         return new Vector2f(this.rigidbody.getPosition()).sub(this.halfSize); // assume the position is the center of the box
     }
-
+    public Vector2f getHalfSize() {
+        return this.halfSize;
+    }
     public Vector2f getMax() {
         return new Vector2f(this.rigidbody.getPosition()).add(this.halfSize);
     }

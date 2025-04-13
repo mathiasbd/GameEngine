@@ -206,21 +206,62 @@ public class CollisionTests {
     }
 
     @Test
-    public void testCircleJustOutsideBox() {
+    public void testCircleJustOutsideSquare() {
         Circle circle = new Circle(1.0f);
         Rigidbody2D circleBody = new Rigidbody2D();
-        circleBody.setPosition(new Vector2f(2.01f, 0f)); // just outside range
+        circleBody.setPosition(new Vector2f(2.01f, 0f)); // just outside
         circle.setRigidbody(circleBody);
 
-        AlignedBox box = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
-        Rigidbody2D boxBody = new Rigidbody2D();
-        boxBody.setPosition(new Vector2f(0f, 0f));
-        box.setRigidbody(boxBody);
+        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D squareBody = new Rigidbody2D();
+        squareBody.setPosition(new Vector2f(0f, 0f));
+        square.setRigidbody(squareBody);
 
-        assertFalse(RaycastManager.circleAndAlignedBox(circle, box));
+        assertFalse(RaycastManager.circleAndSquare(circle, square));
+    }
+    @Test
+    public void testCircleMissesRotatedSquare() {
+        Circle circle = new Circle(1.0f);
+        Rigidbody2D circleBody = new Rigidbody2D();
+        circleBody.setPosition(new Vector2f(2.5f, 0f)); // pushed further out
+        circle.setRigidbody(circleBody);
+
+        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D squareBody = new Rigidbody2D();
+        squareBody.setPosition(new Vector2f(0f, 0f));
+        squareBody.setRotation((float) Math.toRadians(45));
+        square.setRigidbody(squareBody);
+
+        assertFalse(RaycastManager.circleAndSquare(circle, square));
+    }
+    @Test
+    public void testCircleTouchingRotatedSquare() {
+        Circle circle = new Circle(1.0f);
+        Rigidbody2D circleBody = new Rigidbody2D();
+        circleBody.setPosition(new Vector2f(1.0f, 1.0f)); // near rotated edge
+        circle.setRigidbody(circleBody);
+
+        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D squareBody = new Rigidbody2D();
+        squareBody.setPosition(new Vector2f(0f, 0f));
+        squareBody.setRotation((float) Math.toRadians(45));
+        square.setRigidbody(squareBody);
+
+        assertTrue(RaycastManager.circleAndSquare(circle, square));
     }
 
+    @Test
+    public void testCircleFullyInsideSquare() {
+        Circle circle = new Circle(0.5f);
+        Rigidbody2D circleBody = new Rigidbody2D();
+        circleBody.setPosition(new Vector2f(0f, 0f)); // center of square
+        circle.setRigidbody(circleBody);
 
+        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D squareBody = new Rigidbody2D();
+        squareBody.setPosition(new Vector2f(0f, 0f));
+        square.setRigidbody(squareBody);
 
-
+        assertTrue(RaycastManager.circleAndSquare(circle, square));
+    }
 }

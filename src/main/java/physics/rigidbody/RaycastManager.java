@@ -172,7 +172,7 @@ public class RaycastManager {
         return distance <= radiusSum*radiusSum;
     }
     //AlignedBox vs circle
-    //// Checks for collision between a circle and an Axis Aligned Box
+    // Checks for collision between a circle and an Axis Aligned Box
     public static boolean circleAndAlignedBox (Circle circle, AlignedBox aBox){
 
         Vector2f circleCenter = circle.getCenter();
@@ -189,6 +189,35 @@ public class RaycastManager {
 
         // Check if the distance squared is less than or equal to the circle's radius squared
         return circleToBox.lengthSquared() <= circle.getRadius() * circle.getRadius();
+    }
+
+    //Square vs circle
+    // Treat the Square just like an AABB, after we rotate the vector from the center of the box to the center of the circle
+    public static boolean circleAndSquare (Circle circle, Square square){
+        // Treat the square like an aligned  box in its local space
+        Vector2f min = new Vector2f(); // (0, 0) in local square space
+        Vector2f max = new Vector2f(square.getHalfSize()).mul(2.0f); // Full size of the box (width, height)
+
+        //Convert the circle's center to the box's local coordinate space
+        Vector2f r = new Vector2f(circle.getCenter()).sub(square.getRigidbody().getPosition());// Translate to box origin
+        DTUMath.rotate(r, -square.getRigidbody().getRotation(), new Vector2f());
+        Vector2f localCircle= new Vector2f(r).add(square.getHalfSize());
+
+
+
+        // This gives us the closest point on the ABox to the circle
+        float closestX = Math.max(min.x, Math.min(localCircle.x, max.x));
+        float closestY = Math.max(min.y, Math.min(localCircle.y, max.y));
+
+        Vector2f closestPointToCircle = new Vector2f(closestX, closestY);
+
+        // Create a vector from the closest point on the box to the circle's center
+        Vector2f circleToBox = new Vector2f(localCircle).sub(closestPointToCircle);
+
+        // Check if the distance squared is less than or equal to the circle's radius squared
+        return circleToBox.lengthSquared() <= circle.getRadius() * circle.getRadius();
+
+
     }
 
 
