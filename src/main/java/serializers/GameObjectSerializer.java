@@ -15,7 +15,8 @@ public class GameObjectSerializer implements JsonDeserializer<GameObject> {
         JsonArray components = jsonObject.getAsJsonArray("components");
         Transform transform = context.deserialize(jsonObject.get("transform"), Transform.class);
         int zIndex = context.deserialize(jsonObject.get("zIndex"), int.class);
-        GameObject go = new GameObject(name, transform, zIndex);
+        boolean inScene = context.deserialize(jsonObject.get("inScene"), boolean.class);
+        GameObject go = new GameObject(name, transform, zIndex, inScene);
         for(JsonElement e : components) {
             Component c = context.deserialize(e, Component.class);
             go.addComponent(c);

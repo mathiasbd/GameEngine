@@ -1,6 +1,7 @@
 package org.example;
 
-import imgui.ImGuiIO;
+import imgui.*;
+import imgui.flag.ImGuiCol;
 import input.KeyboardHandler;
 import input.MouseHandler;
 import org.lwjgl.*;
@@ -18,7 +19,6 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-import imgui.ImGui;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
@@ -28,6 +28,8 @@ public class WindowManager {
     private long window;
     private int width;
     private int height;
+    private int windowPosX = 0;
+    private int windowPosY = 0;
     private String title;
 
     private ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
@@ -79,12 +81,17 @@ public class WindowManager {
         if(window==NULL) {
             throw new RuntimeException("Failed to create window");
         }
+        //Give moushandler info on width and height
+        MouseHandler.setWindowWidth(width);
+        MouseHandler.setWindowHeight(height);
 
         //Setting up the mouse handler and keyboard handler
         glfwSetMouseButtonCallback(window, MouseHandler::mouseButtonCallback);
         glfwSetCursorPosCallback(window, MouseHandler::mousePositionCallback);
         glfwSetScrollCallback(window, MouseHandler::scrollCallback);
         glfwSetKeyCallback(window, KeyboardHandler::keyCallback);
+        glfwSetWindowPosCallback(window, this::windowPosCallback);
+        glfwSetWindowSizeCallback(window, this::windowSizeCallback);
 
 
         //Allocating memory to get the screen size and set the window position to the center
@@ -95,10 +102,9 @@ public class WindowManager {
             glfwGetWindowSize(window, pWidth, pHeight);
 
             GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            glfwSetWindowPos(window,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2);
+            this.windowPosX = (vidmode.width() - pWidth.get(0)) / 2;
+            this.windowPosY = (vidmode.height() - pHeight.get(0)) / 2;
+            glfwSetWindowPos(window, windowPosX, windowPosY);
         }
         //Making a context for the window
         glfwMakeContextCurrent(window);
@@ -134,6 +140,16 @@ public class WindowManager {
         ImGui.createContext();
         ImGuiIO io = ImGui.getIO();
         io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
+        addStyle();
+    }
+
+    private void addStyle() {
+        ImGuiStyle style = ImGui.getStyle();
+        style.setFramePadding(new ImVec2(0, 2));
+        style.setFrameRounding(2);
+//        ImVec4 selectedColor = new ImVec4(0.271f, 0.361f, 0.651f, 1.0f);
+//        int selectedColorU32 = ImGui.getColorU32(selectedColor);
+//        ImGui.getStyle().setColor(ImGuiCol.Header, selectedColorU32);  // Set selected color
     }
 
     public void startImGuiFrame() {
@@ -162,4 +178,31 @@ public class WindowManager {
         return window;
     }
 
+    private void windowPosCallback(long window, int x, int y) {
+        this.windowPosX = x;
+        this.windowPosY = y;
+    }
+
+    private void windowSizeCallback(long window, int x, int y) {
+        this.width = x;
+        this.height = y;
+        MouseHandler.setWindowWidth(x);
+        MouseHandler.setWindowHeight(height);
+    }
+
+    public int getWindowPosX() {
+        return this.windowPosX;
+    }
+
+    public int getWindowPosY() {
+        return this.windowPosY;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

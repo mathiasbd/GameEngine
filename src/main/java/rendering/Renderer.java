@@ -37,12 +37,20 @@ public class Renderer {
                 }
             }
         }
-        if(!added) {
+        if(!added && sprite.gameObject.isInScene()) {
             RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE, sprite.gameObject.getzIndex());
             newBatch.start();
             batches.add(newBatch);
             newBatch.addSprite(sprite);
             Collections.sort(batches);
+        }
+    }
+    public void removeSprite(SpriteRenderer sprite) {
+        for(RenderBatch batch : batches) {
+            if(batch.hasSprite(sprite)) {
+                System.out.println("The sprite was found in the batch renderer");
+                batch.removeSprite(sprite);
+            }
         }
     }
 

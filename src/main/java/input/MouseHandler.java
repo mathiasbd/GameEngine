@@ -1,5 +1,9 @@
 package input;
 
+import org.example.Camera;
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
+
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
@@ -9,6 +13,8 @@ public class MouseHandler {
     private double xPos, yPos, lastX, lastY;
     private boolean mouseButtonPressed[] = new boolean[3];
     private boolean isDragging;
+    private int windowWidth;
+    private int windowHeight;
 
     private MouseHandler() {
         this.xScroll = 0.0;
@@ -17,6 +23,14 @@ public class MouseHandler {
         this.yPos = 0.0;
         this.lastX = 0.0;
         this.lastY = 0.0;
+    }
+
+    public static void setWindowWidth(int width) {
+        get().windowWidth = width;
+    }
+
+    public static void setWindowHeight(int height) {
+        get().windowHeight = height;
     }
 
     public static MouseHandler get() {
@@ -87,6 +101,20 @@ public class MouseHandler {
 
     public static boolean isDragging() {
         return get().isDragging;
+    }
+
+    public static float getOrthoX(Camera camera) {
+        float ndc = (getX()/get().windowWidth) * 2 - 1;
+        Vector4f tmp = new Vector4f(ndc, 0,0,1);
+        tmp.mul(camera.getInvProjectionMatric()).mul(camera.getInvViewMatric());
+        return tmp.x;
+    }
+
+    public static float getOrthoY(Camera camera) {
+        float ndc = 1.0f - (getY()/get().windowHeight) * 2;
+        Vector4f tmp = new Vector4f(0, ndc,0,1);
+        tmp.mul(camera.getInvProjectionMatric()).mul(camera.getInvViewMatric());
+        return tmp.y;
     }
 
     public static boolean isButtonDown(int button) {

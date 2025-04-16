@@ -1,5 +1,5 @@
 package org.example;
-import org.lwjgl.opengl.GL;
+import imGui.ImGuiLayer;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
@@ -13,10 +13,8 @@ public class GameEngineManager {
 
     private static Scene currentScene;
     private static String currentSceneName;
-    private ImGuiLayer imGuiLayer;
     public GameEngineManager(WindowManager window) {
         this.window = window;
-        this.imGuiLayer = new ImGuiLayer();
         changeScene("EditorScene");
         loop();
     }
@@ -27,6 +25,8 @@ public class GameEngineManager {
         float deltaTime = -1.0f;
         int frames = 0, updates = 0;
 
+        currentScene.load();
+
         //Loop runs until windowShouldClose is set to true
         while (!glfwWindowShouldClose(window.getWindow())) {
             //Set the clear color
@@ -34,13 +34,11 @@ public class GameEngineManager {
             //Clear the framebuffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            window.startImGuiFrame();
-            imGuiLayer.process(currentScene);
-            window.endImGuiFrame();
-
 
             if (deltaTime >= 0) {
+                window.startImGuiFrame();
                 currentScene.update(deltaTime);
+                window.endImGuiFrame();
                 updates++;
             }
 
@@ -56,6 +54,7 @@ public class GameEngineManager {
             deltaTime = endTime-initialTime;
             initialTime = endTime;
         }
+        currentScene.saveExit();
     }
 
     public static void changeScene(String sceneName) {
@@ -80,5 +79,21 @@ public class GameEngineManager {
 
     public static Scene getCurrentScene() {
         return currentScene;
+    }
+
+    public int getWindowPosX() {
+        return window.getWindowPosX();
+    }
+
+    public int getWindowPosY() {
+        return window.getWindowPosY();
+    }
+
+    public int getWindowWidth() {
+        return window.getWidth();
+    }
+
+    public int getWindowHeight() {
+        return window.getHeight();
     }
 }

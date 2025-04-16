@@ -1,0 +1,98 @@
+[
+  {
+    "name": "green cube",
+    "components": [
+      {
+        "type": "components.SpriteRenderer",
+        "properties": {
+          "color": {
+            "x": 0.121477164,
+            "y": 0.29085097,
+            "z": 0.71428573,
+            "w": 0.8163265
+          },
+          "sprite": {
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "zIndex": -1,
+    "inScene": true,
+    "transform": {
+      "position": {
+        "x": 403.75,
+        "y": 542.80005
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 105.0
+      }
+    }
+  },
+  {
+    "name": "Orale",
+    "components": [
+      {
+        "type": "components.SpriteRenderer",
+        "properties": {
+          "color": {
+            "x": 0.23789787,
+            "y": 0.6258503,
+            "z": 0.2213892,
+            "w": 0.6462585
+          },
+          "sprite": {
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "zIndex": -3,
+    "inScene": true,
+    "transform": {
+      "position": {
+        "x": 453.75,
+        "y": 494.25003
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    }
+  }
+]

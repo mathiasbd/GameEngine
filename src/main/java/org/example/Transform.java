@@ -9,7 +9,7 @@ public class Transform {
 
     public Transform() {
         this.position = new Vector2f();
-        this.position = new Vector2f();
+        this.scale = new Vector2f();
     }
 
     public Transform(Vector2f position) {

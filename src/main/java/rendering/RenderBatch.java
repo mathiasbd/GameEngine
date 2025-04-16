@@ -48,6 +48,7 @@ public class RenderBatch implements Comparable<RenderBatch> {
     private SpriteRenderer[] sprites;
     private int numberSprites;
     private boolean hasRoom;
+    private boolean needsRebuffer = false;
     private int []texSlots={0,1,2,3,4,5,6,7};
 
     private int maxBatchSize;
@@ -102,9 +103,10 @@ public class RenderBatch implements Comparable<RenderBatch> {
         boolean rebufferData = false;
         for(int i = 0; i < numberSprites; i++) {
             SpriteRenderer spr = sprites[i];
-            if(spr.getIsDirty()) {
+            if(spr.getIsDirty() | needsRebuffer) {
                 rebufferData = true;
                 loadVertexProperties(i);
+                this.needsRebuffer= false;
                 spr.setClean();
             }
         }
@@ -177,6 +179,33 @@ public class RenderBatch implements Comparable<RenderBatch> {
             this.hasRoom = false;
         }
     }
+    //Todo when batch renderer empty remove it
+    public void removeSprite(SpriteRenderer sprite) {
+        for(int i=0;i<numberSprites;i++) {
+            if(sprites[i] == sprite) {
+                for(int j=i;j<numberSprites-1;j++) {
+                    sprites[j] = sprites[j+1];
+
+                    System.arraycopy(vertices,
+                            (j+1)*4*VERTEX_SIZE,
+                            vertices,
+                            j*4*VERTEX_SIZE,
+                            4*VERTEX_SIZE);
+                }
+                sprites[numberSprites - 1] = null;
+
+                int offset = (numberSprites - 1) * 4 * VERTEX_SIZE;
+                for (int k = 0; k < 4 * VERTEX_SIZE; k++) {
+                    vertices[offset + k] = 0.0f;
+                }
+
+                numberSprites--;
+                hasRoom = true;
+                this.needsRebuffer = true;
+                break;
+            }
+        }
+    }
 
     private void loadVertexProperties(int index) {
         SpriteRenderer sprite = sprites[index];
@@ -234,6 +263,15 @@ public class RenderBatch implements Comparable<RenderBatch> {
 
     public boolean hasTextureRoom() {
         return this.texture.size() < 8;
+    }
+
+    public boolean hasSprite(SpriteRenderer sprite) {
+        for(int i = 0; i < numberSprites; i++) {
+            if(sprites[i] == sprite) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean hasTexture(Texture texture) {

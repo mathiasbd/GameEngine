@@ -9,7 +9,9 @@ import components.Component;
 import components.Sprite;
 import components.SpriteRenderer;
 import components.SpriteSheet;
+import imGui.ImGuiLayer;
 import input.KeyboardHandler;
+import input.MouseHandler;
 import org.example.*;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -17,6 +19,7 @@ import rendering.Shader;
 import org.lwjgl.BufferUtils;
 import rendering.Texture;
 import serializers.ComponentSerializer;
+import serializers.GameObjectSerializer;
 import util.AssetPool;
 import util.Time;
 
@@ -32,39 +35,16 @@ public class LevelEditorScene extends Scene {
 
     private GameObject obj1;
     private SpriteSheet sprites;
+    private GameObject draggedObject = null;
+    private ImGuiLayer imGuiLayer;
     @Override
     public void init() {
         loadResources();
         this.camera = new Camera(new Vector2f());
+        this.imGuiLayer = new ImGuiLayer();
+
 
         sprites = AssetPool.getSpriteSheet("assets/spritesheets/Blue_Slime/Attack_1.png");
-        //test texture batching for our  images
-        obj1 =new GameObject("object 1",new Transform(new Vector2f(100,100),new Vector2f(320,128)), 3);
-        SpriteRenderer spr1 = new SpriteRenderer();
-        spr1.setSprite(sprites.getSprite(0));
-        spr1.setColor(new Vector4f(1,1,1,1));
-        obj1.addComponent(spr1);
-        this.addGameObjectToScene(obj1);
-
-        GameObject greenCube = new GameObject("green cube", new Transform(new Vector2f(500, 100), new Vector2f(100, 100)), -2);
-        SpriteRenderer spr2 = new SpriteRenderer();
-        spr2.setColor(new Vector4f(0,1,0,0.3f));
-        spr2.setSprite(new Sprite());
-        greenCube.addComponent(spr2);
-        this.addGameObjectToScene(greenCube);
-
-        GameObject redCube = new GameObject("red cube", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)), 1);
-        SpriteRenderer spr3 = new SpriteRenderer();
-        spr3.setColor(new Vector4f(1,0,0,0.3f));
-        spr3.setSprite(new Sprite());
-        redCube.addComponent(spr3);
-        this.addGameObjectToScene(redCube);
-
-        Gson gson = new GsonBuilder().setPrettyPrinting()
-                .registerTypeAdapter(Component.class, new ComponentSerializer())
-                .create();
-        String jsonOutput = gson.toJson(obj1);
-        System.out.println(jsonOutput);
     }
 
     private void loadResources() {
@@ -81,20 +61,25 @@ public class LevelEditorScene extends Scene {
 
         testTime -= dt;
 
-        if(testTime < 0) {
-            obj1.getComponent(SpriteRenderer.class).setSprite(sprites.getSprite(index));
-            testTime = 0.1f;
-            if(index < 3) {
-                index++;
-            } else {
-                index = 0;
-            }
-        }
-
         for (GameObject go : this.gameObjects) {
             go.update(dt);
         }
-
+        if(dragDropper.isDragging()) {
+            draggedObject = dragDropper.getDraggedObject();
+            if(!MouseHandler.isButtonDown(0) && draggedObject != null) {
+                System.out.println("Object is released");
+                draggedObject.setTransform(new Transform(new Vector2f(MouseHandler.getOrthoX(this.camera)-50, MouseHandler.getOrthoY(this.camera)-50), new Vector2f(100,100)));
+                draggedObject.start();
+                if(!draggedObject.isInScene()) {
+                    draggedObject.setInScene(true);
+                    this.renderer.add(draggedObject);
+                    System.out.println("Adding dragged object to renderer");
+                }
+                dragDropper.setDragging(false);
+                dragDropper.setDraggedObject(null);
+            }
+        }
+        imGuiLayer.process(this);
         this.renderer.render();
     }
 }
