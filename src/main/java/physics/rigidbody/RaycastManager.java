@@ -110,17 +110,17 @@ public class RaycastManager {
         float circleRadius = circle.getRadius();
 
         Vector2f centerToRay = new Vector2f(rayStart).sub(circleCenter);
-        System.out.println("centerToRay: " + centerToRay);
+//        System.out.println("centerToRay: " + centerToRay);
 
         float a = rayDirection.dot(rayDirection);
         float b = 2.0f * rayDirection.dot(centerToRay);
         float c = centerToRay.dot(centerToRay) - circleRadius * circleRadius;
-        System.out.println("a: " + a);
-        System.out.println("b: " + b);
-        System.out.println("c: " + c);
+//        System.out.println("a: " + a);
+//        System.out.println("b: " + b);
+//        System.out.println("c: " + c);
 
         float discriminant = b * b - 4.0f * a * c;
-        System.out.println("discriminant: " + discriminant);
+//        System.out.println("discriminant: " + discriminant);
 
         if (discriminant < 0.0f) {
             RaycastResult.reset(rayResult);
@@ -131,8 +131,8 @@ public class RaycastManager {
         float sqrtDiscriminant = (float) Math.sqrt(discriminant);
         float t1 = (-b - sqrtDiscriminant) / (2.0f * a);
         float t2 = (-b + sqrtDiscriminant) / (2.0f * a);
-        System.out.println("t1: " + t1);
-        System.out.println("t2: " + t2);
+//        System.out.println("t1: " + t1);
+//        System.out.println("t2: " + t2);
 
         if (t1 < 0.0f && t2 < 0.0f) {
             RaycastResult.reset(rayResult);
@@ -152,14 +152,78 @@ public class RaycastManager {
     }
 
     public static boolean raycastABox(Raycast ray, AlignedBox box, RaycastResult rayResult) {
-        return false;
+        Vector2f rayStart = ray.getStart();
+        Vector2f rayDirection = ray.getDirection();
+        Vector2f min = box.getMin();
+        Vector2f max = box.getMax();
+
+        float tMinX, tMaxX;
+        if (rayDirection.x == 0) {
+            if (rayStart.x < min.x || rayStart.x > max.x) {
+                RaycastResult.reset(rayResult);
+                return false;
+            }
+            tMinX = Float.NEGATIVE_INFINITY;
+            tMaxX = Float.POSITIVE_INFINITY;
+        } else {
+            tMinX = (min.x - rayStart.x) / rayDirection.x;
+            tMaxX = (max.x - rayStart.x) / rayDirection.x;
+            if (tMinX > tMaxX) {
+                float temp = tMinX;
+                tMinX = tMaxX;
+                tMaxX = temp;
+            }
+        }
+
+        float tMinY, tMaxY;
+        if (rayDirection.y == 0) {
+            if (rayStart.y < min.y || rayStart.y > max.y) {
+                RaycastResult.reset(rayResult);
+                return false;
+            }
+            tMinY = Float.NEGATIVE_INFINITY;
+            tMaxY = Float.POSITIVE_INFINITY;
+        } else {
+            tMinY = (min.y - rayStart.y) / rayDirection.y;
+            tMaxY = (max.y - rayStart.y) / rayDirection.y;
+            if (tMinY > tMaxY) {
+                float temp = tMinY;
+                tMinY = tMaxY;
+                tMaxY = temp;
+            }
+        }
+
+        // Combine X and Y slab intervals
+        float tEntry = Math.max(tMinX, tMinY);
+        float tExit = Math.min(tMaxX, tMaxY);
+
+        System.out.println("tEntry: " + tEntry);
+        System.out.println("tExit: " + tExit);
+
+        if (tEntry > tExit || tExit < 0) {
+            RaycastResult.reset(rayResult);
+            return false;
+        }
+
+        float t = tEntry >= 0 ? tEntry : tExit;
+        Vector2f intersectionPoint = new Vector2f(rayDirection).mul(t).add(rayStart);
+        Vector2f normal = new Vector2f();
+
+        if (t == tEntry) {
+            if (Math.abs(intersectionPoint.x - min.x) < 1e-6) normal.set(-1, 0);
+            else if (Math.abs(intersectionPoint.x - max.x) < 1e-6) normal.set(1, 0);
+            else if (Math.abs(intersectionPoint.y - min.y) < 1e-6) normal.set(0, -1);
+            else if (Math.abs(intersectionPoint.y - max.y) < 1e-6) normal.set(0, 1);
+        }
+
+        System.out.println("intersectionPoint: " + intersectionPoint);
+        rayResult.init(intersectionPoint, normal, t, true);
+        return true;
     }
 
     public static boolean raycastSquare(Raycast ray, Square square, RaycastResult rayResult) {
         return false;
     }
-
-
 
 
     //Shapes dectecter
@@ -171,6 +235,7 @@ public class RaycastManager {
         float radiusSum = c1.getRadius() + c2.getRadius();
         return distance <= radiusSum*radiusSum;
     }
+
     //AlignedBox vs circle
     // Checks for collision between a circle and an Axis Aligned Box
     public static boolean circleAndAlignedBox (Circle circle, AlignedBox aBox){

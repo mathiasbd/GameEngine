@@ -11,7 +11,7 @@ public class CollisionTests {
     @Test
     public void lineInCircle() {
         Circle circle = new Circle(1f);
-        // Test rigidbody
+
         Rigidbody2D circleRigidbody = new Rigidbody2D();
         circleRigidbody.setPosition(new Vector2f(0f, 0f));
         circle.setRigidbody(circleRigidbody);
@@ -23,7 +23,7 @@ public class CollisionTests {
     @Test
     public void lineOnCirclePerimeter() {
         Circle circle = new Circle(1f);
-        // Test rigidbody
+
         Rigidbody2D circleRigidbody = new Rigidbody2D();
         circleRigidbody.setPosition(new Vector2f(0f, 0f));
         circle.setRigidbody(circleRigidbody);
@@ -35,7 +35,7 @@ public class CollisionTests {
     @Test
     public void lineNotInCircle() {
         Circle circle = new Circle(1f);
-        // Test rigidbody
+
         Rigidbody2D circleRigidbody = new Rigidbody2D();
         circleRigidbody.setPosition(new Vector2f(0f, 0f));
         circle.setRigidbody(circleRigidbody);
@@ -48,7 +48,7 @@ public class CollisionTests {
     public void lineInABox() {
         Line2D line = new Line2D(new Vector2f(-1.5f, -0.5f), new Vector2f(1.5f, 0.5f), null, 1);
         AlignedBox alignedBox = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
-        // Test rigidbody
+
         Rigidbody2D alignedBoxRigidbody = new Rigidbody2D();
         alignedBoxRigidbody.setPosition(new Vector2f(0f, 0f));
         alignedBox.setRigidbody(alignedBoxRigidbody);
@@ -61,7 +61,7 @@ public class CollisionTests {
     public void lineNotInABox() {
         Line2D line = new Line2D(new Vector2f(-1.5f, -1.5f), new Vector2f(2.5f, -1f), null, 1);
         AlignedBox alignedBox = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
-        // Test rigidbody
+
         Rigidbody2D alignedBoxRigidbody = new Rigidbody2D();
         alignedBoxRigidbody.setPosition(new Vector2f(0f, 0f));
         alignedBox.setRigidbody(alignedBoxRigidbody);
@@ -73,7 +73,7 @@ public class CollisionTests {
     public void lineOnABoxPerimeter() {
         Line2D line = new Line2D(new Vector2f(-1.5f, -0.5f), new Vector2f(-0.5f, -1.5f), null, 1);
         AlignedBox alignedBox = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
-        // Test rigidbody
+
         Rigidbody2D alignedBoxRigidbody = new Rigidbody2D();
         alignedBoxRigidbody.setPosition(new Vector2f(0f, 0f));
         alignedBox.setRigidbody(alignedBoxRigidbody);
@@ -85,7 +85,7 @@ public class CollisionTests {
     public void lineOnASquare() {
         Line2D line = new Line2D(new Vector2f(-0.5f, 0), new Vector2f(0.5f, 0), null, 1);
         Square square = new Square(new Vector2f(-1, -1), new Vector2f(1, 1));
-        // Test rigidbody
+
         Rigidbody2D rb = new Rigidbody2D();
         rb.setPosition(new Vector2f(0, 0));
         rb.setRotation(0); // No rotation
@@ -98,7 +98,7 @@ public class CollisionTests {
     public void testLineIntersectingRotatedSquare() {
         Square square = new Square(new Vector2f(-1, -1), new Vector2f(1, 1));
         Line2D line = new Line2D(new Vector2f(-2, 0), new Vector2f(2, 0), null, 1);
-        // Test rigidbody
+
         Rigidbody2D rb = new Rigidbody2D();
         rb.setPosition(new Vector2f(0, 0));
         rb.setRotation((float) Math.toRadians(45)); // Rotate 45 degrees
@@ -148,6 +148,40 @@ public class CollisionTests {
         boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
         assertFalse(hit);
     }
+
+    @Test
+    public void testRaycastAlignedBoxIntersection() {
+        // Create an AlignedBox
+        AlignedBox alignedBox = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D rigidbody = new Rigidbody2D();
+        rigidbody.setPosition(new Vector2f(0f, 0f));
+        alignedBox.setRigidbody(rigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(0f, 2f), new Vector2f(1f, -1f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastABox(ray, alignedBox, rayResult);
+
+        assertTrue(hit);
+    }
+
+    @Test
+    public void testRaycastAlignedBoxNoIntersection() {
+        // Create an AlignedBox
+        AlignedBox alignedBox = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D rigidbody = new Rigidbody2D();
+        rigidbody.setPosition(new Vector2f(0f, 0f));
+        alignedBox.setRigidbody(rigidbody);
+
+
+        Raycast ray = new Raycast(new Vector2f(0f, 2f), new Vector2f(1f, 0f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastABox(ray, alignedBox, rayResult);
+
+        assertFalse(hit);
+    }
+
     @Test
     public void testCircleCompletelyOutsideBox() {
         Circle circle = new Circle(1f);
