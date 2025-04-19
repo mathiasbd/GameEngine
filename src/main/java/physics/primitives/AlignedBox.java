@@ -3,6 +3,7 @@ package physics.primitives;
 import org.joml.Vector2f;
 import physics.rigidbody.RaycastManager;
 import physics.rigidbody.Rigidbody2D;
+import util.DTUMath;
 
 public class AlignedBox extends Shape {
     private Vector2f halfSize;
@@ -18,16 +19,17 @@ public class AlignedBox extends Shape {
         this.halfSize = new Vector2f(this.size).mul(0.5f);
     }
 
-    public Vector2f getMin() {
+    public Vector2f getLocalMin() {
         return new Vector2f(this.rigidbody.getPosition()).sub(this.halfSize); // assume the position is the center of the box
     }
 
-    public Vector2f getMax() {
+    public Vector2f getLocalMax() {
         return new Vector2f(this.rigidbody.getPosition()).add(this.halfSize);
     }
+
     public Vector2f[] getVertices() {
-        Vector2f min = getMin();
-        Vector2f max = getMax();
+        Vector2f min = getLocalMin();
+        Vector2f max = getLocalMax();
         Vector2f[] vertices = {
                 new Vector2f(min.x, min.y), // bottom left
                 new Vector2f(max.x, min.y), // bottom right
@@ -41,6 +43,7 @@ public class AlignedBox extends Shape {
         if (rigidbody.getRotation() != 0.0f) {
             for (Vector2f vertex : vertices) {
                 // Rotate the vertices
+                DTUMath.rotate(vertex, this.rigidbody.getRotation(), this.rigidbody.getPosition());
             }
         }
         return vertices;
@@ -55,5 +58,10 @@ public class AlignedBox extends Shape {
     @Override
     public boolean cast(Raycast ray, RaycastResult rayResult) {
         return RaycastManager.raycastABox(ray, this, rayResult);
+    }
+
+    public void setSize(Vector2f size) {
+        this.size.set(size);
+        this.halfSize.set(size.x / 2.0f, size.y / 2.0f);
     }
 }

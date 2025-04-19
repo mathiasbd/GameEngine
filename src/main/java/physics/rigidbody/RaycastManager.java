@@ -21,8 +21,8 @@ public class RaycastManager {
     }
 
     public static boolean pointInABox(Vector2f point, AlignedBox box) { // test if a point is in an axis aligned box
-        Vector2f min = box.getMin();
-        Vector2f max = box.getMax();
+        Vector2f min = box.getLocalMin();
+        Vector2f max = box.getLocalMax();
         return point.x <= max.x && min.x
                 <= point.x && point.y <= max.y && min.y
                 <= point.y; // if the point is within the bounds of the box
@@ -33,8 +33,8 @@ public class RaycastManager {
         Vector2f localPoint = new Vector2f(point);
         DTUMath.rotate(localPoint, box.getRigidbody().getRotation(), box.getRigidbody().getPosition());
 
-        Vector2f min = box.getMin();
-        Vector2f max = box.getMax();
+        Vector2f min = box.getLocalMin();
+        Vector2f max = box.getLocalMax();
 
         return localPoint.x <= max.x && min.x
                 <= localPoint.x && localPoint.y <= max.y && min.y
@@ -154,8 +154,8 @@ public class RaycastManager {
     public static boolean raycastABox(Raycast ray, AlignedBox box, RaycastResult rayResult) {
         Vector2f rayStart = ray.getStart();
         Vector2f rayDirection = ray.getDirection();
-        Vector2f min = box.getMin();
-        Vector2f max = box.getMax();
+        Vector2f min = box.getLocalMin();
+        Vector2f max = box.getLocalMax();
 
         float tMinX, tMaxX;
         if (rayDirection.x == 0) {
@@ -242,8 +242,8 @@ public class RaycastManager {
 
         Vector2f circleCenter = circle.getCenter();
         // Get the min and max corners of the AlignedBox
-        Vector2f min = aBox.getMin();
-        Vector2f max = aBox.getMax();
+        Vector2f min = aBox.getLocalMin();
+        Vector2f max = aBox.getLocalMax();
         // This gives us the closest point on the AlignedBox to the circle
         float closestX = Math.max(min.x, Math.min(circleCenter.x, max.x));
         float closestY = Math.max(min.y, Math.min(circleCenter.y, max.y));
@@ -281,8 +281,6 @@ public class RaycastManager {
 
         // Check if the distance squared is less than or equal to the circle's radius squared
         return circleToBox.lengthSquared() <= circle.getRadius() * circle.getRadius();
-
-
     }
 
 

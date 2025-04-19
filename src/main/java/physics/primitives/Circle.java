@@ -32,5 +32,8 @@ public class Circle extends Shape {
     public Rigidbody2D getRigidbody() {
         return rigidbody;
     }
+    public void setRadius(float r) {
+        this.radius = r;
+    }
 
 }
