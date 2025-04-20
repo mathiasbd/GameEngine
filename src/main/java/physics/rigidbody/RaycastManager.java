@@ -157,6 +157,7 @@ public class RaycastManager {
         Vector2f min = box.getLocalMin();
         Vector2f max = box.getLocalMax();
 
+
         float tMinX, tMaxX;
         if (rayDirection.x == 0) {
             if (rayStart.x < min.x || rayStart.x > max.x) {
@@ -197,8 +198,7 @@ public class RaycastManager {
         float tEntry = Math.max(tMinX, tMinY);
         float tExit = Math.min(tMaxX, tMaxY);
 
-        System.out.println("tEntry: " + tEntry);
-        System.out.println("tExit: " + tExit);
+//        System.out.println("tEntry: " + tEntry + ", tExit: " + tExit);
 
         if (tEntry > tExit || tExit < 0) {
             RaycastResult.reset(rayResult);
@@ -216,13 +216,50 @@ public class RaycastManager {
             else if (Math.abs(intersectionPoint.y - max.y) < 1e-6) normal.set(0, 1);
         }
 
-        System.out.println("intersectionPoint: " + intersectionPoint);
+        //System.out.println("intersectionPoint: " + intersectionPoint);
         rayResult.init(intersectionPoint, normal, t, true);
         return true;
     }
 
     public static boolean raycastSquare(Raycast ray, Square square, RaycastResult rayResult) {
-        return false;
+        // Step 1: Transform the ray into the square's local space
+        Vector2f rayStartLocal = new Vector2f(ray.getStart()).sub(square.getRigidbody().getPosition());
+        Vector2f rayDirectionLocal = new Vector2f(ray.getDirection());
+        float inverseRotation = square.getRigidbody().getRotation();
+        float inverseRotationDegrees = (float) Math.toDegrees(inverseRotation);
+
+        DTUMath.rotate(rayStartLocal, inverseRotationDegrees, new Vector2f());
+        DTUMath.rotate(rayDirectionLocal, inverseRotationDegrees, new Vector2f());
+
+        // Create a new ray in local space
+        Raycast localRay = new Raycast(rayStartLocal, rayDirectionLocal);
+
+        // Step 2: Perform raycast on the aligned box
+        AlignedBox alignedBox = new AlignedBox(square.getMin(), square.getMax());
+        alignedBox.setRigidbody(square.getRigidbody());
+
+        boolean hit = raycastABox(localRay, alignedBox, rayResult);
+
+        if (!hit) {
+            return false;
+        }
+
+        System.out.println("rayResult: " + rayResult.getPoint() + ", " + rayResult.getNormal());
+
+        // Step 3: Transform the results back to world space
+        Vector2f intersectionPointWorld = new Vector2f(rayResult.getPoint());
+        Vector2f normalWorld = new Vector2f(rayResult.getNormal());
+
+        DTUMath.rotate(intersectionPointWorld, (float) Math.toDegrees(-inverseRotation), new Vector2f());
+        DTUMath.rotate(normalWorld, (float) Math.toDegrees(-inverseRotation), new Vector2f());
+
+        intersectionPointWorld.add(square.getRigidbody().getPosition());
+
+        // Step 4: Update the ray result
+        rayResult.init(intersectionPointWorld, normalWorld, rayResult.getDistance(), true);
+        System.out.println("intersectionPointWorld: " + intersectionPointWorld);
+        System.out.println("normalWorld: " + normalWorld);
+        return true;
     }
 
 

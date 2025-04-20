@@ -182,6 +182,73 @@ public class CollisionTests {
         assertFalse(hit);
     }
 
+
+    @Test
+    public void testRaycastSquareIntersection() {
+        // Create a Square
+        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D rigidbody = new Rigidbody2D();
+        rigidbody.setPosition(new Vector2f(0f, 0f));
+        square.setRigidbody(rigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(0f, 2f), new Vector2f(1f, -1f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastSquare(ray, square, rayResult);
+
+        assertTrue(hit);
+    }
+
+    @Test
+    public void testRaycastSquareNoIntersection() {
+        // Create a Square
+        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D rigidbody = new Rigidbody2D();
+        rigidbody.setPosition(new Vector2f(0f, 0f));
+        square.setRigidbody(rigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(0f, 2f), new Vector2f(1f, 0f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastSquare(ray, square, rayResult);
+
+        assertFalse(hit);
+    }
+
+    @Test
+    public void testRaycastRotatedSquareIntersection() {
+        // Create a Square
+        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D rigidbody = new Rigidbody2D();
+        rigidbody.setPosition(new Vector2f(0f, 0f));
+        rigidbody.setRotation((float) Math.toRadians(45));
+        square.setRigidbody(rigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(-1.1f, 1.5f), new Vector2f(0f, -1f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastSquare(ray, square, rayResult);
+
+        assertTrue(hit);
+    }
+
+    @Test
+    public void testRaycastRotatedSquareNoIntersection() {
+        // Create a Square
+        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D rigidbody = new Rigidbody2D();
+        rigidbody.setPosition(new Vector2f(0f, 0f));
+        rigidbody.setRotation((float) Math.toRadians(45));
+        square.setRigidbody(rigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(-1.2f, -0.4f), new Vector2f(0.7071f, -0.7071f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastSquare(ray, square, rayResult);
+
+        assertFalse(hit);
+    }
+
     @Test
     public void testCircleCompletelyOutsideBox() {
         Circle circle = new Circle(1f);

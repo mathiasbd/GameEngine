@@ -5,6 +5,7 @@ import org.joml.Vector2f;
 public class DTUMath {
 
     public static void rotate(Vector2f vec, float angleDeg, Vector2f origin) { // Modifies the vector given as argument
+//        System.out.println("Rotating vector: " + vec + " with angle: " + angleDeg + " degrees around origin: " + origin);
         float angleRad = (float) Math.toRadians(angleDeg);
         float cos = (float) Math.cos(angleRad);
         float sin = (float) Math.sin(angleRad);
@@ -16,6 +17,7 @@ public class DTUMath {
         yNew += origin.y;
         vec.x = xNew;
         vec.y = yNew;
+//        System.out.println("Rotated vector: " + vec);
     }
 
     public static boolean compare(float a, float b, float epsilon) { // Custom float comparison that allows for a small error margin (epsilon)
