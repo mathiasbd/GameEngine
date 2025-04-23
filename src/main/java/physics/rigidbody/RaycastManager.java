@@ -31,7 +31,7 @@ public class RaycastManager {
     public static boolean pointInBox2D(Vector2f point, AlignedBox box) { // test if a point is in a box (not necessarily axis aligned)
         // translate the point to the box's local space
         Vector2f localPoint = new Vector2f(point);
-        DTUMath.rotate(localPoint, box.getRigidbody().getRotation(), box.getRigidbody().getPosition());
+        DTUMath.rotate(localPoint, -box.getRigidbody().getRotation(), box.getRigidbody().getPosition());
 
         Vector2f min = box.getLocalMin();
         Vector2f max = box.getLocalMax();
@@ -225,11 +225,10 @@ public class RaycastManager {
         // Step 1: Transform the ray into the square's local space
         Vector2f rayStartLocal = new Vector2f(ray.getStart()).sub(square.getRigidbody().getPosition());
         Vector2f rayDirectionLocal = new Vector2f(ray.getDirection());
-        float inverseRotation = square.getRigidbody().getRotation();
-        float inverseRotationDegrees = (float) Math.toDegrees(inverseRotation);
+        float theta = square.getRigidbody().getRotation();
 
-        DTUMath.rotate(rayStartLocal, inverseRotationDegrees, new Vector2f());
-        DTUMath.rotate(rayDirectionLocal, inverseRotationDegrees, new Vector2f());
+        DTUMath.rotate(rayStartLocal, theta, new Vector2f());
+        DTUMath.rotate(rayDirectionLocal, theta, new Vector2f());
 
         // Create a new ray in local space
         Raycast localRay = new Raycast(rayStartLocal, rayDirectionLocal);
@@ -250,8 +249,8 @@ public class RaycastManager {
         Vector2f intersectionPointWorld = new Vector2f(rayResult.getPoint());
         Vector2f normalWorld = new Vector2f(rayResult.getNormal());
 
-        DTUMath.rotate(intersectionPointWorld, (float) Math.toDegrees(-inverseRotation), new Vector2f());
-        DTUMath.rotate(normalWorld, (float) Math.toDegrees(-inverseRotation), new Vector2f());
+        DTUMath.rotate(intersectionPointWorld, (float) Math.toDegrees(-theta), new Vector2f());
+        DTUMath.rotate(normalWorld, (float) Math.toDegrees(-theta), new Vector2f());
 
         intersectionPointWorld.add(square.getRigidbody().getPosition());
 

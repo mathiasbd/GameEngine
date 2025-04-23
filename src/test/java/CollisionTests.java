@@ -101,7 +101,7 @@ public class CollisionTests {
 
         Rigidbody2D rb = new Rigidbody2D();
         rb.setPosition(new Vector2f(0, 0));
-        rb.setRotation((float) Math.toRadians(45)); // Rotate 45 degrees
+        rb.setRotation((45));
         square.setRigidbody(rb);
 
         assertTrue(RaycastManager.lineInSquare(line, square));
@@ -221,7 +221,7 @@ public class CollisionTests {
         Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D rigidbody = new Rigidbody2D();
         rigidbody.setPosition(new Vector2f(0f, 0f));
-        rigidbody.setRotation((float) Math.toRadians(45));
+        rigidbody.setRotation(45);
         square.setRigidbody(rigidbody);
 
         Raycast ray = new Raycast(new Vector2f(-1.1f, 1.5f), new Vector2f(0f, -1f));
@@ -238,7 +238,7 @@ public class CollisionTests {
         Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D rigidbody = new Rigidbody2D();
         rigidbody.setPosition(new Vector2f(0f, 0f));
-        rigidbody.setRotation((float) Math.toRadians(45));
+        rigidbody.setRotation(45);
         square.setRigidbody(rigidbody);
 
         Raycast ray = new Raycast(new Vector2f(-1.2f, -0.4f), new Vector2f(0.7071f, -0.7071f));
@@ -330,7 +330,7 @@ public class CollisionTests {
         Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D squareBody = new Rigidbody2D();
         squareBody.setPosition(new Vector2f(0f, 0f));
-        squareBody.setRotation((float) Math.toRadians(45));
+        squareBody.setRotation((45));
         square.setRigidbody(squareBody);
 
         assertFalse(RaycastManager.circleAndSquare(circle, square));
@@ -339,28 +339,43 @@ public class CollisionTests {
     public void testCircleTouchingRotatedSquare() {
         Circle circle = new Circle(1.0f);
         Rigidbody2D circleBody = new Rigidbody2D();
-        circleBody.setPosition(new Vector2f(1.0f, 1.0f)); // near rotated edge
+        circleBody.setPosition(new Vector2f(1.2f, 1.38f));
         circle.setRigidbody(circleBody);
 
         Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D squareBody = new Rigidbody2D();
         squareBody.setPosition(new Vector2f(0f, 0f));
-        squareBody.setRotation((float) Math.toRadians(45));
+        squareBody.setRotation((45));
         square.setRigidbody(squareBody);
 
         assertTrue(RaycastManager.circleAndSquare(circle, square));
     }
-
     @Test
-    public void testCircleFullyInsideSquare() {
+    public void testCircleFullyInsideRotatedSquare() {
         Circle circle = new Circle(0.5f);
         Rigidbody2D circleBody = new Rigidbody2D();
-        circleBody.setPosition(new Vector2f(0f, 0f)); // center of square
+        circleBody.setPosition(new Vector2f(0f, 0f));
         circle.setRigidbody(circleBody);
 
         Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D squareBody = new Rigidbody2D();
         squareBody.setPosition(new Vector2f(0f, 0f));
+        squareBody.setRotation(30f);
+        square.setRigidbody(squareBody);
+
+        assertTrue(RaycastManager.circleAndSquare(circle, square));
+    }
+    @Test
+    public void testCircleTouchingEdgeOfRotatedSquare() {
+        Circle circle = new Circle(1f);
+        Rigidbody2D circleBody = new Rigidbody2D();
+        circleBody.setPosition(new Vector2f(2f, 0f));
+        circle.setRigidbody(circleBody);
+
+        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Rigidbody2D squareBody = new Rigidbody2D();
+        squareBody.setPosition(new Vector2f(0f, 0f));
+        squareBody.setRotation(60f);
         square.setRigidbody(squareBody);
 
         assertTrue(RaycastManager.circleAndSquare(circle, square));
