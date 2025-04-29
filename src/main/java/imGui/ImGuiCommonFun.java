@@ -14,4 +14,10 @@ public class ImGuiCommonFun {
         }
         return false;
     }
+
+    public static boolean slider(String label, int[] imInt, int min, int max) {
+        ImGui.text(label);
+        ImGui.sameLine();
+        return ImGui.sliderInt("##" + label, imInt, min, max);
+    }
 }

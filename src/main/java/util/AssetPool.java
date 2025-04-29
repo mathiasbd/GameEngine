@@ -56,4 +56,8 @@ public class AssetPool {
         }
         return AssetPool.spriteSheets.getOrDefault(file.getAbsolutePath(), null);
     }
+
+    public static Map<String, SpriteSheet> getSpriteSheets() {
+        return spriteSheets;
+    }
 }

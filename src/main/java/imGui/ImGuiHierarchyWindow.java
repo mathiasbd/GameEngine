@@ -122,6 +122,9 @@ public class ImGuiHierarchyWindow {
                         queedSpriteRenderer.setColor(new Vector4f(0,0,0,1));
                         queedSpriteRenderer.setSprite(sprite);
                     }
+                    if(ImGui.menuItem("RigidBody2D")) {
+                        System.out.println("Implement rigidBody");
+                    }
                     ImGui.endMenu();
                 }
                 if(ImGui.menuItem("Edit fields")) {

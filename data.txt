@@ -48,16 +48,16 @@
     }
   },
   {
-    "name": "Orale",
+    "name": "Fedt",
     "components": [
       {
         "type": "components.SpriteRenderer",
         "properties": {
           "color": {
-            "x": 0.23789787,
-            "y": 0.6258503,
-            "z": 0.2213892,
-            "w": 0.6462585
+            "x": 0.4487926,
+            "y": 0.6802721,
+            "z": 0.41649312,
+            "w": 0.6530612
           },
           "sprite": {
             "texCoords": [
@@ -82,12 +82,12 @@
         }
       }
     ],
-    "zIndex": -3,
+    "zIndex": 0,
     "inScene": true,
     "transform": {
       "position": {
-        "x": 453.75,
-        "y": 494.25003
+        "x": 598.75,
+        "y": 304.90002
       },
       "scale": {
         "x": 100.0,

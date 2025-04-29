@@ -42,4 +42,8 @@ public class SpriteSheet {
         return sprites.get(index);
     }
 
+    public Texture getTexture() {
+        return texture;
+    }
+
 }
