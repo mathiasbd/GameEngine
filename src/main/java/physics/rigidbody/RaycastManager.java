@@ -160,8 +160,6 @@ public class RaycastManager {
     }
 
 
-
-
     //Shapes dectecter
     //Circle vs Circle detecter
     //// Checks for collision between a circle and an circle
@@ -216,13 +214,101 @@ public class RaycastManager {
 
         // Check if the distance squared is less than or equal to the circle's radius squared
         return circleToBox.lengthSquared() <= circle.getRadius() * circle.getRadius();
-
-
     }
 
 
+    public static boolean ABoxAndCircle(AlignedBox aBox, Circle circle){
+        return circleAndAlignedBox(circle, aBox);
+    }
 
+    public static boolean ABoxAndABox(AlignedBox aBox1, AlignedBox aBox2){
+        Vector2f axesToTest[] = {
+                new Vector2f(1, 0), // x-axis
+                new Vector2f(0, 1), // y-axis
+        };
+        for (Vector2f axis : axesToTest) {
+            if (!overlapOnAxis(aBox1, aBox2, axis)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    public static boolean ABoxAndSquare(AlignedBox aBox, Square square){
+        Vector2f axesToTest[] = {
+                new Vector2f(0, 1),
+                new Vector2f(1, 0),
+                new Vector2f(0, 1),
+                new Vector2f(1, 0),
+        };
+        DTUMath.rotate(axesToTest[2], square.getRigidbody().getRotation(), square.getRigidbody().getPosition());
+        DTUMath.rotate(axesToTest[3], square.getRigidbody().getRotation(), square.getRigidbody().getPosition());
 
+        for (Vector2f axis : axesToTest) {
+            if (!overlapOnAxis(aBox, square, axis)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    private static boolean overlapOnAxis(AlignedBox aBox1, AlignedBox aBox2, Vector2f axis) {
+        Vector2f interval1 = getInterval(aBox1, axis);
+        Vector2f interval2 = getInterval(aBox2, axis);
+
+        return interval1.x <= interval2.y && interval2.x <= interval1.y;
+    }
+
+    private static boolean overlapOnAxis(AlignedBox aBox, Square square, Vector2f axis) {
+        Vector2f interval1 = getInterval(aBox, axis);
+        Vector2f interval2 = getInterval(square, axis);
+
+        return interval1.x <= interval2.y && interval2.x <= interval1.y;
+    }
+
+    private static Vector2f getInterval(AlignedBox box, Vector2f axis) {
+        Vector2f result = new Vector2f(0, 0);
+
+        Vector2f min = box.getMin();
+        Vector2f max = box.getMax();
+
+        Vector2f[] vertices = {
+                new Vector2f(min.x, min.y),
+                new Vector2f(min.x, max.y),
+                new Vector2f(max.x, min.y),
+                new Vector2f(max.x, max.y)
+        };
+
+        result.x = axis.dot(vertices[0]);
+        result.y = result.x;
+        for (int i = 1; i < vertices.length; i++) {
+            float projection = axis.dot(vertices[i]);
+            if (projection < result.x) {
+                result.x = projection;
+            } else if (projection > result.y) {
+                result.y = projection;
+            }
+        }
+        return result;
+    }
+
+    private static Vector2f getInterval(Square box, Vector2f axis) {
+        Vector2f result = new Vector2f(0, 0);
+
+        Vector2f min = box.getMin();
+        Vector2f max = box.getMax();
+
+        Vector2f vertices[] = box.getVertices();
+        result.x = axis.dot(vertices[0]);
+        result.y = result.x;
+        for (int i = 1; i < vertices.length; i++) {
+            float projection = axis.dot(vertices[i]);
+            if (projection < result.x) {
+                result.x = projection;
+            } else if (projection > result.y) {
+                result.y = projection;
+            }
+        }
+        return result;
+    }
 }
