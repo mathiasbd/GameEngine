@@ -3,10 +3,12 @@ package physics.rigidbody;
 import components.Component;
 import org.example.Transform;
 import org.joml.Vector2f;
+import physics.primitives.Collider;
 
 
 public class Rigidbody2D extends Component {
     private Transform rawTransform;
+    private Collider collider;
 
     private Vector2f position = new Vector2f();
     private float rotation = 0.0f;
@@ -49,6 +51,9 @@ public class Rigidbody2D extends Component {
         this.forceAcc.zero();
     }
 
+    public boolean hasInfiniteMass() {
+        return this.mass == 0.0f;
+    }
 
 
     public Vector2f getPosition() {
@@ -85,6 +90,15 @@ public class Rigidbody2D extends Component {
         this.rawTransform = rawTransform;
         this.position.set(rawTransform.position);
     }
+    public void setCollider(Collider collider) {
+        this.collider = collider;
+    }
+
+    public Collider getCollider() {
+        return this.collider;
+    }
+
+
 
 
 }

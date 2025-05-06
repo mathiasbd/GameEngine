@@ -41,4 +41,7 @@ public class CollisionManifold {
     public float getPenetrationDepth() {
         return penetrationDepth;
     }
+    public boolean isColliding() {
+        return this.isColliding;
+    }
 }

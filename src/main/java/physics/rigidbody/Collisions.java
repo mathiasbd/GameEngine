@@ -2,10 +2,20 @@ package physics.rigidbody;
 
 import org.joml.Vector2f;
 import physics.primitives.Circle;
+import physics.primitives.Collider;
 
 import java.util.List;
 
 public class Collisions {
+    public static CollisionManifold findCollisionFeatures(Collider c1, Collider c2) {
+        if (c1 instanceof Circle && c2 instanceof Circle) {
+            return findCollisionFeatures((Circle)c1, (Circle)c2);
+        } else {
+            assert false : "Unknown Col '" + c1.getClass() + "' vs '" + c2.getClass() + "'";
+        }
+
+        return null;
+    }
     public static CollisionManifold findCollisionFeatures(Circle a, Circle b) {
         CollisionManifold manifold = new CollisionManifold();
 

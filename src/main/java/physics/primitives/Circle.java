@@ -4,7 +4,7 @@ import org.joml.Vector2f;
 import physics.rigidbody.RaycastManager;
 import physics.rigidbody.Rigidbody2D;
 
-public class Circle extends Shape {
+public class Circle extends  Collider{
     private float radius;
     private Rigidbody2D rigidbody = null;
 
@@ -24,7 +24,6 @@ public class Circle extends Shape {
         this.rigidbody = rigidbody;
     }
 
-    @Override
     public boolean cast(Raycast ray, RaycastResult rayResult) {
         return RaycastManager.raycastCircle(ray, this, rayResult);
     }

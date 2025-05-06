@@ -10,8 +10,10 @@ public class Gravity implements ForceGenerator{
     public Gravity(Vector2f force) {
         this.gravity = new Vector2f(force);
     }
+    // gravity is fg=m*a
     @Override
     public void updateForce(Rigidbody2D rb, float dt) {
-        rb.addForce(new Vector2f(gravity).mul(rb.getMass()));
+        rb.addForce(new Vector2f(gravity).mul(rb.getMass())
+        );
     }
 }
