@@ -24,10 +24,6 @@ public class Circle extends Collider {
         this.rigidbody = rigidbody;
     }
 
-    public boolean cast(Raycast ray, RaycastResult rayResult) {
-        return RaycastManager.raycastCircle(ray, this, rayResult);
-    }
-
     public Rigidbody2D getRigidbody() {
         return rigidbody;
     }

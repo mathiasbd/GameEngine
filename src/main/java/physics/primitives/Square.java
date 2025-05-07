@@ -5,7 +5,7 @@ import physics.rigidbody.RaycastManager;
 import physics.rigidbody.Rigidbody2D;
 import util.DTUMath;
 
-public class Square {
+public class Square extends Collider {
     private Vector2f size = new Vector2f();
     private Vector2f halfSize = new Vector2f();
     private Rigidbody2D rigidbody = null;
@@ -54,9 +54,5 @@ public class Square {
     }
     public void setRigidbody(Rigidbody2D rigidbody) {
         this.rigidbody = rigidbody;
-    }
-
-    public boolean cast(Raycast ray, RaycastResult rayResult) {
-        return RaycastManager.raycastSquare(ray, this, rayResult);
     }
 }

@@ -4,7 +4,7 @@ import org.joml.Vector2f;
 import physics.rigidbody.RaycastManager;
 import physics.rigidbody.Rigidbody2D;
 
-public class AlignedBox {
+public class AlignedBox extends Collider {
     private Vector2f halfSize;
     private Vector2f size = new Vector2f();
     private Rigidbody2D rigidbody = null;
@@ -50,9 +50,5 @@ public class AlignedBox {
     }
     public void setRigidbody(Rigidbody2D rigidbody) {
         this.rigidbody = rigidbody;
-    }
-
-    public boolean cast(Raycast ray, RaycastResult rayResult) {
-        return RaycastManager.raycastABox(ray, this, rayResult);
     }
 }
