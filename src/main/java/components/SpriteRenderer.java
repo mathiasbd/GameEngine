@@ -27,6 +27,7 @@ public class SpriteRenderer extends Component {
     public void update(float dt) {
         if(!this.gameObject.transform.equals(this.lastTransform)) {
             this.isDirty = true;
+            this.lastTransform = gameObject.transform.getTransform();
         }
     }
 

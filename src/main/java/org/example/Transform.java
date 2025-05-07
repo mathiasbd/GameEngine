@@ -37,6 +37,7 @@ public class Transform {
             return false;
         }
         if(!(o instanceof Transform)) {return false;}
-        return ((Transform) o).position == this.position && ((Transform) o).scale == this.scale;
+        return (((Transform) o).position.x == this.position.x && ((Transform) o).position.y == this.position.y &&
+                ((Transform) o).scale.x == this.scale.x && ((Transform) o).scale.y == this.scale.y);
     }
 }

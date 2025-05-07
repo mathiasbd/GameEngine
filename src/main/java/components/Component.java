@@ -48,7 +48,9 @@ public abstract class Component {
                     ImGui.pushItemWidth(ImGui.getWindowWidth()-10);
                     if(ImGui.colorPicker4("##ColorPickerWidget", color, flags)) {
                         Vector4f newVal = new Vector4f(color[0], color[1], color[2], color[3]);
-                        field.set(this, newVal);
+                        if(this instanceof SpriteRenderer) {
+                            ((SpriteRenderer) this).setColor(newVal);
+                        }
                     }
                 }
 

@@ -61,6 +61,7 @@ public class ImGuiAssetWindow {
                 try {
                     String droppedFilePath = new String(payload);
                     if(!AssetPool.getSpriteSheets().containsKey(droppedFilePath)) {
+                        System.out.println(droppedFilePath);
                         AssetPool.addSpritesheet(droppedFilePath,
                                 new SpriteSheet(AssetPool.getTexture(droppedFilePath), 80, 34, 4, 46, 94, 27));
                         System.out.println("Added " + droppedFilePath);
@@ -81,6 +82,11 @@ public class ImGuiAssetWindow {
             String name = entry.getKey().substring(index+1);
             if(ImGui.selectable(name)) {
                 selectedAsset = entry.getKey();
+            }
+            if(ImGui.beginDragDropSource()) {
+                ImGui.setDragDropPayload("spriteSheet", entry.getKey().getBytes());
+                ImGui.text("Dragging " + entry.getKey());
+                ImGui.endDragDropSource();
             }
             ImGui.popID();
             loop++;
@@ -167,7 +173,7 @@ public class ImGuiAssetWindow {
                     this.ySpacing = imIntYSpacing[0];
                 }
                 ImGui.nextColumn();
-                if(ImGuiCommonFun.slider("Num sprites", imIntNumSprites, 0, 100)) {
+                if(ImGuiCommonFun.slider("Num sprites", imIntNumSprites, 0, 20)) {
                     this.numSprites = imIntNumSprites[0];
                 }
                 ImGui.nextColumn();
@@ -181,17 +187,39 @@ public class ImGuiAssetWindow {
                     float x1 = pos.x + (xStart + i*spriteWidth + i*xSpacing) * scaleX;
                     float y1 = pos.y;
                     float y2 = pos.y + texture.getHeight() * scaleY;
-                    ImGui.getWindowDrawList().addLine(x1, y1,x1,y2,
-                            ImColor.rgb(255,0,0), 2.0f);
+                    if(i % 2 == 0) {
+                        ImGui.getWindowDrawList().addLine(x1, y1,x1,y2,
+                                ImColor.rgb(255,0,0), 1.0f);
+                    } else {
+                        ImGui.getWindowDrawList().addLine(x1, y1,x1,y2,
+                                ImColor.rgb(0,255,0), 1.0f);
+                    }
                     if(i > 0) {
                         float x2 = pos.x + (xStart + i*spriteWidth + (i-1)*xSpacing) * scaleX;
-                        ImGui.getWindowDrawList().addLine(x2, y1,x2,y2,
-                                ImColor.rgb(255,0,0), 2.0f);
-                    }
+                        if(i % 2 == 0) {
+                            ImGui.getWindowDrawList().addLine(x2, y1,x2,y2,
+                                    ImColor.rgb(0,255,0), 1.0f);
+                        } else {
+                            ImGui.getWindowDrawList().addLine(x2, y1,x2,y2,
+                                    ImColor.rgb(255,0,0), 1.0f);
+                        }
 
+                    }
                 }
+                ImGui.getWindowDrawList().addLine(pos.x, pos.y+ySpacing*scaleY,ImGui.getItemRectMaxX(),pos.y+ySpacing*scaleY,
+                        ImColor.rgb(0,0,255), 1.0f);
+                ImGui.getWindowDrawList().addLine(pos.x, pos.y+(ySpacing+spriteHeight)*scaleY,ImGui.getItemRectMaxX(),pos.y+(ySpacing+spriteHeight)*scaleY,
+                        ImColor.rgb(0,0,255), 1.0f);
+
                 ImGui.end();
                 if(!open.get()) {
+                    if(AssetPool.getSpriteSheets().containsKey(selectedAsset)) {
+                        System.out.println(AssetPool.getTexture(selectedAsset).getTexID());
+                        System.out.println(selectedAsset);
+                        AssetPool.addSpritesheet(selectedAsset,
+                                new SpriteSheet(AssetPool.getTexture(selectedAsset), spriteWidth, spriteHeight, numSprites, xSpacing, ySpacing, xStart));
+                        System.out.println("Added " + AssetPool.getSpriteSheet(selectedAsset).getTexture());
+                    }
                     selectedAsset = null;
                 }
             }

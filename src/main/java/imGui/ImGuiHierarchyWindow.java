@@ -3,6 +3,7 @@ package imGui;
 import components.Component;
 import components.Sprite;
 import components.SpriteRenderer;
+import components.SpriteSheet;
 import imgui.ImGui;
 import imgui.ImGuiStyle;
 import imgui.ImVec2;
@@ -15,10 +16,16 @@ import imgui.type.ImString;
 import org.example.GameObject;
 import org.example.Transform;
 import org.joml.Vector4f;
+import physics.primitives.Circle;
+import physics.primitives.Collider;
+import rendering.Texture;
 import scenes.LevelEditorScene;
 import scenes.Scene;
+import util.AssetPool;
 
+import java.io.File;
 import java.sql.Array;
+import java.util.Arrays;
 import java.util.List;
 
 public class ImGuiHierarchyWindow {
@@ -177,6 +184,29 @@ public class ImGuiHierarchyWindow {
             treeNode = ImGui.treeNodeEx(c.getClass().getName().substring(startIndex + 1), flags);
             if(selectedComponent == i*gameObjects.size()+j && i == selectedObject) {
                 ImGui.popStyleColor();
+            }
+            if(c.getClass() == SpriteRenderer.class) {
+                if(ImGui.beginDragDropTarget()) {
+                    byte[] payload = ImGui.acceptDragDropPayload("spriteSheet");
+                    if(payload != null) {
+                        String spriteSheetName = new String(payload);
+                        SpriteSheet sheet = AssetPool.getSpriteSheet(spriteSheetName);
+                        System.out.println(sheet.getTexture().getTexID() + " " + sheet.getSprite(0).getTexture().getTexID());
+                        if (sheet != null && sheet.getSprite(0) != null && sheet.getSprite(0).getTexture() != null) {
+                            ((SpriteRenderer) c).setSprite(sheet.getSprite(0));
+                            System.out.println("Sprite set from: " + spriteSheetName);
+                        } else {
+                            if(sheet == null) {
+                                System.out.println("Sheet is null");
+                            } else if(sheet.getSprite(0) == null) {
+                                System.out.println("sprite is null");
+                            } else {
+                                System.out.println("texture is null");
+                            }
+                            System.err.println("Failed to get sprite from: " + spriteSheetName);
+                        }
+                    }
+                }
             }
             if(ImGui.isItemClicked()) {
                 selectedComponent = i*gameObjects.size()+j;

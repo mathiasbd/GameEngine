@@ -46,6 +46,8 @@ public class AssetPool {
         File file = new File(resourceName);
         if(!AssetPool.spriteSheets.containsKey(file.getAbsolutePath())) {
             AssetPool.spriteSheets.put(file.getAbsolutePath(), spriteSheet);
+        } else {
+            AssetPool.spriteSheets.replace(file.getAbsolutePath(), spriteSheet);
         }
     }
 
@@ -54,6 +56,7 @@ public class AssetPool {
         if(!AssetPool.spriteSheets.containsKey(file.getAbsolutePath())) {
             throw new RuntimeException("SpriteSheet not found: " + resourceName);
         }
+        SpriteSheet test = AssetPool.spriteSheets.getOrDefault(file.getAbsolutePath(), null);
         return AssetPool.spriteSheets.getOrDefault(file.getAbsolutePath(), null);
     }
 

@@ -74,6 +74,8 @@ public class LevelEditorScene extends Scene {
                     draggedObject.setInScene(true);
                     this.renderer.add(draggedObject);
                     System.out.println("Adding dragged object to renderer");
+                } else {
+                    draggedObject.getComponent(SpriteRenderer.class).setDirty();
                 }
                 dragDropper.setDragging(false);
                 dragDropper.setDraggedObject(null);
