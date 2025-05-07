@@ -15,6 +15,7 @@ public class Rigidbody2D extends Component {
     private float mass =0f;
     private float inverseMass = 0f;
 
+    private float restitution = 1.0f;
     private Vector2f forceAcc= new Vector2f();
     private Vector2f linearVelocity = new Vector2f();
     private float angularVelocity = 0.0f;
@@ -55,7 +56,6 @@ public class Rigidbody2D extends Component {
         return this.mass == 0.0f;
     }
 
-
     public Vector2f getPosition() {
         return position;
     }
@@ -64,6 +64,13 @@ public class Rigidbody2D extends Component {
         this.position = position;
     }
 
+    public void setVelocity(Vector2f velocity) {
+        this.linearVelocity.set(velocity);
+    }
+
+    public Vector2f getLinearVelocity() {
+        return this.linearVelocity;
+    }
     public float getRotation() {
         return rotation;
     }
@@ -74,6 +81,10 @@ public class Rigidbody2D extends Component {
 
     public float getMass() {
         return mass;
+    }
+
+    public float getInverseMass() {
+        return inverseMass;
     }
 
     public void setMass(float mass) {
@@ -98,7 +109,10 @@ public class Rigidbody2D extends Component {
         return this.collider;
     }
 
-
-
-
+    public void setRestitution(float restitution) {
+        this.restitution = restitution;
+    }
+    public float getRestitution() {
+        return restitution;
+    }
 }

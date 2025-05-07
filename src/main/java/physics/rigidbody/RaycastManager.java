@@ -99,10 +99,6 @@ public class RaycastManager {
         return lineInABox(localLine, alignedBox);
     }
 
-    public static boolean cast(Raycast ray, Shape shape, RaycastResult rayResult) {
-        return shape.cast(ray, rayResult);
-    }
-
     public static boolean raycastCircle(Raycast ray, Circle circle, RaycastResult rayResult) {
         Vector2f rayStart = ray.getStart();
         Vector2f rayDirection = ray.getDirection();
