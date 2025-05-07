@@ -86,7 +86,9 @@ public class Rigidbody2D extends Component {
     public float getInverseMass() {
         return inverseMass;
     }
-
+    public Vector2f getForceAccumulator() {
+        return new Vector2f(forceAcc);
+    }
     public void setMass(float mass) {
         this.mass = mass;
         if (this.mass != 0.0f) {
