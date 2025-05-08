@@ -27,5 +27,4 @@ public class Circle extends Collider {
     public Rigidbody2D getRigidbody() {
         return rigidbody;
     }
-
 }

@@ -15,7 +15,7 @@ public class LevelScene extends Scene {
 
     @Override
     public void init() {
-
+        // When play button is pressed, loop over gameobjects and add to physics
     }
 
     @Override
