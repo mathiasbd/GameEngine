@@ -9,9 +9,22 @@ import java.util.List;
 public class SpriteSheet {
     private Texture texture;
     private List<Sprite> sprites = new ArrayList<>();
+    private int spriteWidth;
+    private int spriteHeight;
+    private int numSprites;
+    private int xSpacing;
+    private int ySpacing;
+    private int startX;
 
     public SpriteSheet(Texture texture, int spriteWidth, int spriteHeight, int numSprites, int xSpacing, int ySpacing, int startX) {
         this.texture = texture;
+        this.spriteWidth = spriteWidth;
+        this.spriteHeight = spriteHeight;
+        this.numSprites = numSprites;
+        this.xSpacing = xSpacing;
+        this.ySpacing = ySpacing;
+        this.startX = startX;
+
         int currentX = startX;
         int currentY = texture.getHeight() - spriteHeight - ySpacing; //Start at the top left corner
         for (int i = 0; i < numSprites; i++) {
@@ -46,4 +59,27 @@ public class SpriteSheet {
         return texture;
     }
 
+    public int getSpriteWidth() {
+        return spriteWidth;
+    }
+
+    public int getSpriteHeight() {
+        return spriteHeight;
+    }
+
+    public int getNumSprites() {
+        return numSprites;
+    }
+
+    public int getXSpacing() {
+        return xSpacing;
+    }
+
+    public int getYSpacing() {
+        return ySpacing;
+    }
+
+    public int getStartX() {
+        return startX;
+    }
 }

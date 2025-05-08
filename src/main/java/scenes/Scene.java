@@ -6,12 +6,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import components.Component;
 import components.SpriteRenderer;
+import components.SpriteSheet;
 import imGui.DragDropper;
 import org.example.Camera;
 import org.example.GameObject;
+import org.example.SaveFile;
 import rendering.Renderer;
 import serializers.ComponentSerializer;
 import serializers.GameObjectSerializer;
+import serializers.SpriteSheetSerializer;
+import util.AssetPool;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Scene {
 
@@ -74,10 +79,12 @@ public abstract class Scene {
         Gson gson = new GsonBuilder().setPrettyPrinting()
                 .registerTypeAdapter(Component.class, new ComponentSerializer())
                 .registerTypeAdapter(GameObject.class, new GameObjectSerializer())
+                .registerTypeAdapter(SpriteSheet.class, new SpriteSheetSerializer())
                 .create();
+        SaveFile saveFile = new SaveFile(this.gameObjects.toArray(new GameObject[0]), AssetPool.getSpriteSheets());
         try {
             FileWriter file = new FileWriter("data.txt");
-            file.write(gson.toJson(this.gameObjects));
+            file.write(gson.toJson(saveFile));
             file.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -88,6 +95,7 @@ public abstract class Scene {
         Gson gson = new GsonBuilder().setPrettyPrinting()
                 .registerTypeAdapter(Component.class, new ComponentSerializer())
                 .registerTypeAdapter(GameObject.class, new GameObjectSerializer())
+                .registerTypeAdapter(SpriteSheet.class, new SpriteSheetSerializer())
                 .create();
         String inFile = "";
         try {
@@ -97,8 +105,11 @@ public abstract class Scene {
         }
 
         if(!inFile.isEmpty()) {
-            GameObject[] gameObjects = gson.fromJson(inFile, GameObject[].class);
-            for(GameObject go : gameObjects) {
+            SaveFile saveFile = gson.fromJson(inFile, SaveFile.class);
+            for(Map.Entry<String, SpriteSheet> entry : saveFile.spriteSheets.entrySet()) {
+                AssetPool.addSpritesheet(entry.getKey(), entry.getValue());
+            }
+            for(GameObject go : saveFile.gameObjects) {
                 addGameObjectToScene(go);
             }
             this.dataLoaded = true;
