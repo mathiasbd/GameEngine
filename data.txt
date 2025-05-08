@@ -14,7 +14,7 @@
             },
             "sprite": {
               "texture": {
-                "filepath": "C:\\Users\\mathi\\OneDrive\\Desktop\\DTU\\4.semester\\Game-Engine-FagProjekt\\GameEngine\\assets\\Spritesheets\\Blue_Slime\\Attack_2.png",
+                "filepath": "assets/Spritesheets/Blue_Slime/Attack_2.png",
                 "texID": 3,
                 "width": 512,
                 "height": 128
@@ -56,9 +56,9 @@
     }
   ],
   "spriteSheets": {
-    "C:\\Users\\mathi\\OneDrive\\Desktop\\DTU\\4.semester\\Game-Engine-FagProjekt\\GameEngine\\assets\\spritesheets\\Blue_Slime\\Attack_1.png": {
+    "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png": {
       "texture": {
-        "filepath": "assets/spritesheets/Blue_Slime/Attack_1.png",
+        "filepath": "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png",
         "texID": 2,
         "width": 512,
         "height": 128
@@ -69,20 +69,6 @@
       "xSpacing": 46,
       "ySpacing": 94,
       "startX": 27
-    },
-    "C:\\Users\\mathi\\OneDrive\\Desktop\\DTU\\4.semester\\Game-Engine-FagProjekt\\GameEngine\\assets\\Spritesheets\\Blue_Slime\\Attack_2.png": {
-      "texture": {
-        "filepath": "C:\\Users\\mathi\\OneDrive\\Desktop\\DTU\\4.semester\\Game-Engine-FagProjekt\\GameEngine\\assets\\Spritesheets\\Blue_Slime\\Attack_2.png",
-        "texID": 3,
-        "width": 512,
-        "height": 128
-      },
-      "spriteWidth": 75,
-      "spriteHeight": 44,
-      "numSprites": 4,
-      "xSpacing": 69,
-      "ySpacing": 90,
-      "startX": 29
     }
   }
 }

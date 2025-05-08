@@ -11,6 +11,9 @@ import imGui.DragDropper;
 import org.example.Camera;
 import org.example.GameObject;
 import org.example.SaveFile;
+import org.joml.Vector2f;
+import physics.PhysicsSystem;
+import physics.rigidbody.Rigidbody2D;
 import rendering.Renderer;
 import serializers.ComponentSerializer;
 import serializers.GameObjectSerializer;
@@ -38,8 +41,9 @@ public abstract class Scene {
 
     protected Renderer renderer = new Renderer();
     protected DragDropper dragDropper = new DragDropper();
-
+    private PhysicsSystem physicsSystem;
     public Scene() {
+        this.physicsSystem = new PhysicsSystem(0.016f, new Vector2f(0, -9.8f));
     }
 
     public abstract void init();
@@ -61,6 +65,12 @@ public abstract class Scene {
             gameObjects.add(go);
             go.start();
             this.renderer.add(go);
+        }
+        Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+        System.out.println("Added " + go.getName() + " to scene");
+        if (rb != null) {
+            physicsSystem.addRigidbody(rb, true); // always add gravity to the new rigidbody, might change later
+            System.out.println("Added rigidBody to physics system");
         }
     }
 
@@ -106,17 +116,17 @@ public abstract class Scene {
 
         if(!inFile.isEmpty()) {
             SaveFile saveFile = gson.fromJson(inFile, SaveFile.class);
-            for(Map.Entry<String, SpriteSheet> entry : saveFile.spriteSheets.entrySet()) {
-                AssetPool.addSpritesheet(entry.getKey(), entry.getValue());
+            if (saveFile.spriteSheets != null) {
+                for (Map.Entry<String, SpriteSheet> entry : saveFile.spriteSheets.entrySet()) {
+                    String resolvedPath = entry.getValue().getTexture().getFilepath();
+                    AssetPool.addSpritesheet(resolvedPath, entry.getValue());
+                }
             }
             for(GameObject go : saveFile.gameObjects) {
                 addGameObjectToScene(go);
             }
             this.dataLoaded = true;
         }
-
-
-
     }
 
     public List<GameObject> getGameObjects() {

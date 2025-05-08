@@ -8,7 +8,9 @@ import org.example.Transform;
 import rendering.Texture;
 import util.AssetPool;
 
+import java.io.File;
 import java.lang.reflect.Type;
+import java.nio.file.Paths;
 
 public class SpriteSheetSerializer implements JsonSerializer<SpriteSheet>, JsonDeserializer<SpriteSheet> {
 
@@ -29,7 +31,15 @@ public class SpriteSheetSerializer implements JsonSerializer<SpriteSheet>, JsonD
     public SpriteSheet deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         Texture texture = context.deserialize(jsonObject.get("texture"), Texture.class);
+
+        String basePath = System.getProperty("user.dir"); // Project root directory
+        String resolvedPath = Paths.get(basePath, texture.getFilepath()).toString();
+
+
+        System.out.println("Loading texture from: " + resolvedPath);
+        texture.setFilepath(resolvedPath);
         texture.init(texture.getFilepath());
+
         int spriteWidth = context.deserialize(jsonObject.get("spriteWidth"), int.class);
         int spriteHeight = context.deserialize(jsonObject.get("spriteHeight"), int.class);
         int numSprites = context.deserialize(jsonObject.get("numSprites"), int.class);

@@ -7,6 +7,7 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.*;
+import java.nio.file.Paths;
 
 public class Texture {
     private String filepath;
@@ -19,7 +20,7 @@ public class Texture {
     }
 
     public void init(String filepath) {
-        this.filepath = filepath;
+        // Resolve relative path to absolute path
 
         // Generate texture id and bind it on the GPU
         texID = glGenTextures();
@@ -28,22 +29,21 @@ public class Texture {
         // Set texture parameters
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        //When stretching
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        //When shrinking
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        //Create buffer
+        // Create buffer
         IntBuffer width = BufferUtils.createIntBuffer(1);
         IntBuffer height = BufferUtils.createIntBuffer(1);
         IntBuffer channels = BufferUtils.createIntBuffer(1);
         stbi_set_flip_vertically_on_load(true);
+        System.out.println("Loading texture from: " + filepath);
         ByteBuffer image = stbi_load(filepath, width, height, channels, 0);
 
-        if(image!=null) {
+        if (image != null) {
             this.width = width.get(0);
             this.height = height.get(0);
-            if(channels.get(0) == 3) {
+            if (channels.get(0) == 3) {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0),
                         0, GL_RGB, GL_UNSIGNED_BYTE, image);
                 System.out.println("No alpha");
@@ -55,10 +55,14 @@ public class Texture {
                 throw new RuntimeException("Error: Picture is not RGB or RGBA");
             }
         } else {
-            throw new RuntimeException("Error: Could not load the texture image");
+            throw new RuntimeException("Error: Could not load the texture image at " + filepath);
         }
 
         stbi_image_free(image);
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
     }
 
     public void bind() {

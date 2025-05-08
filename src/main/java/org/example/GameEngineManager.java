@@ -1,5 +1,7 @@
 package org.example;
 import imGui.ImGuiLayer;
+import org.joml.Vector2f;
+import physics.PhysicsSystem;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
@@ -13,8 +15,10 @@ public class GameEngineManager {
 
     private static Scene currentScene;
     private static String currentSceneName;
+    private PhysicsSystem physicsSystem;
     public GameEngineManager(WindowManager window) {
         this.window = window;
+        this.physicsSystem = new PhysicsSystem(0.016f, new Vector2f(0.0f, -9.82f)); // 60 FPS and gravity
         changeScene("EditorScene");
         loop();
     }
@@ -37,6 +41,9 @@ public class GameEngineManager {
 
             if (deltaTime >= 0) {
                 window.startImGuiFrame();
+                //Update the physics system
+                physicsSystem.update(deltaTime);
+                //Update the current scene
                 currentScene.update(deltaTime);
                 window.endImGuiFrame();
                 updates++;
