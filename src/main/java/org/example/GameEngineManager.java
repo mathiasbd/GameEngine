@@ -15,7 +15,7 @@ public class GameEngineManager {
 
     private static Scene currentScene;
     private static String currentSceneName;
-    private PhysicsSystem physicsSystem;
+    private static PhysicsSystem physicsSystem;
     public GameEngineManager(WindowManager window) {
         this.window = window;
         this.physicsSystem = new PhysicsSystem(0.016f, new Vector2f(0.0f, -9.82f)); // 60 FPS and gravity
@@ -102,5 +102,9 @@ public class GameEngineManager {
 
     public int getWindowHeight() {
         return window.getHeight();
+    }
+
+    public static PhysicsSystem getPhysicsSystem() {
+        return physicsSystem;
     }
 }

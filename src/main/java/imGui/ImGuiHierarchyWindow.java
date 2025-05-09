@@ -13,11 +13,15 @@ import imgui.internal.flag.ImGuiItemFlags;
 import imgui.type.ImBoolean;
 import imgui.type.ImInt;
 import imgui.type.ImString;
+import org.example.GameEngineManager;
 import org.example.GameObject;
 import org.example.Transform;
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 import physics.primitives.Circle;
 import physics.primitives.Collider;
+import physics.primitives.Square;
+import physics.rigidbody.Rigidbody2D;
 import rendering.Texture;
 import scenes.LevelEditorScene;
 import scenes.Scene;
@@ -124,13 +128,35 @@ public class ImGuiHierarchyWindow {
             if(ImGui.beginPopupContextItem("ObjectSettings" + i, ImGuiPopupFlags.MouseButtonRight)) {
                 if(ImGui.beginMenu("Add component")) {
                     if(ImGui.menuItem("SpriteRenderer")) {
-                        Sprite sprite = new Sprite();
-                        queedSpriteRenderer = new SpriteRenderer();
-                        queedSpriteRenderer.setColor(new Vector4f(0,0,0,1));
-                        queedSpriteRenderer.setSprite(sprite);
+                        if(go.getComponent(SpriteRenderer.class) == null) {
+                            Sprite sprite = new Sprite();
+                            queedSpriteRenderer = new SpriteRenderer();
+                            queedSpriteRenderer.setColor(new Vector4f(0,0,0,1));
+                            queedSpriteRenderer.setSprite(sprite);
+                        }
                     }
                     if(ImGui.menuItem("RigidBody2D")) {
-                        System.out.println("Implement rigidBody");
+                        Rigidbody2D rigB2D = new Rigidbody2D();
+                        GameEngineManager.getPhysicsSystem().addRigidbody(rigB2D, true);
+                        go.addComponent(rigB2D);
+                    }
+                    if(go.getComponent(Rigidbody2D.class)!=null) {
+                        if(ImGui.beginMenu("Collider")) {
+                            if(ImGui.menuItem("Square")) {
+                                //System.out.println("Trying to add square shape");
+                                Square square = new Square(new Vector2f(5,5), new Vector2f(10,10));
+                                square.setRigidbody(go.getComponent(Rigidbody2D.class));
+                                go.addComponent(square);
+                            }
+                            if(ImGui.menuItem("Circle")) {
+                                //System.out.println("Trying to add circle shape");
+                                Circle circle = new Circle(5);
+                                circle.setRigidbody(go.getComponent(Rigidbody2D.class));
+                                go.addComponent(circle);
+
+                            }
+                            ImGui.endMenu();
+                        }
                     }
                     ImGui.endMenu();
                 }
@@ -171,7 +197,7 @@ public class ImGuiHierarchyWindow {
         int flags;
         for(int j=0; j<go.getComponents().size(); j++) {
             Component c = go.getComponents().get(j);
-            int startIndex = c.getClass().getName().indexOf('.');
+            int startIndex = c.getClass().getName().lastIndexOf('.');
             ImGui.pushID(j);
             flags = ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.Framed |
                     ImGuiTreeNodeFlags.AllowItemOverlap | ImGuiTreeNodeFlags.Leaf;
