@@ -14,6 +14,7 @@ import input.KeyboardHandler;
 import input.MouseHandler;
 import org.example.*;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 import rendering.Shader;
 import org.lwjgl.BufferUtils;
@@ -21,6 +22,7 @@ import rendering.Texture;
 import serializers.ComponentSerializer;
 import serializers.GameObjectSerializer;
 import util.AssetPool;
+import util.DebugDraw;
 import util.Time;
 
 import static org.lwjgl.opengl.GL30.*;
@@ -43,7 +45,7 @@ public class LevelEditorScene extends Scene {
         this.camera = new Camera(new Vector2f());
         this.imGuiLayer = new ImGuiLayer();
 
-
+        DebugDraw.addLine2D(new Vector2f(100, 100), new Vector2f(200, 200), new Vector3f(1, 0, 0), 100);
         sprites = AssetPool.getSpriteSheet("assets/spritesheets/Blue_Slime/Attack_1.png");
     }
 

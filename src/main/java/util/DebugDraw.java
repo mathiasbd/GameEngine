@@ -44,7 +44,7 @@ public class DebugDraw {
         glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * Float.BYTES, 3 * Float.BYTES);
         glEnableVertexAttribArray(1);
 
-        // TODO: SET LINE WIDTH
+        glLineWidth(10.0f);
 
     }
 
@@ -62,14 +62,15 @@ public class DebugDraw {
         }
     }
 
-    public static void drawLine(Line2D line) {
+    public static void drawLines() {
         if (lines.size() <= 0) return;
-
+        //System.out.println("Drawing " + lines.size() + " lines");
         int index = 0;
         for (Line2D l : lines) {
             for (int i = 0; i < 2; i++) {
                 Vector2f position = i == 0 ? l.getFrom() : l.getTo();
-                Vector3f color = line.getColor();
+                Vector3f color = l.getColor();
+                System.out.println("from: " + l.getFrom() + " to: " + l.getTo());
 
                 // load position
                 vertexArray[index] = position.x;
@@ -106,7 +107,6 @@ public class DebugDraw {
 
         // unbind shader
         shader.detach();
-
     }
 
     public static void addLine2D(Vector2f from, Vector2f to) {

@@ -12,6 +12,7 @@ import org.example.Camera;
 import org.example.GameObject;
 import org.example.SaveFile;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import physics.PhysicsSystem;
 import physics.rigidbody.Rigidbody2D;
 import rendering.Renderer;
@@ -19,6 +20,7 @@ import serializers.ComponentSerializer;
 import serializers.GameObjectSerializer;
 import serializers.SpriteSheetSerializer;
 import util.AssetPool;
+import util.DebugDraw;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -56,6 +58,7 @@ public abstract class Scene {
             this.renderer.add(go);
         }
         isRunning = true;
+
     }
 
     public void addGameObjectToScene(GameObject go) {

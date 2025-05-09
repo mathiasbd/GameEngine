@@ -5,6 +5,7 @@ import physics.PhysicsSystem;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
+import util.DebugDraw;
 import util.Time;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -24,6 +25,7 @@ public class GameEngineManager {
     }
 
     public void loop() {
+        glDisable(GL_DEPTH_TEST);
         float initialTime = Time.getTime();
         float endTime;
         float deltaTime = -1.0f;
@@ -33,16 +35,19 @@ public class GameEngineManager {
 
         //Loop runs until windowShouldClose is set to true
         while (!glfwWindowShouldClose(window.getWindow())) {
+
+            DebugDraw.beginFrame();
             //Set the clear color
             glClearColor(0.25f, 0.3f, 0.3f, 1.0f);
             //Clear the framebuffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
             if (deltaTime >= 0) {
                 window.startImGuiFrame();
+                DebugDraw.drawLines();
                 //Update the physics system
                 physicsSystem.update(deltaTime);
+                DebugDraw.drawLines();
                 //Update the current scene
                 currentScene.update(deltaTime);
                 window.endImGuiFrame();
