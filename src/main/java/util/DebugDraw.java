@@ -1,5 +1,6 @@
 package util;
 
+import org.example.GameEngineManager;
 import org.example.WindowManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -89,8 +90,8 @@ public class DebugDraw {
 
         // draw the lines
         shader.useProgram();
-        //shader.uploadMat4f("uProjection", WindowManager.getScene().getCamera().getProjectionMatrix());
-        //shader.uploadMat4f("uView", WindowManager.getScene().getCamera().getViewMatrix());
+        shader.uploadMat4f("uProjection", GameEngineManager.getCurrentScene().getCamera().getProjectionMatrix());
+        shader.uploadMat4f("uView", GameEngineManager.getCurrentScene().getCamera().getViewMatrix());
 
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);
