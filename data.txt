@@ -127,12 +127,12 @@
         "width": 512,
         "height": 128
       },
-      "spriteWidth": 80,
-      "spriteHeight": 34,
+      "spriteWidth": 20,
+      "spriteHeight": 20,
       "numSprites": 4,
-      "xSpacing": 46,
-      "ySpacing": 94,
-      "startX": 27
+      "xSpacing": 2,
+      "ySpacing": 2,
+      "startX": 5
     }
   }
 }

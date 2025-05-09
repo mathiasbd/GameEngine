@@ -2,7 +2,7 @@ import org.joml.Vector2f;
 import org.junit.jupiter.api.Test;
 import physics.primitives.*;
 import physics.rigidbody.RaycastManager;
-import physics.rigidbody.Line2D;
+import physics.primitives.Line2D;
 import physics.rigidbody.Rigidbody2D;
 
 import static org.junit.jupiter.api.Assertions.*;

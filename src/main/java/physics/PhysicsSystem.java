@@ -52,7 +52,6 @@ public class PhysicsSystem {
                 Rigidbody2D r2 = rb.get(j);
                 Collider c1 = r1.getCollider();
                 Collider c2 = r2.getCollider();
-                ;
 
                 if (c1 != null && c2 != null && !(r1.hasInfiniteMass() && r2.hasInfiniteMass())) {
                     result = Collisions.findCollisionFeatures(c1, c2);
