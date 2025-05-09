@@ -58,8 +58,15 @@ public class LevelEditorScene extends Scene {
     private float testTime = 0.1f;
     private int index = 0;
 
+    float angle = 0.0f;
     @Override
     public void update(float dt) {
+        DebugDraw.addCircle(new Vector2f(500, 200), 64, new Vector3f(0, 1, 0), 1);
+        DebugDraw.addCircle(new Vector2f(500, 200), 32, new Vector3f(0, 1, 0), 1);
+        DebugDraw.addCircle(new Vector2f(500, 200), 96, new Vector3f(0, 1, 0), 1);
+        DebugDraw.addBox(new Vector2f(500, 200), new Vector2f(110, 110), angle, new Vector3f(0, 1, 0), 1);
+        DebugDraw.addBox(new Vector2f(500, 200), new Vector2f(110, 110), angle-45, new Vector3f(0, 1, 0), 1);
+        angle += 80.0f * dt;
 
         testTime -= dt;
 

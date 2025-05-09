@@ -70,7 +70,6 @@ public class DebugDraw {
             for (int i = 0; i < 2; i++) {
                 Vector2f position = i == 0 ? l.getFrom() : l.getTo();
                 Vector3f color = l.getColor();
-                System.out.println("from: " + l.getFrom() + " to: " + l.getTo());
 
                 // load position
                 vertexArray[index] = position.x;
@@ -109,6 +108,8 @@ public class DebugDraw {
         shader.detach();
     }
 
+    //// Adds a line to the debug draw list
+
     public static void addLine2D(Vector2f from, Vector2f to) {
         addLine2D(from, to, new Vector3f(0, 1, 0), 1);
     }
@@ -123,6 +124,65 @@ public class DebugDraw {
             return;
         }
         DebugDraw.lines.add(new Line2D(from, to, color, lifetime));
+    }
+
+    /// addBox methods
+
+    public static void addBox(Vector2f center, Vector2f dimensions, float rotation) {
+        addBox(center, dimensions, rotation, new Vector3f(0, 1, 0), 1);
+    }
+
+    public static void addBox(Vector2f center, Vector2f dimensions, float rotation, Vector3f color) {
+        addBox(center, dimensions, rotation, color, 1);
+    }
+
+    public static void addBox(Vector2f center, Vector2f dimensions, float rotation, Vector3f color, int lifetime) {
+        Vector2f min = new Vector2f(center).sub(new Vector2f(dimensions).div(2));
+        Vector2f max = new Vector2f(center).add(new Vector2f(dimensions).div(2));
+        Vector2f[] points = new Vector2f[4];
+        points[0] = new Vector2f(min.x, min.y);
+        points[1] = new Vector2f(min.x, max.y);
+        points[2] = new Vector2f(max.x, max.y);
+        points[3] = new Vector2f(max.x, min.y);
+
+        if (rotation != 0.0f) {
+            for (Vector2f point : points) {
+                DTUMath.rotate(point, rotation, center);
+            }
+        }
+
+        addLine2D(points[0], points[1], color, lifetime);
+        addLine2D(points[1], points[2], color, lifetime);
+        addLine2D(points[2], points[3], color, lifetime);
+        addLine2D(points[3], points[0], color, lifetime);
+    }
+
+    /// addCircle methods
+
+    public static void addCircle(Vector2f center, float radius) {
+        addCircle(center, radius, new Vector3f(0, 1, 0), 1);
+    }
+
+    public static void addCircle(Vector2f center, float radius, Vector3f color) {
+        addCircle(center, radius, color, 1);
+    }
+
+    public static void addCircle(Vector2f center, float radius, Vector3f color, int lifetime) {
+        Vector2f[] points = new Vector2f[20];
+        int increment = 360 / points.length;
+        int currentAngle = 0;
+
+        for (int i = 0; i < points.length; i++) {
+            Vector2f tmp = new Vector2f(0, radius);
+            DTUMath.rotate(tmp, currentAngle, new Vector2f());
+            points[i] = new Vector2f(tmp).add(center);
+
+            if (i > 0) {
+                addLine2D(points[i - 1], points[i], color, lifetime);
+            }
+            currentAngle += increment;
+        }
+        addLine2D(points[points.length - 1], points[0], color, lifetime);
     }
 
 }
