@@ -237,6 +237,12 @@ public class ImGuiHierarchyWindow {
             if(ImGui.isItemClicked()) {
                 selectedComponent = i*gameObjects.size()+j;
             }
+            if(ImGui.beginPopupContextItem("ComponentSettings", ImGuiPopupFlags.MouseButtonRight)) {
+                if(ImGui.menuItem("Delete component")) {
+                    System.out.println("Not implemented yet");
+                }
+                ImGui.endPopup();
+            }
             if(treeNode) {
                 ImGui.treePop();
             }
