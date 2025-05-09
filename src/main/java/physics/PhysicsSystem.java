@@ -108,9 +108,9 @@ public class PhysicsSystem {
         }
     }
 
-    public void addRigidbody(Rigidbody2D body, boolean addGravity) {
+    public void addRigidbody(Rigidbody2D body) {
         this.rb.add(body);
-        if (addGravity) {
+        if (body.getHasGravity()) {
             this.fr.add(body, gravity);
         }
     }

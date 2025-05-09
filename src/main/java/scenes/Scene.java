@@ -69,12 +69,7 @@ public abstract class Scene {
             go.start();
             this.renderer.add(go);
         }
-        Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
         System.out.println("Added " + go.getName() + " to scene");
-        if (rb != null) {
-            physicsSystem.addRigidbody(rb, true); // always add gravity to the new rigidbody, might change later
-            System.out.println("Added rigidBody to physics system");
-        }
     }
 
     public void removeGameObjectFromScene(GameObject go) {

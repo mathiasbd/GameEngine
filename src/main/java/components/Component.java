@@ -2,6 +2,7 @@ package components;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiColorEditFlags;
+import imgui.type.ImBoolean;
 import org.example.GameObject;
 import org.joml.Vector4f;
 
@@ -39,6 +40,25 @@ public abstract class Component {
                         field.set(this, imInt[0]);
                     }
                 }
+                if(type == float.class) {
+                    float val = (float)value;
+                    float[] imFloat = {val};
+                    ImGui.text(name);
+                    ImGui.sameLine();
+                    if(ImGui.dragFloat("##Float",imFloat)) {
+                        field.set(this, imFloat[0]);
+                    }
+                }
+
+                if (type == boolean.class) {
+                    boolean currentValue = (boolean) field.get(this);
+                    ImBoolean imBool = new ImBoolean(currentValue);
+                    ImGui.text(name);
+                    ImGui.sameLine();
+                    if (ImGui.checkbox("##bool", imBool)) {
+                        field.set(this, imBool.get());
+                    }
+                }
 
                 if(type == Vector4f.class) {
                     Vector4f val = (Vector4f) value;
@@ -53,7 +73,6 @@ public abstract class Component {
                         }
                     }
                 }
-
                 if(isPrivate) {
                     field.setAccessible(false);
                 }

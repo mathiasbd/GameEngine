@@ -50,6 +50,7 @@
             "rotation": 0.0,
             "mass": 0.0,
             "inverseMass": 0.0,
+            "hasGravity": false,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -84,6 +85,7 @@
               "rotation": 0.0,
               "mass": 0.0,
               "inverseMass": 0.0,
+              "hasGravity": false,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -109,12 +111,12 @@
       "inScene": true,
       "transform": {
         "position": {
-          "x": 21.25,
-          "y": 359.15002
+          "x": 567.5,
+          "y": 466.60004
         },
         "scale": {
-          "x": 200.0,
-          "y": 80.0
+          "x": 100.0,
+          "y": 100.0
         }
       }
     }

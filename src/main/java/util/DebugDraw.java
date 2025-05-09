@@ -75,7 +75,7 @@ public class DebugDraw {
                 // load position
                 vertexArray[index] = position.x;
                 vertexArray[index + 1] = position.y;
-                vertexArray[index + 2] = -10.0f; // z position
+                vertexArray[index + 2] = 0.0f; // z position
 
                 // load color
                 vertexArray[index + 3] = color.x;
@@ -98,7 +98,7 @@ public class DebugDraw {
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
 
-        glDrawArrays(GL_LINES, 0, lines.size());
+        glDrawArrays(GL_LINES, 0, lines.size()*2);
 
         // disable Location
         glDisableVertexAttribArray(0);

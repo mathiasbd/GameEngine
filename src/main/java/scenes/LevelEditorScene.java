@@ -45,7 +45,7 @@ public class LevelEditorScene extends Scene {
         this.camera = new Camera(new Vector2f());
         this.imGuiLayer = new ImGuiLayer();
 
-        DebugDraw.addLine2D(new Vector2f(100, 100), new Vector2f(200, 200), new Vector3f(1, 0, 0), 100);
+        DebugDraw.addLine2D(new Vector2f(0, 0), new Vector2f(800, 800), new Vector3f(1, 0, 0), 500);
         sprites = AssetPool.getSpriteSheet("assets/spritesheets/Blue_Slime/Attack_1.png");
     }
 

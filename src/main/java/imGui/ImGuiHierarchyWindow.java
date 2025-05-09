@@ -137,7 +137,7 @@ public class ImGuiHierarchyWindow {
                     }
                     if(ImGui.menuItem("RigidBody2D")) {
                         Rigidbody2D rigB2D = new Rigidbody2D();
-                        GameEngineManager.getPhysicsSystem().addRigidbody(rigB2D, true);
+                        GameEngineManager.getPhysicsSystem().addRigidbody(rigB2D);
                         go.addComponent(rigB2D);
                     }
                     if(go.getComponent(Rigidbody2D.class)!=null) {

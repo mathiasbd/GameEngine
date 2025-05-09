@@ -44,7 +44,6 @@ public class GameEngineManager {
 
             if (deltaTime >= 0) {
                 window.startImGuiFrame();
-                DebugDraw.drawLines();
                 //Update the physics system
                 physicsSystem.update(deltaTime);
                 DebugDraw.drawLines();
