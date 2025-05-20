@@ -92,6 +92,10 @@ public class GameEngineManager {
         return currentScene;
     }
 
+    public static void windowResize() {
+        //getCurrentScene().getCamera().adjustProjection();
+    }
+
     public int getWindowPosX() {
         return window.getWindowPosX();
     }

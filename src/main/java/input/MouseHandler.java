@@ -107,13 +107,15 @@ public class MouseHandler {
         float ndc = (getX()/get().windowWidth) * 2 - 1;
         Vector4f tmp = new Vector4f(ndc, 0,0,1);
         tmp.mul(camera.getInvProjectionMatric()).mul(camera.getInvViewMatric());
+        System.out.println(tmp.x + " window width: " + ndc);
         return tmp.x;
     }
 
     public static float getOrthoY(Camera camera) {
-        float ndc = 1.0f - (getY()/get().windowHeight) * 2;
+        float ndc = ((get().windowHeight-getY())/get().windowHeight) * 2 - 1;
         Vector4f tmp = new Vector4f(0, ndc,0,1);
         tmp.mul(camera.getInvProjectionMatric()).mul(camera.getInvViewMatric());
+        System.out.println(tmp.y);
         return tmp.y;
     }
 

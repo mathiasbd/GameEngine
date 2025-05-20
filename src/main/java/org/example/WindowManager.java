@@ -92,6 +92,10 @@ public class WindowManager {
         glfwSetKeyCallback(window, KeyboardHandler::keyCallback);
         glfwSetWindowPosCallback(window, this::windowPosCallback);
         glfwSetWindowSizeCallback(window, this::windowSizeCallback);
+        glfwSetFramebufferSizeCallback(window, (win, width, height) -> {
+            glViewport(0, 0, width, height); // Stretch framebuffer to fit screen
+        });
+
 
 
         //Allocating memory to get the screen size and set the window position to the center
@@ -186,8 +190,9 @@ public class WindowManager {
     private void windowSizeCallback(long window, int x, int y) {
         this.width = x;
         this.height = y;
-        MouseHandler.setWindowWidth(x);
-        MouseHandler.setWindowHeight(height);
+        MouseHandler.setWindowWidth(this.width);
+        MouseHandler.setWindowHeight(this.height);
+        GameEngineManager.windowResize();
     }
 
     public int getWindowPosX() {
