@@ -92,6 +92,10 @@ public class GameEngineManager {
         return currentScene;
     }
 
+    public static String getCurrentSceneName() {
+        return currentSceneName;
+    }
+
     public static void windowResize() {
         //getCurrentScene().getCamera().adjustProjection();
     }
