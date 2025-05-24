@@ -70,17 +70,17 @@
           "type": "physics.primitives.Square",
           "properties": {
             "size": {
-              "x": 5.0,
-              "y": 5.0
+              "x": 100.0,
+              "y": 100.0
             },
             "halfSize": {
-              "x": 2.5,
-              "y": 2.5
+              "x": 50.0,
+              "y": 50.0
             },
             "rigidbody": {
               "position": {
-                "x": 0.0,
-                "y": 0.0
+                "x": 500.0,
+                "y": 500.0
               },
               "rotation": 0.0,
               "mass": 0.0,

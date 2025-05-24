@@ -15,23 +15,10 @@ public class LevelScene extends Scene {
 
     @Override
     public void init() {
-        // When play button is pressed, loop over gameobjects and add to physics
+
     }
 
     @Override
     public void update(float dt) {
-
-        if (!changingScene && MouseHandler.isButtonDown(0)) { // Key to change scene
-            changingScene = true;
-            System.out.println("Changing scene");
-        }
-
-        if (changingScene && timeToChangeScene > 0) {
-            timeToChangeScene -= dt;
-            // Do stuff
-
-        } else if (changingScene) {
-            GameEngineManager.changeScene("EditorScene"); // Problem making it static
-        }
     }
 }

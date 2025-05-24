@@ -51,4 +51,8 @@ public class AlignedBox extends Collider {
     public void setRigidbody(Rigidbody2D rigidbody) {
         this.rigidbody = rigidbody;
     }
+
+    public Vector2f getHalfSize() {
+        return this.halfSize;
+    }
 }

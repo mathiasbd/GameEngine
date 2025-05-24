@@ -69,6 +69,7 @@ public class GameEngineManager {
     }
 
     public static void changeScene(String sceneName) {
+        System.out.println("Changing scene to: " + sceneName);
         switch(sceneName) {
             case "EditorScene":
                 currentScene = new LevelEditorScene();

@@ -24,7 +24,6 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 
 public class WindowManager {
-
     private long window;
     private int width;
     private int height;

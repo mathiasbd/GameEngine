@@ -16,6 +16,10 @@ import org.example.*;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import physics.primitives.AlignedBox;
+import physics.primitives.Circle;
+import physics.primitives.Collider;
+import physics.primitives.Square;
 import rendering.Shader;
 import org.lwjgl.BufferUtils;
 import rendering.Texture;
@@ -25,27 +29,28 @@ import util.AssetPool;
 import util.DebugDraw;
 import util.Time;
 
+import javax.swing.*;
+
 import static org.lwjgl.opengl.GL30.*;
 import java.nio.IntBuffer;
 import java.nio.FloatBuffer;
 
 public class LevelEditorScene extends Scene {
 
-    public LevelEditorScene() {
-        System.out.println("Inside the level editing scene");
-    }
-
     private GameObject obj1;
     private SpriteSheet sprites;
     private GameObject draggedObject = null;
     private ImGuiLayer imGuiLayer;
+
+
+    public LevelEditorScene() {
+        System.out.println("Inside the level editing scene");
+    }
     @Override
     public void init() {
         loadResources();
         this.camera = new Camera(new Vector2f());
         this.imGuiLayer = new ImGuiLayer();
-
-        DebugDraw.addLine2D(new Vector2f(0, 0), new Vector2f(800, 800), new Vector3f(1, 0, 0), 500);
         sprites = AssetPool.getSpriteSheet("assets/spritesheets/Blue_Slime/Attack_1.png");
     }
 
@@ -53,25 +58,15 @@ public class LevelEditorScene extends Scene {
         AssetPool.getShader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
         AssetPool.addSpritesheet("assets/spritesheets/Blue_Slime/Attack_1.png",
                 new SpriteSheet(AssetPool.getTexture("assets/spritesheets/Blue_Slime/Attack_1.png"), 80, 34, 4, 46, 94, 27));
-    } // the spritesheet dimensions arent correct so its not working perfectly.
-
-    private float testTime = 0.1f;
-    private int index = 0;
-
-    float angle = 0.0f;
+    }
     @Override
     public void update(float dt) {
-        DebugDraw.addCircle(new Vector2f(500, 200), 64, new Vector3f(0, 1, 0), 1);
-        DebugDraw.addCircle(new Vector2f(500, 200), 32, new Vector3f(0, 1, 0), 1);
-        DebugDraw.addCircle(new Vector2f(500, 200), 96, new Vector3f(0, 1, 0), 1);
-        DebugDraw.addBox(new Vector2f(500, 200), new Vector2f(110, 110), angle, new Vector3f(0, 1, 0), 1);
-        DebugDraw.addBox(new Vector2f(500, 200), new Vector2f(110, 110), angle-45, new Vector3f(0, 1, 0), 1);
-        angle += 80.0f * dt;
-
-        testTime -= dt;
-
         for (GameObject go : this.gameObjects) {
             go.update(dt);
+            Collider collider = go.getComponent(Collider.class);
+            if (collider != null) {
+                drawCollider(collider);
+            }
         }
         if(dragDropper.isDragging()) {
             draggedObject = dragDropper.getDraggedObject();
@@ -92,5 +87,23 @@ public class LevelEditorScene extends Scene {
         }
         imGuiLayer.process(this);
         this.renderer.render();
+    }
+
+    private void drawCollider(Collider collider) {
+        switch (collider) {
+            case Circle circle -> DebugDraw.addCircle(circle.getCenter(), circle.getRadius(), new Vector3f(1, 0, 0), 1);
+            case Square square -> {
+                Vector2f center = square.getRigidbody().getPosition();
+                Vector2f dimensions = square.getHalfSize().mul(2, new Vector2f());
+                float rotation = square.getRigidbody().getRotation();
+                DebugDraw.addBox(center, dimensions, rotation, new Vector3f(1, 0, 0), 1);
+            }
+            case AlignedBox alignedBox -> {
+                Vector2f center = alignedBox.getRigidbody().getPosition();
+                Vector2f dimensions = alignedBox.getHalfSize().mul(2, new Vector2f());
+                DebugDraw.addBox(center, dimensions, 0, new Vector3f(1, 0, 0), 1); // No rotation
+            }
+            case null, default -> System.err.println("Unknown collider type");
+        }
     }
 }
