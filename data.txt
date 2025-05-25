@@ -48,8 +48,8 @@
               "y": -25268.895
             },
             "rotation": 0.0,
-            "mass": 5.0,
-            "inverseMass": 0.2,
+            "mass": 1.0,
+            "inverseMass": 1.0,
             "hasGravity": true,
             "restitution": 1.0,
             "forceAcc": {
@@ -58,7 +58,7 @@
             },
             "linearVelocity": {
               "x": 0.0,
-              "y": -708.77295
+              "y": 0.0
             },
             "angularVelocity": 0.0,
             "linearDamping": 0.0,
@@ -112,7 +112,7 @@
       "transform": {
         "position": {
           "x": 587.5,
-          "y": -25257.555
+          "y": 300.555
         },
         "scale": {
           "x": 100.0,
