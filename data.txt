@@ -45,10 +45,10 @@
           "properties": {
             "position": {
               "x": 587.5,
-              "y": 300.895
+              "y": 300.555
             },
             "rotation": 0.0,
-            "mass": 1.0,
+            "mass": 0.0,
             "inverseMass": 1.0,
             "hasGravity": true,
             "restitution": 1.0,
@@ -80,11 +80,11 @@
             "rigidbody": {
               "position": {
                 "x": 587.5,
-                "y": -25268.895
+                "y": 300.555
               },
               "rotation": 0.0,
-              "mass": 5.0,
-              "inverseMass": 0.2,
+              "mass": 0.0,
+              "inverseMass": 1.0,
               "hasGravity": true,
               "restitution": 1.0,
               "forceAcc": {
@@ -93,7 +93,7 @@
               },
               "linearVelocity": {
                 "x": 0.0,
-                "y": -708.77295
+                "y": 0.0
               },
               "angularVelocity": 0.0,
               "linearDamping": 0.0,
@@ -113,6 +113,126 @@
         "position": {
           "x": 587.5,
           "y": 300.555
+        },
+        "scale": {
+          "x": 100.0,
+          "y": 100.0
+        }
+      }
+    },
+    {
+      "name": "Blue",
+      "components": [
+        {
+          "type": "physics.rigidbody.Rigidbody2D",
+          "properties": {
+            "position": {
+              "x": 503.75,
+              "y": 461.35004
+            },
+            "rotation": 28.0,
+            "mass": 28.0,
+            "inverseMass": 28.0,
+            "hasGravity": false,
+            "restitution": 29.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "angularVelocity": 28.0,
+            "linearDamping": 28.0,
+            "angularDamping": 28.0,
+            "fixedRotation": false
+          }
+        },
+        {
+          "type": "components.SpriteRenderer",
+          "properties": {
+            "color": {
+              "x": 1.0,
+              "y": 1.0,
+              "z": 1.0,
+              "w": 1.0
+            },
+            "sprite": {
+              "texture": {
+                "filepath": "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png",
+                "texID": 1,
+                "width": 512,
+                "height": 128
+              },
+              "texCoords": [
+                {
+                  "x": 0.1875,
+                  "y": 0.2734375
+                },
+                {
+                  "x": 0.1875,
+                  "y": -0.0078125
+                },
+                {
+                  "x": 0.03515625,
+                  "y": -0.0078125
+                },
+                {
+                  "x": 0.03515625,
+                  "y": 0.2734375
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "physics.primitives.Square",
+          "properties": {
+            "size": {
+              "x": 100.0,
+              "y": 100.0
+            },
+            "halfSize": {
+              "x": 50.0,
+              "y": 50.0
+            },
+            "rigidbody": {
+              "position": {
+                "x": 503.75,
+                "y": 461.35004
+              },
+              "rotation": 28.0,
+              "mass": 28.0,
+              "inverseMass": 28.0,
+              "hasGravity": false,
+              "restitution": 29.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "angularVelocity": 28.0,
+              "linearDamping": 28.0,
+              "angularDamping": 28.0,
+              "fixedRotation": false
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": true,
+      "transform": {
+        "position": {
+          "x": 503.75,
+          "y": 461.35004
         },
         "scale": {
           "x": 100.0,
