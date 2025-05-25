@@ -19,7 +19,7 @@ public class GameEngineManager {
     private static PhysicsSystem physicsSystem;
     public GameEngineManager(WindowManager window) {
         this.window = window;
-        this.physicsSystem = new PhysicsSystem(0.016f, new Vector2f(0.0f, -9.82f)); // 60 FPS and gravity
+        physicsSystem = new PhysicsSystem(0.016f, new Vector2f(0.0f, -9.82f)); // 60 FPS and gravity
         changeScene("EditorScene");
         loop();
     }

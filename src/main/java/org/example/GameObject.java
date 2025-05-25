@@ -16,7 +16,6 @@ public class GameObject {
     private List<Component> components;
     private int zIndex;
     private boolean inScene;
-
     public Transform transform;
 
     public GameObject(String name) {
@@ -49,6 +48,8 @@ public class GameObject {
         return null;
     }
 
+
+
     public <t extends Component> void removeComponent(Class <t> componentClass) {
         for (int i=0; i< components.size(); i++) {
             Component c = components.get(i);
@@ -80,6 +81,10 @@ public class GameObject {
 
     public void setTransform(Transform transform) {
         this.transform = transform;
+    }
+
+    public Transform getTransform() {
+        return this.transform;
     }
 
     public String getName() {

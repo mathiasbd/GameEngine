@@ -34,15 +34,6 @@ public class AlignedBox extends Collider {
                 new Vector2f(max.x, max.y), // top right
                 new Vector2f(min.x, max.y) // top left
         };
-
-        for (Vector2f vertex : vertices) {
-            System.out.println(vertex);
-        }
-        if (rigidbody.getRotation() != 0.0f) {
-            for (Vector2f vertex : vertices) {
-                // Rotate the vertices
-            }
-        }
         return vertices;
     }
     public Rigidbody2D getRigidbody() {

@@ -42,14 +42,12 @@ public class Square extends Collider {
                 new Vector2f(max.x, max.y), // top-right
                 new Vector2f(min.x, max.y)  // top-left
         };
-
         if (rigidbody != null && rigidbody.getRotation() != 0.0f) {
             Vector2f center = rigidbody.getPosition();
             for (Vector2f vertex : vertices) {
                 DTUMath.rotate(vertex, rigidbody.getRotation(), center);
             }
         }
-
         return vertices;
     }
     public void setRigidbody(Rigidbody2D rigidbody) {

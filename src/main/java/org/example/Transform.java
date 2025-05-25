@@ -31,6 +31,14 @@ public class Transform {
         to.scale.set(this.scale);
     }
 
+    public void setPosition(Vector2f position) {
+        this.position.set(position);
+    }
+
+    public Vector2f getPosition() {
+        return new Vector2f(this.position);
+    }
+
     @Override
     public boolean equals(Object o) {
         if(o == null) {

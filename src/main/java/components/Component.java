@@ -11,7 +11,6 @@ import java.lang.reflect.Modifier;
 
 public abstract class Component {
 
-
     public transient GameObject gameObject = null;
 
     public void start() {

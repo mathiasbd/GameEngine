@@ -44,13 +44,13 @@
           "type": "physics.rigidbody.Rigidbody2D",
           "properties": {
             "position": {
-              "x": 0.0,
-              "y": 0.0
+              "x": 587.5,
+              "y": 315.40002
             },
             "rotation": 0.0,
             "mass": 0.0,
             "inverseMass": 0.0,
-            "hasGravity": false,
+            "hasGravity": true,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -79,13 +79,13 @@
             },
             "rigidbody": {
               "position": {
-                "x": 500.0,
-                "y": 500.0
+                "x": 587.5,
+                "y": 315.40002
               },
               "rotation": 0.0,
               "mass": 0.0,
               "inverseMass": 0.0,
-              "hasGravity": false,
+              "hasGravity": true,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -111,8 +111,8 @@
       "inScene": true,
       "transform": {
         "position": {
-          "x": 490.0,
-          "y": 508.60004
+          "x": 587.5,
+          "y": 315.40002
         },
         "scale": {
           "x": 100.0,

@@ -2,12 +2,14 @@ package physics.primitives;
 
 import components.Component;
 import org.joml.Vector2f;
+import physics.rigidbody.Rigidbody2D;
 
-public class Collider extends Component {
-
+public abstract class Collider extends Component {
     protected Vector2f offset = new Vector2f();
+
+    public abstract void setRigidbody(Rigidbody2D rigidbody);
+
     @Override
     public void update(float dt) {
-
     }
 }

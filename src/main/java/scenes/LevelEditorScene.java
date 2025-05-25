@@ -16,10 +16,12 @@ import org.example.*;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import physics.PhysicsSystem;
 import physics.primitives.AlignedBox;
 import physics.primitives.Circle;
 import physics.primitives.Collider;
 import physics.primitives.Square;
+import physics.rigidbody.Rigidbody2D;
 import rendering.Shader;
 import org.lwjgl.BufferUtils;
 import rendering.Texture;
@@ -42,6 +44,9 @@ public class LevelEditorScene extends Scene {
     private GameObject draggedObject = null;
     private ImGuiLayer imGuiLayer;
 
+    private PhysicsSystem physicsSystem;
+
+    private boolean physicsEnabled = false;
 
     public LevelEditorScene() {
         System.out.println("Inside the level editing scene");
@@ -51,6 +56,7 @@ public class LevelEditorScene extends Scene {
         loadResources();
         this.camera = new Camera(new Vector2f());
         this.imGuiLayer = new ImGuiLayer();
+        this.physicsSystem = GameEngineManager.getPhysicsSystem();
         sprites = AssetPool.getSpriteSheet("assets/spritesheets/Blue_Slime/Attack_1.png");
     }
 
@@ -61,13 +67,35 @@ public class LevelEditorScene extends Scene {
     }
     @Override
     public void update(float dt) {
+        if (!physicsEnabled) {
+            for (GameObject go : this.gameObjects) {
+                Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+                if (rb != null) {
+                    physicsSystem.addRigidbody(rb);
+                }
+            }
+            physicsEnabled = true;
+        }
+
         for (GameObject go : this.gameObjects) {
             go.update(dt);
+            Transform transform = go.getTransform();
+            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
             Collider collider = go.getComponent(Collider.class);
             if (collider != null) {
+                rb.setPosition(transform.getPosition());
+                if (rb != null) {
+                    collider.setRigidbody(rb);
+                } else {
+                    System.err.println("Collider without Rigidbody2D: " + go.getName());
+                }
                 drawCollider(collider);
             }
+            if (physicsSystem != null) {
+                physicsSystem.update(dt);
+            }
         }
+
         if(dragDropper.isDragging()) {
             draggedObject = dragDropper.getDraggedObject();
             if(!MouseHandler.isButtonDown(0) && draggedObject != null) {
@@ -90,6 +118,7 @@ public class LevelEditorScene extends Scene {
     }
 
     private void drawCollider(Collider collider) {
+
         switch (collider) {
             case Circle circle -> DebugDraw.addCircle(circle.getCenter(), circle.getRadius(), new Vector3f(1, 0, 0), 1);
             case Square square -> {
