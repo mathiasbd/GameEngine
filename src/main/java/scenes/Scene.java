@@ -45,10 +45,9 @@ public abstract class Scene {
     protected DragDropper dragDropper = new DragDropper();
     private PhysicsSystem physicsSystem;
     public Scene() {
-        this.physicsSystem = new PhysicsSystem(0.016f, new Vector2f(0, -9.8f));
     }
 
-    public abstract void init();
+    public abstract void init(List<GameObject> gameObjects);
 
     public abstract void update(float dt);
 

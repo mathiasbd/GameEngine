@@ -45,7 +45,7 @@
           "properties": {
             "position": {
               "x": 587.5,
-              "y": -25268.895
+              "y": 300.895
             },
             "rotation": 0.0,
             "mass": 1.0,

@@ -8,6 +8,9 @@ import scenes.Scene;
 import util.DebugDraw;
 import util.Time;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 public class GameEngineManager {
@@ -20,7 +23,7 @@ public class GameEngineManager {
     public GameEngineManager(WindowManager window) {
         this.window = window;
         physicsSystem = new PhysicsSystem(0.016f, new Vector2f(0.0f, -9.82f)); // 60 FPS and gravity
-        changeScene("EditorScene");
+        changeScene("EditorScene", new ArrayList<>());
         loop();
     }
 
@@ -68,18 +71,18 @@ public class GameEngineManager {
         currentScene.saveExit();
     }
 
-    public static void changeScene(String sceneName) {
+    public static void changeScene(String sceneName, List<GameObject> gameObjects) {
         System.out.println("Changing scene to: " + sceneName);
         switch(sceneName) {
             case "EditorScene":
                 currentScene = new LevelEditorScene();
-                currentScene.init();
+                currentScene.init(gameObjects);
                 currentScene.start();
                 currentSceneName = "EditorScene";
                 break;
             case "GameScene":
                 currentScene = new LevelScene();
-                currentScene.init();
+                currentScene.init(gameObjects);
                 currentScene.start();
                 currentSceneName = "GameScene";
                 break;

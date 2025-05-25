@@ -56,7 +56,7 @@ public class ImGuiLayer {
 
         if (!isInGame) {
             if (ImGui.button("Play", buttonWidth, 0)) {
-                // Should load the game objects into the new scene
+                GameEngineManager.changeScene("GameScene", new ArrayList<>(currentScene.getGameObjects()));
             }
         } else {
             ImGui.beginDisabled(true);
@@ -69,9 +69,9 @@ public class ImGuiLayer {
         if (!isInEditor) {
             if (ImGui.button("Stop", buttonWidth, 0)) {
                 if (isInGame) {
-                    // should revert back original info from editorscene
+                    GameEngineManager.changeScene("LevelEditorScene", new ArrayList<>(currentScene.getGameObjects()));
                 }
-                GameEngineManager.changeScene("EditorScene");
+                GameEngineManager.changeScene("EditorScene", new ArrayList<>(currentScene.getGameObjects()));
             }
         } else {
             ImGui.beginDisabled(true);

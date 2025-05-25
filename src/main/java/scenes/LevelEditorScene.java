@@ -36,6 +36,7 @@ import javax.swing.*;
 import static org.lwjgl.opengl.GL30.*;
 import java.nio.IntBuffer;
 import java.nio.FloatBuffer;
+import java.util.List;
 
 public class LevelEditorScene extends Scene {
 
@@ -52,12 +53,12 @@ public class LevelEditorScene extends Scene {
         System.out.println("Inside the level editing scene");
     }
     @Override
-    public void init() {
+    public void init(List<GameObject> gameObjects) {
         loadResources();
         this.camera = new Camera(new Vector2f());
         this.imGuiLayer = new ImGuiLayer();
         this.physicsSystem = GameEngineManager.getPhysicsSystem();
-        sprites = AssetPool.getSpriteSheet("assets/spritesheets/Blue_Slime/Attack_1.png");
+        this.gameObjects = gameObjects;
     }
 
     private void loadResources() {
@@ -68,14 +69,14 @@ public class LevelEditorScene extends Scene {
     @Override
     public void update(float dt) {
         if (!physicsEnabled) {
-            for (GameObject go : this.gameObjects) {
-                Transform transform = go.getTransform();
-                Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
-                if (rb != null) {
-                    rb.setPosition(transform.getPosition());
-                    physicsSystem.addRigidbody(rb);
-                }
-            }
+//            for (GameObject go : this.gameObjects) {
+//                Transform transform = go.getTransform();
+//                Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+//                if (rb != null) {
+//                    rb.setPosition(transform.getPosition());
+//                    physicsSystem.addRigidbody(rb);
+//                }
+//            }
             physicsEnabled = true;
         }
 
@@ -86,7 +87,7 @@ public class LevelEditorScene extends Scene {
             Collider collider = go.getComponent(Collider.class);
             if (collider != null) {
                 if (rb != null) {
-                    transform.setPosition(rb.getPosition());
+                    rb.setPosition(transform.getPosition());
                     collider.setRigidbody(rb);
                 } else {
                     System.err.println("Collider without Rigidbody2D: " + go.getName());
