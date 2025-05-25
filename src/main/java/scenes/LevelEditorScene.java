@@ -69,8 +69,10 @@ public class LevelEditorScene extends Scene {
     public void update(float dt) {
         if (!physicsEnabled) {
             for (GameObject go : this.gameObjects) {
+                Transform transform = go.getTransform();
                 Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
                 if (rb != null) {
+                    rb.setPosition(transform.getPosition());
                     physicsSystem.addRigidbody(rb);
                 }
             }
@@ -83,8 +85,8 @@ public class LevelEditorScene extends Scene {
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
             Collider collider = go.getComponent(Collider.class);
             if (collider != null) {
-                rb.setPosition(transform.getPosition());
                 if (rb != null) {
+                    transform.setPosition(rb.getPosition());
                     collider.setRigidbody(rb);
                 } else {
                     System.err.println("Collider without Rigidbody2D: " + go.getName());
