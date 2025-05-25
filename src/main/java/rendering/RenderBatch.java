@@ -116,7 +116,7 @@ public class RenderBatch implements Comparable<RenderBatch> {
                 loadVertexProperties(i);
                 this.needsRebuffer= false;
                 spr.setClean();
-                System.out.println("Rebuffer complete");
+                //System.out.println("Rebuffer complete");
             }
         }
         if(rebufferData) {
@@ -228,7 +228,7 @@ public class RenderBatch implements Comparable<RenderBatch> {
         int texId =0;
         //loop to find the tex that matches the sprite we are at
         if (sprite.getTexture() != null) {
-            System.out.println(texture.size());
+            //System.out.println(texture.size());
             for (int i = 0; i < texture.size(); i++) {
                 if (texture.get(i) == sprite.getTexture()) {
                     texId = i+1;  // OpenGL expects texture IDs starting from 1

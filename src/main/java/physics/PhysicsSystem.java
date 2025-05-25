@@ -110,9 +110,7 @@ public class PhysicsSystem {
 
     public void addRigidbody(Rigidbody2D body) {
         this.rb.add(body);
-        System.out.println("Adding body");
         if (body.getHasGravity()) {
-            System.out.println("Adding gravity to body");
             this.fr.add(body, gravity);
         }
     }

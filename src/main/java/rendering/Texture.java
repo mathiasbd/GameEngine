@@ -46,11 +46,11 @@ public class Texture {
             if (channels.get(0) == 3) {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0),
                         0, GL_RGB, GL_UNSIGNED_BYTE, image);
-                System.out.println("No alpha");
+                System.out.println("Texture loaded successfully: " + filepath);
             } else if (channels.get(0) == 4) {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0),
                         0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-                System.out.println("Yes alpha");
+                System.out.println("Texture loaded successfully: " + filepath);
             } else {
                 throw new RuntimeException("Error: Picture is not RGB or RGBA");
             }

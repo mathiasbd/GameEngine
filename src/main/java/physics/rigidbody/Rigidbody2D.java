@@ -37,10 +37,7 @@ public class Rigidbody2D extends Component {
         linearVelocity.add(acceleration.mul(dt));
 
         // Update the linear position
-        System.out.println("Updating position with linear velocity: " + linearVelocity);
-        System.out.println("Current position: " + this.position);
         this.position.add(new Vector2f(linearVelocity).mul(dt));
-        System.out.println("New position: " + this.position);
 
         synchCollisionTransforms();
         clearAccumulators();

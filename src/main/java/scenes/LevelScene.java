@@ -36,7 +36,6 @@ public class LevelScene extends Scene {
 
     @Override
     public void init(List<GameObject> gameObjects) {
-        // loadResources();
         this.camera = new Camera(new Vector2f());
         this.imGuiLayer = new ImGuiLayer();
         this.physicsSystem = GameEngineManager.getPhysicsSystem();
@@ -52,12 +51,6 @@ public class LevelScene extends Scene {
         }
     }
 
-    private void loadResources() {
-        AssetPool.getShader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
-        AssetPool.addSpritesheet("assets/spritesheets/Blue_Slime/Attack_1.png",
-                new SpriteSheet(AssetPool.getTexture("assets/spritesheets/Blue_Slime/Attack_1.png"), 80, 34, 4, 46, 94, 27));
-    }
-
     @Override
     public void update(float dt) {
         for (GameObject go : this.gameObjects) {
@@ -69,6 +62,7 @@ public class LevelScene extends Scene {
                 if (rb != null) {
                     transform.setPosition(rb.getPosition());
                     collider.setRigidbody(rb);
+                    rb.setCollider(collider);
                 } else {
                     System.err.println("Collider without Rigidbody2D: " + go.getName());
                 }
