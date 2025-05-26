@@ -18,6 +18,8 @@ public class Collisions {
             return findCollisionFeatures((Square)c1, (Square)c2);
         } if (c1 instanceof Square && c2 instanceof Circle) {
             return findCollisionFeatures((Circle)c2, (Square)c1);
+        }if (c1 instanceof AlignedBox && c2 instanceof AlignedBox) {
+            return findCollisionFeatures((AlignedBox)c2, (AlignedBox)c1);
         }
         return null;
     }
@@ -268,6 +270,49 @@ public class Collisions {
         }
 
         return contacts;
+    }
+    public static CollisionManifold findCollisionFeatures(AlignedBox a, AlignedBox b) {
+        CollisionManifold manifold = new CollisionManifold();
+
+        Vector2f aMin = a.getMin();
+        Vector2f aMax = a.getMax();
+        Vector2f bMin = b.getMin();
+        Vector2f bMax = b.getMax();
+
+        boolean xOverlap = aMax.x > bMin.x && aMin.x < bMax.x;
+        boolean yOverlap = aMax.y > bMin.y && aMin.y < bMax.y;
+
+        if (!(xOverlap && yOverlap)) {
+            return manifold; // No collision
+        }
+
+        // Compute overlap on each axis
+        float overlapX = Math.min(aMax.x, bMax.x) - Math.max(aMin.x, bMin.x);
+        float overlapY = Math.min(aMax.y, bMax.y) - Math.max(aMin.y, bMin.y);
+
+        Vector2f normal;
+        float penetration;
+
+        if (overlapX < overlapY) {
+            // Resolve on X axis
+            normal = a.getRigidbody().getPosition().x < b.getRigidbody().getPosition().x
+                    ? new Vector2f(-1, 0) : new Vector2f(1, 0);
+            penetration = overlapX;
+        } else {
+            // Resolve on Y axis
+            normal = a.getRigidbody().getPosition().y < b.getRigidbody().getPosition().y
+                    ? new Vector2f(0, -1) : new Vector2f(0, 1);
+            penetration = overlapY;
+        }
+
+        // Contact point is the midpoint between box centers approximation
+        Vector2f contact = new Vector2f(a.getRigidbody().getPosition())
+                .add(b.getRigidbody().getPosition())
+                .mul(0.5f);
+
+        manifold = new CollisionManifold(normal, penetration);
+        manifold.addContactPoint(contact);
+        return manifold;
     }
 
 }
