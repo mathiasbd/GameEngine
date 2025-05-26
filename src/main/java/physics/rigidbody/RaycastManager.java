@@ -165,6 +165,7 @@ public class RaycastManager {
         float radiusSum = c1.getRadius() + c2.getRadius();
         return distance <= radiusSum*radiusSum;
     }
+
     //AlignedBox vs circle
     // Checks for collision between a circle and an Axis Aligned Box
     public static boolean circleAndAlignedBox (Circle circle, AlignedBox aBox){
@@ -261,6 +262,8 @@ public class RaycastManager {
 
         return interval1.x <= interval2.y && interval2.x <= interval1.y;
     }
+
+
 
     private static Vector2f getInterval(AlignedBox box, Vector2f axis) {
         Vector2f result = new Vector2f(0, 0);
