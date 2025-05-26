@@ -1,15 +1,17 @@
 package physics;
+
 import org.joml.Vector2f;
 import physics.forces.ForceRegistry;
-import physics.forces.Gravity;
 import physics.forces.Gravity;
 import physics.primitives.Collider;
 import physics.rigidbody.CollisionManifold;
 import physics.rigidbody.Collisions;
 import physics.rigidbody.Rigidbody2D;
+import physics.rigidbody.Rigidbody2D.BodyType;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class PhysicsSystem {
     private ForceRegistry fr;
     private Gravity gravity;
@@ -33,6 +35,7 @@ public class PhysicsSystem {
 
         this.fixedUpdate = fixedUpdateDt;
     }
+
     public void update(float dt) {
         fixedUpdate();
     }
@@ -41,54 +44,51 @@ public class PhysicsSystem {
         bodies1.clear();
         bodies2.clear();
         collisions.clear();
-        // Find any collisions
+
         int size = rb.size();
-        for (int i=0; i < size; i++) {
-            for (int j=i; j < size; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = i; j < size; j++) {
                 if (i == j) continue;
 
-                CollisionManifold result = new CollisionManifold();
                 Rigidbody2D r1 = rb.get(i);
                 Rigidbody2D r2 = rb.get(j);
                 Collider c1 = r1.getCollider();
                 Collider c2 = r2.getCollider();
 
-                if (c1 != null && c2 != null && !(r1.hasInfiniteMass() && r2.hasInfiniteMass()) && !(r1.isStatic() && r2.isStatic())) {
-                    result = Collisions.findCollisionFeatures(c1, c2);
-                }
+                if (c1 != null && c2 != null &&
+                        !(r1.hasInfiniteMass() && r2.hasInfiniteMass()) &&
+                        !(r1.getBodyType() == BodyType.STATIC && r2.getBodyType() == BodyType.STATIC)) {
 
-                if (result != null && result.isColliding()) {
-                    bodies1.add(r1);
-                    bodies2.add(r2);
-                    collisions.add(result);
+                    CollisionManifold result = Collisions.findCollisionFeatures(c1, c2);
+                    if (result != null && result.isColliding()) {
+                        bodies1.add(r1);
+                        bodies2.add(r2);
+                        collisions.add(result);
+                    }
                 }
             }
         }
+
         fr.updateForces(fixedUpdate);
 
-        // Resolve the collisions
-        for (int i=1; i < impulseIterations; i++) {
-            for (int j=0; j < collisions.size(); j++) {
+        for (int i = 1; i < impulseIterations; i++) {
+            for (int j = 0; j < collisions.size(); j++) {
                 int jSize = collisions.get(j).getContactPoints().size();
-                for (int k=0; k < jSize; k++) {
-                    Rigidbody2D r1 = bodies1.get(j);
-                    Rigidbody2D r2 = bodies2.get(j);
-                    applyImpulse(r1, r2, collisions.get(j));
+                for (int k = 0; k < jSize; k++) {
+                    applyImpulse(bodies1.get(j), bodies2.get(j), collisions.get(j));
                 }
-
             }
         }
 
-        // Update the velocities of all rigidbodies
-        for (int i=0; i < rb.size(); i++) {
-            if (!rb.get(i).isStatic()) {
-                rb.get(i).physicsUpdate(fixedUpdate);
+        for (Rigidbody2D body : rb) {
+            if (body.getBodyType() != BodyType.STATIC) {
+                body.physicsUpdate(fixedUpdate);
             }
         }
     }
 
     private void applyImpulse(Rigidbody2D r1, Rigidbody2D r2, CollisionManifold m) {
-        if (r1.isStatic() && r2.isStatic()) return;
+        if (r1.getBodyType() == BodyType.STATIC && r2.getBodyType() == BodyType.STATIC) return;
 
         float invMass1 = r1.getInverseMass();
         float invMass2 = r2.getInverseMass();
@@ -97,24 +97,22 @@ public class PhysicsSystem {
 
         Vector2f relativeVelocity = new Vector2f(r2.getLinearVelocity()).sub(r1.getLinearVelocity());
         Vector2f relativeNormal = new Vector2f(m.getNormal()).normalize();
-        if (relativeVelocity.dot(relativeNormal) > 0.0f) return; // moving away from each other
+        if (relativeVelocity.dot(relativeNormal) > 0.0f) return;
 
-        float e = Math.min(r1.getRestitution(), r2.getRestitution()); // Not fully realistic, but gives a good result
+        float e = Math.min(r1.getRestitution(), r2.getRestitution());
         float numerator = -(1.0f + e) * relativeVelocity.dot(relativeNormal);
         float j = numerator / invMassSum;
-        if (m.getContactPoints().size() > 0 && j != 0.0f) {
-            // Apply the impulse to the contact points evenly (not realistic but gets the job done)
+
+        if (!m.getContactPoints().isEmpty() && j != 0.0f) {
             Vector2f impulse = new Vector2f(relativeNormal).mul(j);
-            r1.setVelocity(
-                    new Vector2f(r1.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass1).mul(-1.0f)));
-            r2.setVelocity(
-                    new Vector2f(r2.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass2)));
+            r1.setVelocity(new Vector2f(r1.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass1).mul(-1.0f)));
+            r2.setVelocity(new Vector2f(r2.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass2)));
         }
     }
 
     public void addRigidbody(Rigidbody2D body) {
         this.rb.add(body);
-        if (!(body.isStatic())) {
+        if (body.getBodyType() != BodyType.STATIC) {
             this.fr.add(body, gravity);
         }
     }
