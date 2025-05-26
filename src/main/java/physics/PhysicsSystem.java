@@ -53,7 +53,7 @@ public class PhysicsSystem {
                 Collider c1 = r1.getCollider();
                 Collider c2 = r2.getCollider();
 
-                if (c1 != null && c2 != null && !(r1.hasInfiniteMass() && r2.hasInfiniteMass())) {
+                if (c1 != null && c2 != null && !(r1.hasInfiniteMass() && r2.hasInfiniteMass()) && !(r1.isStatic() && r2.isStatic())) {
                     result = Collisions.findCollisionFeatures(c1, c2);
                 }
 
@@ -81,11 +81,15 @@ public class PhysicsSystem {
 
         // Update the velocities of all rigidbodies
         for (int i=0; i < rb.size(); i++) {
-            rb.get(i).physicsUpdate(fixedUpdate);
+            if (!rb.get(i).isStatic()) {
+                rb.get(i).physicsUpdate(fixedUpdate);
+            }
         }
     }
 
     private void applyImpulse(Rigidbody2D r1, Rigidbody2D r2, CollisionManifold m) {
+        if (r1.isStatic() && r2.isStatic()) return;
+
         float invMass1 = r1.getInverseMass();
         float invMass2 = r2.getInverseMass();
         float invMassSum = invMass1 + invMass2;
@@ -110,7 +114,7 @@ public class PhysicsSystem {
 
     public void addRigidbody(Rigidbody2D body) {
         this.rb.add(body);
-        if (body.getHasGravity()) {
+        if (!(body.isStatic())) {
             this.fr.add(body, gravity);
         }
     }

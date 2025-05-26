@@ -45,12 +45,12 @@
           "properties": {
             "position": {
               "x": 587.5,
-              "y": 300.555
+              "y": 500.555
             },
             "rotation": 30.0,
             "mass": 1.0,
             "inverseMass": 1.0,
-            "hasGravity": true,
+            "isStatic": false,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -80,12 +80,12 @@
             "rigidbody": {
               "position": {
                 "x": 587.5,
-                "y": 300.555
+                "y": 500.555
               },
-              "rotation": 0.0,
+              "rotation": 30.0,
               "mass": 1.0,
               "inverseMass": 1.0,
-              "hasGravity": true,
+              "isStatic": false,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -170,7 +170,7 @@
             "rotation": 0.0,
             "mass": 0.0,
             "inverseMass": 0.0,
-            "hasGravity": false,
+            "isStatic": false,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -203,9 +203,9 @@
                 "y": 20.0
               },
               "rotation": 0.0,
-              "mass": 1.0,
-              "inverseMass": 1.0,
-              "hasGravity": false,
+              "mass": 0.0,
+              "inverseMass": 0.0,
+              "isStatic": false,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -247,13 +247,13 @@
           "type": "physics.rigidbody.Rigidbody2D",
           "properties": {
             "position": {
-              "x": 0.0,
-              "y": 0.0
+              "x": 582.0,
+              "y": 300.0
             },
             "rotation": 0.0,
             "mass": 0.1,
             "inverseMass": 10.0,
-            "hasGravity": false,
+            "isStatic": false,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -275,13 +275,13 @@
             "radius": 20.0,
             "rigidbody": {
               "position": {
-                "x": 0.0,
-                "y": 0.0
+                "x": 582.0,
+                "y": 300.0
               },
               "rotation": 0.0,
-              "mass": 0.0,
-              "inverseMass": 0.0,
-              "hasGravity": false,
+              "mass": 0.1,
+              "inverseMass": 10.0,
+              "isStatic": false,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -309,6 +309,255 @@
         "position": {
           "x": 582.0,
           "y": 300.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        }
+      }
+    },
+    {
+      "name": "Wall1",
+      "components": [
+        {
+          "type": "physics.rigidbody.Rigidbody2D",
+          "properties": {
+            "position": {
+              "x": 25.0,
+              "y": 0.0
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "inverseMass": 1.0,
+            "isStatic": true,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": -1074481.6
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": -1757.2883
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "fixedRotation": false
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "size": {
+              "x": 30.0,
+              "y": 600.0
+            },
+            "halfSize": {
+              "x": 30.0,
+              "y": 600.0
+            },
+            "rigidbody": {
+              "position": {
+                "x": 25.0,
+                "y": 0.0
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "inverseMass": 1.0,
+              "isStatic": true,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": -1074481.6
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": -1757.2883
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.0,
+              "angularDamping": 0.0,
+              "fixedRotation": false
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 25.0,
+          "y": 0.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        }
+      }
+    },
+    {
+      "name": "Wall2",
+      "components": [
+        {
+          "type": "physics.rigidbody.Rigidbody2D",
+          "properties": {
+            "position": {
+              "x": 1250.0,
+              "y": 0.0
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "inverseMass": 1.0,
+            "isStatic": true,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": -14406.097
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "fixedRotation": false
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "size": {
+              "x": 30.0,
+              "y": 700.0
+            },
+            "halfSize": {
+              "x": 30.0,
+              "y": 700.0
+            },
+            "rigidbody": {
+              "position": {
+                "x": 1250.0,
+                "y": 0.0
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "inverseMass": 1.0,
+              "isStatic": true,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": -14406.097
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.0,
+              "angularDamping": 0.0,
+              "fixedRotation": false
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 1250.0,
+          "y": 0.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        }
+      }
+    },
+    {
+      "name": "Ceiling",
+      "components": [
+        {
+          "type": "physics.rigidbody.Rigidbody2D",
+          "properties": {
+            "position": {
+              "x": 600.0,
+              "y": 615.0
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "inverseMass": 1.0,
+            "isStatic": true,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": -6049.505
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "fixedRotation": false
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "size": {
+              "x": 1000.0,
+              "y": 30.0
+            },
+            "halfSize": {
+              "x": 1000.0,
+              "y": 30.0
+            },
+            "rigidbody": {
+              "position": {
+                "x": 600.0,
+                "y": 615.0
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "inverseMass": 1.0,
+              "isStatic": true,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": -6049.505
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.0,
+              "angularDamping": 0.0,
+              "fixedRotation": false
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 600.0,
+          "y": 615.0
         },
         "scale": {
           "x": 0.0,

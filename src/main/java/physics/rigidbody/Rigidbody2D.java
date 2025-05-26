@@ -12,10 +12,10 @@ public class Rigidbody2D extends Component {
 
     private Vector2f position = new Vector2f();
     private float rotation = 0.0f;
-    private float mass =0f;
-    private float inverseMass = 0f;
-    private boolean hasGravity = false;
+    private float mass = 1f;
+    private float inverseMass = 1f;
 
+    private boolean isStatic = false;
     private float restitution = 1.0f;
     private Vector2f forceAcc= new Vector2f();
     private Vector2f linearVelocity = new Vector2f();
@@ -118,12 +118,7 @@ public class Rigidbody2D extends Component {
     public float getRestitution() {
         return restitution;
     }
-
-    public void setHasGravity(boolean value) {
-        this.hasGravity = value;
-    }
-
-    public boolean getHasGravity() {
-        return hasGravity;
+    public boolean isStatic() {
+        return isStatic;
     }
 }
