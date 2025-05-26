@@ -2,7 +2,7 @@ import org.joml.Vector2f;
 import org.junit.jupiter.api.Test;
 import physics.primitives.*;
 import physics.rigidbody.RaycastManager;
-import physics.primitives.Line2D;
+import physics.primitives.Line;
 import physics.rigidbody.Rigidbody2D;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +16,7 @@ public class CollisionTests {
         circleRigidbody.setPosition(new Vector2f(0f, 0f));
         circle.setRigidbody(circleRigidbody);
 
-        Line2D line = new Line2D(new Vector2f(-1f, 0f), new Vector2f(1f, 0f), null, 1);
+        Line line = new Line(new Vector2f(-1f, 0f), new Vector2f(1f, 0f), null, 1);
         assertTrue(RaycastManager.lineInCircle(line, circle));
     }
 
@@ -28,7 +28,7 @@ public class CollisionTests {
         circleRigidbody.setPosition(new Vector2f(0f, 0f));
         circle.setRigidbody(circleRigidbody);
 
-        Line2D line = new Line2D(new Vector2f(-1.0f, 0f), new Vector2f(-1f, 1f), null, 1);
+        Line line = new Line(new Vector2f(-1.0f, 0f), new Vector2f(-1f, 1f), null, 1);
         assertTrue(RaycastManager.lineInCircle(line, circle));
     }
 
@@ -40,71 +40,71 @@ public class CollisionTests {
         circleRigidbody.setPosition(new Vector2f(0f, 0f));
         circle.setRigidbody(circleRigidbody);
 
-        Line2D line = new Line2D(new Vector2f(-1.5f, 0f), new Vector2f(-1f, 1f), null, 1);
+        Line line = new Line(new Vector2f(-1.5f, 0f), new Vector2f(-1f, 1f), null, 1);
         assertFalse(RaycastManager.lineInCircle(line, circle));
     }
 
     @Test
     public void lineInABox() {
-        Line2D line = new Line2D(new Vector2f(-1.5f, -0.5f), new Vector2f(1.5f, 0.5f), null, 1);
-        AlignedBox alignedBox = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Line line = new Line(new Vector2f(-1.5f, -0.5f), new Vector2f(1.5f, 0.5f), null, 1);
+        AABBCollider AABBCollider = new AABBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         // Test rigidbody
         Rigidbody2D alignedBoxRigidbody = new Rigidbody2D();
         alignedBoxRigidbody.setPosition(new Vector2f(0f, 0f));
-        alignedBox.setRigidbody(alignedBoxRigidbody);
+        AABBCollider.setRigidbody(alignedBoxRigidbody);
 
 
-        assertTrue(RaycastManager.lineInABox(line, alignedBox));
+        assertTrue(RaycastManager.lineInABox(line, AABBCollider));
     }
 
     @Test
     public void lineNotInABox() {
-        Line2D line = new Line2D(new Vector2f(-1.5f, -1.5f), new Vector2f(2.5f, -1f), null, 1);
-        AlignedBox alignedBox = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Line line = new Line(new Vector2f(-1.5f, -1.5f), new Vector2f(2.5f, -1f), null, 1);
+        AABBCollider AABBCollider = new AABBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         // Test rigidbody
         Rigidbody2D alignedBoxRigidbody = new Rigidbody2D();
         alignedBoxRigidbody.setPosition(new Vector2f(0f, 0f));
-        alignedBox.setRigidbody(alignedBoxRigidbody);
+        AABBCollider.setRigidbody(alignedBoxRigidbody);
 
-        assertFalse(RaycastManager.lineInABox(line, alignedBox));
+        assertFalse(RaycastManager.lineInABox(line, AABBCollider));
     }
 
     @Test
     public void lineOnABoxPerimeter() {
-        Line2D line = new Line2D(new Vector2f(-1.5f, -0.5f), new Vector2f(-0.5f, -1.5f), null, 1);
-        AlignedBox alignedBox = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        Line line = new Line(new Vector2f(-1.5f, -0.5f), new Vector2f(-0.5f, -1.5f), null, 1);
+        AABBCollider AABBCollider = new AABBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         // Test rigidbody
         Rigidbody2D alignedBoxRigidbody = new Rigidbody2D();
         alignedBoxRigidbody.setPosition(new Vector2f(0f, 0f));
-        alignedBox.setRigidbody(alignedBoxRigidbody);
+        AABBCollider.setRigidbody(alignedBoxRigidbody);
 
-        assertTrue(RaycastManager.lineInABox(line, alignedBox));
+        assertTrue(RaycastManager.lineInABox(line, AABBCollider));
     }
 
     @Test
     public void lineOnASquare() {
-        Line2D line = new Line2D(new Vector2f(-0.5f, 0), new Vector2f(0.5f, 0), null, 1);
-        Square square = new Square(new Vector2f(-1, -1), new Vector2f(1, 1));
+        Line line = new Line(new Vector2f(-0.5f, 0), new Vector2f(0.5f, 0), null, 1);
+        OBBCollider OBBCollider = new OBBCollider(new Vector2f(-1, -1), new Vector2f(1, 1));
         // Test rigidbody
         Rigidbody2D rb = new Rigidbody2D();
         rb.setPosition(new Vector2f(0, 0));
         rb.setRotation(0); // No rotation
-        square.setRigidbody(rb);
+        OBBCollider.setRigidbody(rb);
 
-        assertTrue(RaycastManager.lineInSquare(line, square));
+        assertTrue(RaycastManager.lineInSquare(line, OBBCollider));
     }
 
     @Test
     public void testLineIntersectingRotatedSquare() {
-        Square square = new Square(new Vector2f(-1, -1), new Vector2f(1, 1));
-        Line2D line = new Line2D(new Vector2f(-2, 0), new Vector2f(2, 0), null, 1);
+        OBBCollider OBBCollider = new OBBCollider(new Vector2f(-1, -1), new Vector2f(1, 1));
+        Line line = new Line(new Vector2f(-2, 0), new Vector2f(2, 0), null, 1);
         // Test rigidbody
         Rigidbody2D rb = new Rigidbody2D();
         rb.setPosition(new Vector2f(0, 0));
         rb.setRotation((float) Math.toRadians(45)); // Rotate 45 degrees
-        square.setRigidbody(rb);
+        OBBCollider.setRigidbody(rb);
 
-        assertTrue(RaycastManager.lineInSquare(line, square));
+        assertTrue(RaycastManager.lineInSquare(line, OBBCollider));
     }
 
     @Test
@@ -155,7 +155,7 @@ public class CollisionTests {
         rigidbody.setPosition(new Vector2f(5f, 5f));
         circle.setRigidbody(rigidbody);
 
-        AlignedBox box = new AlignedBox(new Vector2f(0f, 0f), new Vector2f(2f, 2f));
+        AABBCollider box = new AABBCollider(new Vector2f(0f, 0f), new Vector2f(2f, 2f));
         Rigidbody2D boxBody = new Rigidbody2D();
         boxBody.setPosition(new Vector2f(0f, 0f));
         box.setRigidbody(boxBody);
@@ -169,7 +169,7 @@ public class CollisionTests {
         circleBody.setPosition(new Vector2f(0f, 0f)); // center in box
         circle.setRigidbody(circleBody);
 
-        AlignedBox box = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        AABBCollider box = new AABBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D boxBody = new Rigidbody2D();
         boxBody.setPosition(new Vector2f(0f, 0f));
         box.setRigidbody(boxBody);
@@ -183,7 +183,7 @@ public class CollisionTests {
         circleBody.setPosition(new Vector2f(1.75f, 1f)); // Overlapping aBox
         circle.setRigidbody(circleBody);
 
-        AlignedBox box = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        AABBCollider box = new AABBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D boxBody = new Rigidbody2D();
         boxBody.setPosition(new Vector2f(0f, 0f));
         box.setRigidbody(boxBody);
@@ -197,7 +197,7 @@ public class CollisionTests {
         circleBody.setPosition(new Vector2f(2.0f, 0f)); // touching right edge
         circle.setRigidbody(circleBody);
 
-        AlignedBox box = new AlignedBox(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        AABBCollider box = new AABBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D boxBody = new Rigidbody2D();
         boxBody.setPosition(new Vector2f(0f, 0f));
         box.setRigidbody(boxBody);
@@ -212,12 +212,12 @@ public class CollisionTests {
         circleBody.setPosition(new Vector2f(2.01f, 0f)); // just outside
         circle.setRigidbody(circleBody);
 
-        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        OBBCollider OBBCollider = new OBBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D squareBody = new Rigidbody2D();
         squareBody.setPosition(new Vector2f(0f, 0f));
-        square.setRigidbody(squareBody);
+        OBBCollider.setRigidbody(squareBody);
 
-        assertFalse(RaycastManager.circleAndSquare(circle, square));
+        assertFalse(RaycastManager.circleAndSquare(circle, OBBCollider));
     }
     @Test
     public void testCircleMissesRotatedSquare() {
@@ -226,13 +226,13 @@ public class CollisionTests {
         circleBody.setPosition(new Vector2f(2.5f, 0f)); // pushed further out
         circle.setRigidbody(circleBody);
 
-        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        OBBCollider OBBCollider = new OBBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D squareBody = new Rigidbody2D();
         squareBody.setPosition(new Vector2f(0f, 0f));
         squareBody.setRotation((float) Math.toRadians(45));
-        square.setRigidbody(squareBody);
+        OBBCollider.setRigidbody(squareBody);
 
-        assertFalse(RaycastManager.circleAndSquare(circle, square));
+        assertFalse(RaycastManager.circleAndSquare(circle, OBBCollider));
     }
     @Test
     public void testCircleTouchingRotatedSquare() {
@@ -241,13 +241,13 @@ public class CollisionTests {
         circleBody.setPosition(new Vector2f(1.0f, 1.0f)); // near rotated edge
         circle.setRigidbody(circleBody);
 
-        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        OBBCollider OBBCollider = new OBBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D squareBody = new Rigidbody2D();
         squareBody.setPosition(new Vector2f(0f, 0f));
         squareBody.setRotation((float) Math.toRadians(45));
-        square.setRigidbody(squareBody);
+        OBBCollider.setRigidbody(squareBody);
 
-        assertTrue(RaycastManager.circleAndSquare(circle, square));
+        assertTrue(RaycastManager.circleAndSquare(circle, OBBCollider));
     }
 
     @Test
@@ -257,11 +257,11 @@ public class CollisionTests {
         circleBody.setPosition(new Vector2f(0f, 0f)); // center of square
         circle.setRigidbody(circleBody);
 
-        Square square = new Square(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+        OBBCollider OBBCollider = new OBBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
         Rigidbody2D squareBody = new Rigidbody2D();
         squareBody.setPosition(new Vector2f(0f, 0f));
-        square.setRigidbody(squareBody);
+        OBBCollider.setRigidbody(squareBody);
 
-        assertTrue(RaycastManager.circleAndSquare(circle, square));
+        assertTrue(RaycastManager.circleAndSquare(circle, OBBCollider));
     }
 }

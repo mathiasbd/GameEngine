@@ -9,6 +9,8 @@ public abstract class Collider extends Component {
 
     public abstract void setRigidbody(Rigidbody2D rigidbody);
 
+    public abstract Rigidbody2D getRigidbody();
+
     @Override
     public void update(float dt) {
     }

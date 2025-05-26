@@ -1,17 +1,15 @@
 package util;
 
 import org.example.GameEngineManager;
-import org.example.WindowManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import physics.primitives.Line2D;
+import physics.primitives.Line;
 import rendering.Shader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static imgui.internal.flag.ImGuiDataAuthority.Window;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -19,7 +17,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class DebugDraw {
     private static final int MAX_LINES = 1000;
-    private static List<Line2D> lines = new ArrayList<>();
+    private static List<Line> lines = new ArrayList<>();
     // 6 floats per vertex, 2 vertices per line
     private static float[] vertexArray = new float[MAX_LINES * 6 * 2];
     private static Shader shader = AssetPool.getShader("assets/shaders/lineVertex.glsl", "assets/shaders/lineFragment.glsl");
@@ -66,7 +64,7 @@ public class DebugDraw {
         if (lines.size() <= 0) return;
         //System.out.println("Drawing " + lines.size() + " lines");
         int index = 0;
-        for (Line2D l : lines) {
+        for (Line l : lines) {
             for (int i = 0; i < 2; i++) {
                 Vector2f position = i == 0 ? l.getFrom() : l.getTo();
                 Vector3f color = l.getColor();
@@ -123,7 +121,7 @@ public class DebugDraw {
             System.out.println("Max lines reached, not adding line");
             return;
         }
-        DebugDraw.lines.add(new Line2D(from, to, color, lifetime));
+        DebugDraw.lines.add(new Line(from, to, color, lifetime));
     }
 
     /// addBox methods

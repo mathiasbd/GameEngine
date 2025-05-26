@@ -1,10 +1,10 @@
 package physics.rigidbody;
 
 import org.joml.Vector2f;
-import physics.primitives.AlignedBox;
+import physics.primitives.AABBCollider;
 import physics.primitives.Circle;
 import physics.primitives.Collider;
-import physics.primitives.Square;
+import physics.primitives.OBBCollider;
 import util.DTUMath;
 
 import java.util.ArrayList;
@@ -14,30 +14,29 @@ public class Collisions {
     public static CollisionManifold findCollisionFeatures(Collider c1, Collider c2) {
         if (c1 instanceof Circle && c2 instanceof Circle) {
             return findCollisionFeatures((Circle)c1, (Circle)c2);
-        } if (c1 instanceof Square && c2 instanceof  Square) {
-            return findCollisionFeatures((Square)c1, (Square)c2);
-        } if (c1 instanceof Square && c2 instanceof Circle) {
-            return findCollisionFeatures((Circle)c2, (Square)c1);
-        }if (c1 instanceof AlignedBox && c2 instanceof AlignedBox) {
-            return findCollisionFeatures((AlignedBox)c2, (AlignedBox)c1);
+        } if (c1 instanceof OBBCollider && c2 instanceof OBBCollider) {
+            return findCollisionFeatures((OBBCollider)c1, (OBBCollider)c2);
+        } if (c1 instanceof OBBCollider && c2 instanceof Circle) {
+            return findCollisionFeatures((Circle)c2, (OBBCollider)c1);
+        } if (c1 instanceof Circle && c2 instanceof OBBCollider) {
+            return findCollisionFeatures((Circle)c1, (OBBCollider)c2);
+        } else {
+            System.err.println("Unsupported collision detection between " + c1.getClass().getSimpleName() + " and " + c2.getClass().getSimpleName());
         }
         return null;
     }
+
     public static CollisionManifold findCollisionFeatures(Circle a, Circle b) {
         CollisionManifold manifold = new CollisionManifold();
-
         float radiusSum = a.getRadius() + b.getRadius();
         Vector2f distance = new Vector2f(b.getCenter()).sub(a.getCenter());
 
         if (distance.lengthSquared() > radiusSum * radiusSum) {
-            return manifold; // No collision
+            return manifold;
         }
 
         float penetrationDepth = Math.abs(distance.length() - radiusSum);
         float halfPenetrationDepth = penetrationDepth * 0.5f;
-        // This logic is used to get a similar to realistic collision
-        // We might change it to be more realistic by using mass to apply accurate force on each object
-
         Vector2f normal = new Vector2f(distance).normalize();
         float distanceToA = a.getRadius() - halfPenetrationDepth;
         Vector2f contactPointA = new Vector2f(a.getCenter()).add(new Vector2f(normal).mul(distanceToA));
@@ -47,46 +46,61 @@ public class Collisions {
         return manifold;
     }
 
-    public static CollisionManifold findCollisionFeatures(Circle circle, Square square) {
-        CollisionManifold result = new CollisionManifold();
+    public static CollisionManifold findCollisionFeatures(OBBCollider s1, OBBCollider s2) {
+        if (s1.getRigidbody().getRotation() == 0.0f && s2.getRigidbody().getRotation() == 0.0f) {
+            AABBCollider ab1 = convertToAlignedBox(s1);
+            AABBCollider ab2 = convertToAlignedBox(s2);
+            return findCollisionFeatures(ab1, ab2);
+        }
 
-        // Step 1: Convert circle center to square local space
-        Vector2f squarePos = square.getRigidbody().getPosition();
-        float squareRot = square.getRigidbody().getRotation();
-        Vector2f halfSize = square.getHalfSize();
+        Vector2f[] axes = new Vector2f[]{
+                new Vector2f(1, 0), new Vector2f(0, 1),
+                new Vector2f(1, 0), new Vector2f(0, 1)
+        };
+
+        DTUMath.rotate(axes[0], s1.getRigidbody().getRotation(), new Vector2f());
+        DTUMath.rotate(axes[1], s1.getRigidbody().getRotation(), new Vector2f());
+        DTUMath.rotate(axes[2], s2.getRigidbody().getRotation(), new Vector2f());
+        DTUMath.rotate(axes[3], s2.getRigidbody().getRotation(), new Vector2f());
+
+        return runSAT(s1, s2, axes, true);
+    }
+
+    private static CollisionManifold findCollisionFeatures(Circle circle, OBBCollider OBBCollider) {
+        if (OBBCollider.getRigidbody().getRotation() == 0.0f) {
+            AABBCollider ab = convertToAlignedBox(OBBCollider);
+            return findCollisionFeatures(circle, ab);
+        }
+        CollisionManifold result = new CollisionManifold();
+        Vector2f squarePos = OBBCollider.getRigidbody().getPosition();
+        float squareRot = OBBCollider.getRigidbody().getRotation();
+        Vector2f halfSize = OBBCollider.getHalfSize();
         Vector2f localCenter = new Vector2f(circle.getCenter()).sub(squarePos);
         DTUMath.rotate(localCenter, -squareRot, new Vector2f());
-        localCenter.add(halfSize); // shift origin to square's local min corner
+        localCenter.add(halfSize);
 
-        // Step 2: Compute closest point on local AABB
         Vector2f min = new Vector2f(0, 0);
         Vector2f max = new Vector2f(halfSize).mul(2.0f);
         float closestX = Math.max(min.x, Math.min(localCenter.x, max.x));
         float closestY = Math.max(min.y, Math.min(localCenter.y, max.y));
         Vector2f closestPointLocal = new Vector2f(closestX, closestY);
 
-        // Step 3: Compute local normal and distance
         Vector2f normalLocal = new Vector2f(localCenter).sub(closestPointLocal);
         float distSquared = normalLocal.lengthSquared();
 
-        if (distSquared > circle.getRadius() * circle.getRadius()) {
-            return result; // no collision
-        }
+        if (distSquared > circle.getRadius() * circle.getRadius()) return result;
 
-        // Step 4: Resolve collision manifold
         float distance = (float) Math.sqrt(distSquared);
         Vector2f normalWorld;
         if (distance == 0) {
-            // Circle center is exactly at closest point — use arbitrary normal
             normalWorld = new Vector2f(1, 0);
-            closestPointLocal.set(localCenter); // fallback
+            closestPointLocal.set(localCenter);
         } else {
-            normalLocal.div(distance); // normalize
+            normalLocal.div(distance);
             normalWorld = new Vector2f(normalLocal);
             DTUMath.rotate(normalWorld, squareRot, new Vector2f());
         }
 
-        // Step 5: Rotate closest point back to world space
         Vector2f contactPointWorld = new Vector2f(closestPointLocal).sub(halfSize);
         DTUMath.rotate(contactPointWorld, squareRot, new Vector2f());
         contactPointWorld.add(squarePos);
@@ -98,182 +112,70 @@ public class Collisions {
         return result;
     }
 
+    public static CollisionManifold findCollisionFeatures(AABBCollider box, OBBCollider OBBCollider) {
+        CollisionManifold manifold = new CollisionManifold();
 
-    public static CollisionManifold findCollisionFeatures(Square s1, Square s2) {
-        Vector2f[] axes = new Vector2f[4];
-        axes[0] = new Vector2f(1, 0);
-        axes[1] = new Vector2f(0, 1);
-        axes[2] = new Vector2f(1, 0);
-        axes[3] = new Vector2f(0, 1);
+        Vector2f[] axesToTest = {
+                new Vector2f(1, 0), new Vector2f(0, 1), // AABB axes
+                new Vector2f(1, 0), new Vector2f(0, 1)  // Square axes to be rotated
+        };
 
-        DTUMath.rotate(axes[0], s1.getRigidbody().getRotation(), new Vector2f());
-        DTUMath.rotate(axes[1], s1.getRigidbody().getRotation(), new Vector2f());
-        DTUMath.rotate(axes[2], s2.getRigidbody().getRotation(), new Vector2f());
-        DTUMath.rotate(axes[3], s2.getRigidbody().getRotation(), new Vector2f());
+        DTUMath.rotate(axesToTest[2], OBBCollider.getRigidbody().getRotation(), new Vector2f());
+        DTUMath.rotate(axesToTest[3], OBBCollider.getRigidbody().getRotation(), new Vector2f());
 
         float minOverlap = Float.MAX_VALUE;
         Vector2f smallestAxis = new Vector2f();
-        for (Vector2f axis : axes) {
-            Vector2f i1 = getInterval(s1, axis);
-            Vector2f i2 = getInterval(s2, axis);
-            if (i1.y < i2.x || i2.y < i1.x) {
-                return new CollisionManifold(); // No collision
+
+        for (Vector2f axis : axesToTest) {
+            Vector2f interval1 = getInterval(box, axis);
+            Vector2f interval2 = getInterval(OBBCollider, axis);
+            if (interval1.y < interval2.x || interval2.y < interval1.x) {
+                return manifold; // No collision
             }
 
-            float overlap = Math.min(i1.y, i2.y) - Math.max(i1.x, i2.x);
+            float overlap = Math.min(interval1.y, interval2.y) - Math.max(interval1.x, interval2.x);
             if (overlap < minOverlap) {
                 minOverlap = overlap;
                 smallestAxis.set(axis);
             }
         }
 
-        // Ensure normal points from s1 to s2
-        Vector2f centerOffset = new Vector2f(s2.getRigidbody().getPosition()).sub(s1.getRigidbody().getPosition());
-        if (centerOffset.dot(smallestAxis) < 0) {
-            smallestAxis.negate();
-        }
+        Vector2f centerOffset = new Vector2f(OBBCollider.getRigidbody().getPosition()).sub(box.getRigidbody().getPosition());
+        if (centerOffset.dot(smallestAxis) < 0) smallestAxis.negate();
 
-        CollisionManifold manifold = new CollisionManifold(new Vector2f(smallestAxis), minOverlap);
-
-        // Get contact points
-        List<Vector2f> contactPoints = getContactPoints(s1, s2, manifold.getNormal());
-        for (Vector2f p : contactPoints) {
+        manifold = new CollisionManifold(new Vector2f(smallestAxis), minOverlap);
+        List<Vector2f> contacts = getContactPoints(box, OBBCollider, smallestAxis);
+        for (Vector2f p : contacts) {
             manifold.addContactPoint(p);
         }
-
         return manifold;
     }
 
-    // Helpers
-
-    public static boolean ABoxAndABox(AlignedBox aBox1, AlignedBox aBox2){
-        Vector2f axesToTest[] = {
-                new Vector2f(1, 0), // x-axis
-                new Vector2f(0, 1), // y-axis
-        };
-        for (Vector2f axis : axesToTest) {
-            if (!overlapOnAxis(aBox1, aBox2, axis)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean ABoxAndSquare(AlignedBox aBox, Square square){
-        Vector2f axesToTest[] = {
-                new Vector2f(0, 1),
-                new Vector2f(1, 0),
-                new Vector2f(0, 1),
-                new Vector2f(1, 0),
-        };
-
-        // Rotate square's axes
-        DTUMath.rotate(axesToTest[2], square.getRigidbody().getRotation(), square.getRigidbody().getPosition());
-        DTUMath.rotate(axesToTest[3], square.getRigidbody().getRotation(), square.getRigidbody().getPosition());
-
-        for (Vector2f axis : axesToTest) {
-            if (!overlapOnAxis(aBox, square, axis)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean overlapOnAxis(AlignedBox aBox1, AlignedBox aBox2, Vector2f axis) {
-        Vector2f interval1 = getInterval(aBox1, axis);
-        Vector2f interval2 = getInterval(aBox2, axis);
-
-        return interval1.x <= interval2.y && interval2.x <= interval1.y;
-    }
-
-    private static boolean overlapOnAxis(AlignedBox aBox, Square square, Vector2f axis) {
-        Vector2f interval1 = getInterval(aBox, axis);
-        Vector2f interval2 = getInterval(square, axis);
-
-        return interval1.x <= interval2.y && interval2.x <= interval1.y;
-    }
-
-    private static boolean overlapOnAxis(Square s1, Square s2, Vector2f axis) {
-        Vector2f interval1 = getInterval(s1, axis);
-        Vector2f interval2 = getInterval(s2, axis);
-
-        return interval1.x <= interval2.y && interval2.x <= interval1.y;
-    }
-
-
-    private static Vector2f getInterval(AlignedBox box, Vector2f axis) {
-        Vector2f result = new Vector2f(0, 0);
-
+    private static CollisionManifold findCollisionFeatures(Circle circle, AABBCollider box) {
+        CollisionManifold result = new CollisionManifold();
+        Vector2f circleCenter = circle.getCenter();
         Vector2f min = box.getMin();
         Vector2f max = box.getMax();
 
-        Vector2f[] vertices = {
-                new Vector2f(min.x, min.y),
-                new Vector2f(min.x, max.y),
-                new Vector2f(max.x, min.y),
-                new Vector2f(max.x, max.y)
-        };
+        float closestX = Math.max(min.x, Math.min(circleCenter.x, max.x));
+        float closestY = Math.max(min.y, Math.min(circleCenter.y, max.y));
+        Vector2f closestPoint = new Vector2f(closestX, closestY);
 
-        result.x = axis.dot(vertices[0]);
-        result.y = result.x;
-        for (int i = 1; i < vertices.length; i++) {
-            float projection = axis.dot(vertices[i]);
-            if (projection < result.x) {
-                result.x = projection;
-            } else if (projection > result.y) {
-                result.y = projection;
-            }
-        }
+        Vector2f toCircle = new Vector2f(circleCenter).sub(closestPoint);
+        float distSquared = toCircle.lengthSquared();
+        if (distSquared > circle.getRadius() * circle.getRadius()) return result;
+
+        float distance = (float) Math.sqrt(distSquared);
+        float penetration = circle.getRadius() - distance;
+        Vector2f normal = (distance == 0) ? new Vector2f(1, 0) : toCircle.normalize();
+
+        result = new CollisionManifold(normal, penetration);
+        result.addContactPoint(closestPoint);
         return result;
     }
 
-    private static Vector2f getInterval(Square box, Vector2f axis) {
-        Vector2f result = new Vector2f(0, 0);
-
-        Vector2f min = box.getMin();
-        Vector2f max = box.getMax();
-
-        Vector2f vertices[] = box.getVertices();
-        result.x = axis.dot(vertices[0]);
-        result.y = result.x;
-        for (int i = 1; i < vertices.length; i++) {
-            float projection = axis.dot(vertices[i]);
-            if (projection < result.x) {
-                result.x = projection;
-            } else if (projection > result.y) {
-                result.y = projection;
-            }
-        }
-        return result;
-    }
-
-    private static List<Vector2f> getContactPoints(Square s1, Square s2, Vector2f normal) {
-        List<Vector2f> contacts = new ArrayList<>();
-        Vector2f[] verts1 = s1.getVertices();
-        Vector2f[] verts2 = s2.getVertices();
-
-        float maxDist = 0.01f; // Small epsilon
-
-        for (Vector2f v1 : verts1) {
-            for (Vector2f v2 : verts2) {
-                if (v1.distance(v2) < maxDist) {
-                    contacts.add(new Vector2f(v1).lerp(v2, 0.5f));
-                }
-            }
-        }
-
-        if (contacts.isEmpty()) {
-            // Fallback: estimate contact by projecting center
-            Vector2f mid = new Vector2f(s1.getRigidbody().getPosition())
-                    .add(s2.getRigidbody().getPosition()).mul(0.5f);
-            contacts.add(mid);
-        }
-
-        return contacts;
-    }
-    public static CollisionManifold findCollisionFeatures(AlignedBox a, AlignedBox b) {
+    private static CollisionManifold findCollisionFeatures(AABBCollider a, AABBCollider b) {
         CollisionManifold manifold = new CollisionManifold();
-
         Vector2f aMin = a.getMin();
         Vector2f aMax = a.getMax();
         Vector2f bMin = b.getMin();
@@ -282,37 +184,104 @@ public class Collisions {
         boolean xOverlap = aMax.x > bMin.x && aMin.x < bMax.x;
         boolean yOverlap = aMax.y > bMin.y && aMin.y < bMax.y;
 
-        if (!(xOverlap && yOverlap)) {
-            return manifold; // No collision
-        }
+        if (!(xOverlap && yOverlap)) return manifold;
 
-        // Compute overlap on each axis
         float overlapX = Math.min(aMax.x, bMax.x) - Math.max(aMin.x, bMin.x);
         float overlapY = Math.min(aMax.y, bMax.y) - Math.max(aMin.y, bMin.y);
 
         Vector2f normal;
         float penetration;
-
         if (overlapX < overlapY) {
-            // Resolve on X axis
-            normal = a.getRigidbody().getPosition().x < b.getRigidbody().getPosition().x
-                    ? new Vector2f(-1, 0) : new Vector2f(1, 0);
+            normal = a.getRigidbody().getPosition().x < b.getRigidbody().getPosition().x ? new Vector2f(-1, 0) : new Vector2f(1, 0);
             penetration = overlapX;
         } else {
-            // Resolve on Y axis
-            normal = a.getRigidbody().getPosition().y < b.getRigidbody().getPosition().y
-                    ? new Vector2f(0, -1) : new Vector2f(0, 1);
+            normal = a.getRigidbody().getPosition().y < b.getRigidbody().getPosition().y ? new Vector2f(0, -1) : new Vector2f(0, 1);
             penetration = overlapY;
         }
 
-        // Contact point is the midpoint between box centers approximation
-        Vector2f contact = new Vector2f(a.getRigidbody().getPosition())
-                .add(b.getRigidbody().getPosition())
-                .mul(0.5f);
-
+        Vector2f contact = new Vector2f(a.getRigidbody().getPosition()).add(b.getRigidbody().getPosition()).mul(0.5f);
         manifold = new CollisionManifold(normal, penetration);
         manifold.addContactPoint(contact);
         return manifold;
+    }
+
+    // === SAT Collision Detection ===
+    private static CollisionManifold runSAT(Collider a, Collider b, Vector2f[] axes, boolean useContactPoints) {
+        float minOverlap = Float.MAX_VALUE;
+        Vector2f smallestAxis = new Vector2f();
+
+        for (Vector2f axis : axes) {
+            Vector2f interval1 = getInterval(a, axis);
+            Vector2f interval2 = getInterval(b, axis);
+
+            if (interval1.y < interval2.x || interval2.y < interval1.x) {
+                return new CollisionManifold();
+            }
+
+            float overlap = Math.min(interval1.y, interval2.y) - Math.max(interval1.x, interval2.x);
+            if (overlap < minOverlap) {
+                minOverlap = overlap;
+                smallestAxis.set(axis);
+            }
+        }
+
+        Vector2f centerOffset = new Vector2f(b.getRigidbody().getPosition()).sub(a.getRigidbody().getPosition());
+        if (centerOffset.dot(smallestAxis) < 0) smallestAxis.negate();
+
+        CollisionManifold manifold = new CollisionManifold(new Vector2f(smallestAxis), minOverlap);
+        if (useContactPoints) {
+            List<Vector2f> contacts = getContactPoints(a, b, smallestAxis);
+            for (Vector2f p : contacts) manifold.addContactPoint(p);
+        }
+        return manifold;
+    }
+
+    // === HELPER METHODS ===
+
+    private static Vector2f getInterval(Collider c, Vector2f axis) {
+        Vector2f result = new Vector2f(0, 0);
+        Vector2f[] vertices = c instanceof OBBCollider ? ((OBBCollider) c).getVertices() : ((AABBCollider) c).getVertices();
+
+        result.x = axis.dot(vertices[0]);
+        result.y = result.x;
+        for (int i = 1; i < vertices.length; i++) {
+            float projection = axis.dot(vertices[i]);
+            if (projection < result.x) result.x = projection;
+            else if (projection > result.y) result.y = projection;
+        }
+        return result;
+    }
+
+    private static List<Vector2f> getContactPoints(Collider c1, Collider c2, Vector2f normal) {
+        List<Vector2f> contacts = new ArrayList<>();
+        Vector2f[] verts1 = c1 instanceof OBBCollider ? ((OBBCollider) c1).getVertices() : ((AABBCollider) c1).getVertices();
+        Vector2f[] verts2 = c2 instanceof OBBCollider ? ((OBBCollider) c2).getVertices() : ((AABBCollider) c2).getVertices();
+
+        float maxDist = 0.01f;
+        for (Vector2f v1 : verts1) {
+            for (Vector2f v2 : verts2) {
+                if (v1.distance(v2) < maxDist) {
+                    contacts.add(new Vector2f(v1).lerp(v2, 0.5f));
+                }
+            }
+        }
+        if (contacts.isEmpty()) {
+            Vector2f center1 = c1.getRigidbody().getPosition();
+            Vector2f center2 = c2.getRigidbody().getPosition();
+            contacts.add(new Vector2f(center1).add(center2).mul(0.5f));
+        }
+        return contacts;
+    }
+
+    private static AABBCollider convertToAlignedBox(OBBCollider OBBCollider) {
+        Vector2f center = OBBCollider.getRigidbody().getPosition();
+        Vector2f halfSize = OBBCollider.getHalfSize();
+        Vector2f min = new Vector2f(center).sub(halfSize);
+        Vector2f max = new Vector2f(center).add(halfSize);
+
+        AABBCollider AABBCollider = new AABBCollider(min, max);
+        AABBCollider.setRigidbody(OBBCollider.getRigidbody()); // preserve transform info
+        return AABBCollider;
     }
 
 }

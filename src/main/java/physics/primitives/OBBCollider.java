@@ -1,20 +1,19 @@
 package physics.primitives;
 
 import org.joml.Vector2f;
-import physics.rigidbody.RaycastManager;
 import physics.rigidbody.Rigidbody2D;
 import util.DTUMath;
 
-public class Square extends Collider {
+public class OBBCollider extends Collider {
     private Vector2f size = new Vector2f();
     private Vector2f halfSize = new Vector2f();
     private Rigidbody2D rigidbody = null;
 
-    public Square() {
+    public OBBCollider() {
         this.halfSize = new Vector2f(this.size).mul(0.5f);
     }
 
-    public Square(Vector2f min, Vector2f max) {
+    public OBBCollider(Vector2f min, Vector2f max) {
         this.size = new Vector2f(max).sub(min);
         this.halfSize = new Vector2f(this.size).mul(0.5f);
     }

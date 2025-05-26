@@ -1,19 +1,18 @@
 package physics.primitives;
 
 import org.joml.Vector2f;
-import physics.rigidbody.RaycastManager;
 import physics.rigidbody.Rigidbody2D;
 
-public class AlignedBox extends Collider {
+public class AABBCollider extends Collider {
     private Vector2f halfSize;
     private Vector2f size = new Vector2f();
     private Rigidbody2D rigidbody = null;
 
-    public AlignedBox() {
+    public AABBCollider() {
         this.halfSize = new Vector2f(this.size).mul(0.5f);
     }
 
-    public AlignedBox(Vector2f min, Vector2f max) {
+    public AABBCollider(Vector2f min, Vector2f max) {
         this.size = new Vector2f(max).sub(min); // Since we know its axis aligned, we can get all the points by just knowing the min and max points
         this.halfSize = new Vector2f(this.size).mul(0.5f);
     }

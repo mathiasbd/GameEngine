@@ -6,7 +6,7 @@ import util.DTUMath;
 
 public class RaycastManager {
 
-    public static boolean pointOnLine(Vector2f point, Line2D line) { // test if a point is on a line (obviously)
+    public static boolean pointOnLine(Vector2f point, Line line) { // test if a point is on a line (obviously)
         float dy = line.getTo().y - line.getFrom().y;
         float dx = line.getTo().x - line.getFrom().x;
         float m = dy / dx;
@@ -20,7 +20,7 @@ public class RaycastManager {
         return distance.lengthSquared() <= circle.getRadius() * circle.getRadius();
     }
 
-    public static boolean pointInABox(Vector2f point, AlignedBox box) { // test if a point is in an axis aligned box
+    public static boolean pointInABox(Vector2f point, AABBCollider box) { // test if a point is in an axis aligned box
         Vector2f min = box.getMin();
         Vector2f max = box.getMax();
         return point.x <= max.x && min.x
@@ -28,7 +28,7 @@ public class RaycastManager {
                 <= point.y; // if the point is within the bounds of the box
     }
 
-    public static boolean pointInBox2D(Vector2f point, AlignedBox box) { // test if a point is in a box (not necessarily axis aligned)
+    public static boolean pointInBox2D(Vector2f point, AABBCollider box) { // test if a point is in a box (not necessarily axis aligned)
         // translate the point to the box's local space
         Vector2f localPoint = new Vector2f(point);
         DTUMath.rotate(localPoint, box.getRigidbody().getRotation(), box.getRigidbody().getPosition());
@@ -41,7 +41,7 @@ public class RaycastManager {
                 <= localPoint.y; // if the point is within the bounds of the box
     }
 
-    public static boolean lineInCircle(Line2D line, Circle circle) { // test if a line is in a circle
+    public static boolean lineInCircle(Line line, Circle circle) { // test if a line is in a circle
         if (pointInCircle(line.getFrom(), circle) || pointInCircle(line.getTo(), circle)) {
             return true;
         }
@@ -59,13 +59,13 @@ public class RaycastManager {
         return pointInCircle(closestPoint, circle);
     }
 
-    public static boolean lineInABox(Line2D line, AlignedBox alignedBox) { // test if a line is in an AlignedBox
-        if (pointInBox2D(line.getFrom(), alignedBox) || pointInBox2D(line.getTo(), alignedBox)) {
+    public static boolean lineInABox(Line line, AABBCollider AABBCollider) { // test if a line is in an AlignedBox
+        if (pointInBox2D(line.getFrom(), AABBCollider) || pointInBox2D(line.getTo(), AABBCollider)) {
             return true;
         }
 
-        Vector2f[] corners = alignedBox.getVertices();
-        Vector2f aBoxPosition = alignedBox.getRigidbody().getPosition();
+        Vector2f[] corners = AABBCollider.getVertices();
+        Vector2f aBoxPosition = AABBCollider.getRigidbody().getPosition();
 
         for (int i = 0; i < corners.length; i++) {
             // Get current corner and next corner,
@@ -75,7 +75,7 @@ public class RaycastManager {
             // System.out.println(sideLine);
 
             // Create a line from the two corners
-            Line2D sideLine = new Line2D(from, to, null, 1);
+            Line sideLine = new Line(from, to, null, 1);
 
             if (line.intersectsLine(sideLine)) {
                 return true;
@@ -84,19 +84,19 @@ public class RaycastManager {
         return false;
     }
 
-    public static boolean lineInSquare(Line2D line, Square square){ // test if a line is in a square
-        float theta = -square.getRigidbody().getRotation();
-        Vector2f center = square.getRigidbody().getPosition();
+    public static boolean lineInSquare(Line line, OBBCollider OBBCollider){ // test if a line is in a square
+        float theta = -OBBCollider.getRigidbody().getRotation();
+        Vector2f center = OBBCollider.getRigidbody().getPosition();
         Vector2f localStart = new Vector2f(line.getFrom());
         Vector2f localEnd = new Vector2f(line.getTo());
         DTUMath.rotate(localStart, theta, center);
         DTUMath.rotate(localEnd, theta, center);
 
-        Line2D localLine = new Line2D(localStart, localEnd,null, 1);
-        AlignedBox alignedBox = new AlignedBox(square.getMin(), square.getMax());
-        alignedBox.setRigidbody(square.getRigidbody());
+        Line localLine = new Line(localStart, localEnd,null, 1);
+        AABBCollider AABBCollider = new AABBCollider(OBBCollider.getMin(), OBBCollider.getMax());
+        AABBCollider.setRigidbody(OBBCollider.getRigidbody());
 
-        return lineInABox(localLine, alignedBox);
+        return lineInABox(localLine, AABBCollider);
     }
 
     public static boolean raycastCircle(Raycast ray, Circle circle, RaycastResult rayResult) {
@@ -147,11 +147,11 @@ public class RaycastManager {
         return true;
     }
 
-    public static boolean raycastABox(Raycast ray, AlignedBox box, RaycastResult rayResult) {
+    public static boolean raycastABox(Raycast ray, AABBCollider box, RaycastResult rayResult) {
         return false;
     }
 
-    public static boolean raycastSquare(Raycast ray, Square square, RaycastResult rayResult) {
+    public static boolean raycastSquare(Raycast ray, OBBCollider OBBCollider, RaycastResult rayResult) {
         return false;
     }
 
@@ -169,7 +169,7 @@ public class RaycastManager {
 
     //AlignedBox vs circle
     // Checks for collision between a circle and an Axis Aligned Box
-    public static boolean circleAndAlignedBox (Circle circle, AlignedBox aBox){
+    public static boolean circleAndAlignedBox (Circle circle, AABBCollider aBox){
 
         Vector2f circleCenter = circle.getCenter();
         // Get the min and max corners of the AlignedBox
@@ -189,15 +189,15 @@ public class RaycastManager {
 
     //Square vs circle
     // Treat the Square just like an AABB, after we rotate the vector from the center of the box to the center of the circle
-    public static boolean circleAndSquare (Circle circle, Square square){
+    public static boolean circleAndSquare (Circle circle, OBBCollider OBBCollider){
         // Treat the square like an aligned  box in its local space
         Vector2f min = new Vector2f(); // (0, 0) in local square space
-        Vector2f max = new Vector2f(square.getHalfSize()).mul(2.0f); // Full size of the box (width, height)
+        Vector2f max = new Vector2f(OBBCollider.getHalfSize()).mul(2.0f); // Full size of the box (width, height)
 
         //Convert the circle's center to the box's local coordinate space
-        Vector2f r = new Vector2f(circle.getCenter()).sub(square.getRigidbody().getPosition());// Translate to box origin
-        DTUMath.rotate(r, -square.getRigidbody().getRotation(), new Vector2f());
-        Vector2f localCircle= new Vector2f(r).add(square.getHalfSize());
+        Vector2f r = new Vector2f(circle.getCenter()).sub(OBBCollider.getRigidbody().getPosition());// Translate to box origin
+        DTUMath.rotate(r, -OBBCollider.getRigidbody().getRotation(), new Vector2f());
+        Vector2f localCircle= new Vector2f(r).add(OBBCollider.getHalfSize());
 
         // This gives us the closest point on the ABox to the circle
         float closestX = Math.max(min.x, Math.min(localCircle.x, max.x));
@@ -213,11 +213,11 @@ public class RaycastManager {
     }
 
 
-    public static boolean ABoxAndCircle(AlignedBox aBox, Circle circle){
+    public static boolean ABoxAndCircle(AABBCollider aBox, Circle circle){
         return circleAndAlignedBox(circle, aBox);
     }
 
-    public static boolean ABoxAndABox(AlignedBox aBox1, AlignedBox aBox2){
+    public static boolean ABoxAndABox(AABBCollider aBox1, AABBCollider aBox2){
         Vector2f axesToTest[] = {
                 new Vector2f(1, 0), // x-axis
                 new Vector2f(0, 1), // y-axis
@@ -230,41 +230,41 @@ public class RaycastManager {
         return true;
     }
 
-    public static boolean ABoxAndSquare(AlignedBox aBox, Square square){
+    public static boolean ABoxAndSquare(AABBCollider aBox, OBBCollider OBBCollider){
         Vector2f axesToTest[] = {
                 new Vector2f(0, 1),
                 new Vector2f(1, 0),
                 new Vector2f(0, 1),
                 new Vector2f(1, 0),
         };
-        DTUMath.rotate(axesToTest[2], square.getRigidbody().getRotation(), square.getRigidbody().getPosition());
-        DTUMath.rotate(axesToTest[3], square.getRigidbody().getRotation(), square.getRigidbody().getPosition());
+        DTUMath.rotate(axesToTest[2], OBBCollider.getRigidbody().getRotation(), OBBCollider.getRigidbody().getPosition());
+        DTUMath.rotate(axesToTest[3], OBBCollider.getRigidbody().getRotation(), OBBCollider.getRigidbody().getPosition());
 
         for (Vector2f axis : axesToTest) {
-            if (!overlapOnAxis(aBox, square, axis)) {
+            if (!overlapOnAxis(aBox, OBBCollider, axis)) {
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean overlapOnAxis(AlignedBox aBox1, AlignedBox aBox2, Vector2f axis) {
+    private static boolean overlapOnAxis(AABBCollider aBox1, AABBCollider aBox2, Vector2f axis) {
         Vector2f interval1 = getInterval(aBox1, axis);
         Vector2f interval2 = getInterval(aBox2, axis);
 
         return interval1.x <= interval2.y && interval2.x <= interval1.y;
     }
 
-    private static boolean overlapOnAxis(AlignedBox aBox, Square square, Vector2f axis) {
+    private static boolean overlapOnAxis(AABBCollider aBox, OBBCollider OBBCollider, Vector2f axis) {
         Vector2f interval1 = getInterval(aBox, axis);
-        Vector2f interval2 = getInterval(square, axis);
+        Vector2f interval2 = getInterval(OBBCollider, axis);
 
         return interval1.x <= interval2.y && interval2.x <= interval1.y;
     }
 
 
 
-    private static Vector2f getInterval(AlignedBox box, Vector2f axis) {
+    private static Vector2f getInterval(AABBCollider box, Vector2f axis) {
         Vector2f result = new Vector2f(0, 0);
 
         Vector2f min = box.getMin();
@@ -290,7 +290,7 @@ public class RaycastManager {
         return result;
     }
 
-    private static Vector2f getInterval(Square box, Vector2f axis) {
+    private static Vector2f getInterval(OBBCollider box, Vector2f axis) {
         Vector2f result = new Vector2f(0, 0);
 
         Vector2f min = box.getMin();

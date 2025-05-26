@@ -1,6 +1,5 @@
 package scenes;
 
-import components.SpriteSheet;
 import imGui.ImGuiLayer;
 import org.example.Camera;
 import org.example.GameEngineManager;
@@ -9,12 +8,11 @@ import org.example.Transform;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import physics.PhysicsSystem;
-import physics.primitives.AlignedBox;
+import physics.primitives.AABBCollider;
 import physics.primitives.Circle;
 import physics.primitives.Collider;
-import physics.primitives.Square;
+import physics.primitives.OBBCollider;
 import physics.rigidbody.Rigidbody2D;
-import util.AssetPool;
 import util.DebugDraw;
 
 import java.util.List;
@@ -80,15 +78,15 @@ public class LevelScene extends Scene {
 
         switch (collider) {
             case Circle circle -> DebugDraw.addCircle(circle.getCenter(), circle.getRadius(), new Vector3f(1, 0, 0), 1);
-            case Square square -> {
-                Vector2f center = square.getRigidbody().getPosition();
-                Vector2f dimensions = square.getHalfSize().mul(2, new Vector2f());
-                float rotation = square.getRigidbody().getRotation();
+            case OBBCollider OBBCollider -> {
+                Vector2f center = OBBCollider.getRigidbody().getPosition();
+                Vector2f dimensions = OBBCollider.getHalfSize().mul(2, new Vector2f());
+                float rotation = OBBCollider.getRigidbody().getRotation();
                 DebugDraw.addBox(center, dimensions, rotation, new Vector3f(1, 0, 0), 1);
             }
-            case AlignedBox alignedBox -> {
-                Vector2f center = alignedBox.getRigidbody().getPosition();
-                Vector2f dimensions = alignedBox.getHalfSize().mul(2, new Vector2f());
+            case AABBCollider AABBCollider -> {
+                Vector2f center = AABBCollider.getRigidbody().getPosition();
+                Vector2f dimensions = AABBCollider.getHalfSize().mul(2, new Vector2f());
                 DebugDraw.addBox(center, dimensions, 0, new Vector3f(1, 0, 0), 1); // No rotation
             }
             case null, default -> System.err.println("Unknown collider type");

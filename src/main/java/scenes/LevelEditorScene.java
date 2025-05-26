@@ -1,41 +1,22 @@
 package scenes;
 
 
-import java.awt.event.KeyEvent;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import components.Component;
-import components.Sprite;
 import components.SpriteRenderer;
 import components.SpriteSheet;
 import imGui.ImGuiLayer;
-import input.KeyboardHandler;
 import input.MouseHandler;
 import org.example.*;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 import physics.PhysicsSystem;
-import physics.primitives.AlignedBox;
+import physics.primitives.AABBCollider;
 import physics.primitives.Circle;
 import physics.primitives.Collider;
-import physics.primitives.Square;
+import physics.primitives.OBBCollider;
 import physics.rigidbody.Rigidbody2D;
-import rendering.Shader;
-import org.lwjgl.BufferUtils;
-import rendering.Texture;
-import serializers.ComponentSerializer;
-import serializers.GameObjectSerializer;
 import util.AssetPool;
 import util.DebugDraw;
-import util.Time;
 
-import javax.swing.*;
-
-import static org.lwjgl.opengl.GL30.*;
-import java.nio.IntBuffer;
-import java.nio.FloatBuffer;
 import java.util.List;
 
 public class LevelEditorScene extends Scene {
@@ -124,15 +105,15 @@ public class LevelEditorScene extends Scene {
 
         switch (collider) {
             case Circle circle -> DebugDraw.addCircle(circle.getCenter(), circle.getRadius(), new Vector3f(1, 0, 0), 1);
-            case Square square -> {
-                Vector2f center = square.getRigidbody().getPosition();
-                Vector2f dimensions = square.getHalfSize().mul(2, new Vector2f());
-                float rotation = square.getRigidbody().getRotation();
+            case OBBCollider OBBCollider -> {
+                Vector2f center = OBBCollider.getRigidbody().getPosition();
+                Vector2f dimensions = OBBCollider.getHalfSize().mul(2, new Vector2f());
+                float rotation = OBBCollider.getRigidbody().getRotation();
                 DebugDraw.addBox(center, dimensions, rotation, new Vector3f(1, 0, 0), 1);
             }
-            case AlignedBox alignedBox -> {
-                Vector2f center = alignedBox.getRigidbody().getPosition();
-                Vector2f dimensions = alignedBox.getHalfSize().mul(2, new Vector2f());
+            case AABBCollider AABBCollider -> {
+                Vector2f center = AABBCollider.getRigidbody().getPosition();
+                Vector2f dimensions = AABBCollider.getHalfSize().mul(2, new Vector2f());
                 DebugDraw.addBox(center, dimensions, 0, new Vector3f(1, 0, 0), 1); // No rotation
             }
             case null, default -> System.err.println("Unknown collider type");
