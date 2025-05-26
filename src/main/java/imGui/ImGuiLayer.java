@@ -69,9 +69,8 @@ public class ImGuiLayer {
         if (!isInEditor) {
             if (ImGui.button("Stop", buttonWidth, 0)) {
                 if (isInGame) {
-                    GameEngineManager.changeScene("LevelEditorScene", new ArrayList<>(currentScene.getGameObjects()));
+                    GameEngineManager.changeScene("EditorScene", new ArrayList<>());
                 }
-                GameEngineManager.changeScene("EditorScene", new ArrayList<>(currentScene.getGameObjects()));
             }
         } else {
             ImGui.beginDisabled(true);
@@ -83,30 +82,33 @@ public class ImGuiLayer {
         ImGui.popStyleVar(3);
 
         // SIDEBAR WINDOW
-        float sidebarPosX = ImGui.getMainViewport().getPosX();
-        float sidebarPosY = ImGui.getMainViewport().getPosY() + toolbarHeight;
-        float sidebarWidth = 200.0f;
-        float sidebarHeight = ImGui.getMainViewport().getSizeY() - toolbarHeight;
+        if(currentScene.getClass()== LevelEditorScene.class) {
+            float sidebarPosX = ImGui.getMainViewport().getPosX();
+            float sidebarPosY = ImGui.getMainViewport().getPosY() + toolbarHeight;
+            float sidebarWidth = 200.0f;
+            float sidebarHeight = ImGui.getMainViewport().getSizeY() - toolbarHeight;
 
-        ImGui.setNextWindowPos(new ImVec2(sidebarPosX, sidebarPosY), ImGuiCond.Once);
-        ImGui.setNextWindowSize(new ImVec2(sidebarWidth, sidebarHeight), ImGuiCond.Once);
-        ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0, 0);
+            ImGui.setNextWindowPos(new ImVec2(sidebarPosX, sidebarPosY), ImGuiCond.Once);
+            ImGui.setNextWindowSize(new ImVec2(sidebarWidth, sidebarHeight), ImGuiCond.Once);
+            ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0, 0);
 
-        ImGui.begin("Objects And Assets");
+            ImGui.begin("Objects And Assets");
 
-        ImGui.popStyleVar();
+            ImGui.popStyleVar();
 
-        ImGui.beginChild("ObjectHierarchy", ImGui.getContentRegionAvailX(),
-                ImGui.getContentRegionAvailY() * 0.6f, true);
-        imGuiHierarchyWindow.showContent(currentScene);
-        ImGui.endChild();
+            ImGui.beginChild("ObjectHierarchy", ImGui.getContentRegionAvailX(),
+                    ImGui.getContentRegionAvailY() * 0.6f, true);
+            imGuiHierarchyWindow.showContent(currentScene);
+            ImGui.endChild();
 
-        ImGui.beginChild("Assets", ImGui.getContentRegionAvailX(),
-                ImGui.getContentRegionAvailY(), true);
-        imGuiAssetWindow.showContent(currentScene);
-        ImGui.endChild();
+            ImGui.beginChild("Assets", ImGui.getContentRegionAvailX(),
+                    ImGui.getContentRegionAvailY(), true);
+            imGuiAssetWindow.showContent(currentScene);
+            ImGui.endChild();
 
-        ImGui.end();
+            ImGui.end();
+        }
+
 
     }
 }

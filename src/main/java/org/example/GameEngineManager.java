@@ -34,8 +34,6 @@ public class GameEngineManager {
         float deltaTime = -1.0f;
         int frames = 0, updates = 0;
 
-        currentScene.load();
-
         //Loop runs until windowShouldClose is set to true
         while (!glfwWindowShouldClose(window.getWindow())) {
 
@@ -68,7 +66,9 @@ public class GameEngineManager {
             deltaTime = endTime-initialTime;
             initialTime = endTime;
         }
-        currentScene.saveExit();
+        if(currentScene.getClass()==LevelEditorScene.class) {
+            currentScene.saveExit();
+        }
     }
 
     public static void changeScene(String sceneName, List<GameObject> gameObjects) {
@@ -77,10 +77,12 @@ public class GameEngineManager {
             case "EditorScene":
                 currentScene = new LevelEditorScene();
                 currentScene.init(gameObjects);
+                currentScene.load();
                 currentScene.start();
                 currentSceneName = "EditorScene";
                 break;
             case "GameScene":
+                currentScene.saveExit();
                 currentScene = new LevelScene();
                 currentScene.init(gameObjects);
                 currentScene.start();
