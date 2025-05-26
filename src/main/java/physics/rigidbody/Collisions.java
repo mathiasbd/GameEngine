@@ -7,6 +7,7 @@ import physics.primitives.Collider;
 import physics.primitives.Square;
 import util.DTUMath;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Collisions {
@@ -43,16 +44,49 @@ public class Collisions {
     }
 
     public static CollisionManifold findCollisionFeatures(Square s1, Square s2) {
-        CollisionManifold manifold = new CollisionManifold();
-        boolean colliding = squareAndSquare(s1, s2);
-        if (colliding) {
-            System.out.println("Two squares colliding");
+        Vector2f[] axes = new Vector2f[4];
+        axes[0] = new Vector2f(1, 0);
+        axes[1] = new Vector2f(0, 1);
+        axes[2] = new Vector2f(1, 0);
+        axes[3] = new Vector2f(0, 1);
+
+        DTUMath.rotate(axes[0], s1.getRigidbody().getRotation(), new Vector2f());
+        DTUMath.rotate(axes[1], s1.getRigidbody().getRotation(), new Vector2f());
+        DTUMath.rotate(axes[2], s2.getRigidbody().getRotation(), new Vector2f());
+        DTUMath.rotate(axes[3], s2.getRigidbody().getRotation(), new Vector2f());
+
+        float minOverlap = Float.MAX_VALUE;
+        Vector2f smallestAxis = new Vector2f();
+        for (Vector2f axis : axes) {
+            Vector2f i1 = getInterval(s1, axis);
+            Vector2f i2 = getInterval(s2, axis);
+            if (i1.y < i2.x || i2.y < i1.x) {
+                return new CollisionManifold(); // No collision
+            }
+
+            float overlap = Math.min(i1.y, i2.y) - Math.max(i1.x, i2.x);
+            if (overlap < minOverlap) {
+                minOverlap = overlap;
+                smallestAxis.set(axis);
+            }
         }
-        return null;
+
+        // Ensure normal points from s1 to s2
+        Vector2f centerOffset = new Vector2f(s2.getRigidbody().getPosition()).sub(s1.getRigidbody().getPosition());
+        if (centerOffset.dot(smallestAxis) < 0) {
+            smallestAxis.negate();
+        }
+
+        CollisionManifold manifold = new CollisionManifold(new Vector2f(smallestAxis), minOverlap);
+
+        // Get contact points
+        List<Vector2f> contactPoints = getContactPoints(s1, s2, manifold.getNormal());
+        for (Vector2f p : contactPoints) {
+            manifold.addContactPoint(p);
+        }
+
+        return manifold;
     }
-
-
-
 
     // Helpers
 
@@ -88,31 +122,6 @@ public class Collisions {
         }
         return true;
     }
-
-    public static boolean squareAndSquare(Square square1, Square square2) {
-        Vector2f[] axesToTest = new Vector2f[] {
-                new Vector2f(1, 0),
-                new Vector2f(0, 1),
-                new Vector2f(1, 0),
-                new Vector2f(0, 1),
-        };
-
-        // Rotate square1's axes
-        DTUMath.rotate(axesToTest[0], square1.getRigidbody().getRotation(), new Vector2f());
-        DTUMath.rotate(axesToTest[1], square1.getRigidbody().getRotation(), new Vector2f());
-
-        // Rotate square2's axes
-        DTUMath.rotate(axesToTest[2], square2.getRigidbody().getRotation(), new Vector2f());
-        DTUMath.rotate(axesToTest[3], square2.getRigidbody().getRotation(), new Vector2f());
-
-        for (Vector2f axis : axesToTest) {
-            if (!overlapOnAxis(square1, square2, axis)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     private static boolean overlapOnAxis(AlignedBox aBox1, AlignedBox aBox2, Vector2f axis) {
         Vector2f interval1 = getInterval(aBox1, axis);
@@ -181,4 +190,30 @@ public class Collisions {
         }
         return result;
     }
+
+    private static List<Vector2f> getContactPoints(Square s1, Square s2, Vector2f normal) {
+        List<Vector2f> contacts = new ArrayList<>();
+        Vector2f[] verts1 = s1.getVertices();
+        Vector2f[] verts2 = s2.getVertices();
+
+        float maxDist = 0.01f; // Small epsilon
+
+        for (Vector2f v1 : verts1) {
+            for (Vector2f v2 : verts2) {
+                if (v1.distance(v2) < maxDist) {
+                    contacts.add(new Vector2f(v1).lerp(v2, 0.5f));
+                }
+            }
+        }
+
+        if (contacts.isEmpty()) {
+            // Fallback: estimate contact by projecting center
+            Vector2f mid = new Vector2f(s1.getRigidbody().getPosition())
+                    .add(s2.getRigidbody().getPosition()).mul(0.5f);
+            contacts.add(mid);
+        }
+
+        return contacts;
+    }
+
 }

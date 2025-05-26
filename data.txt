@@ -47,7 +47,7 @@
               "x": 587.5,
               "y": 300.555
             },
-            "rotation": 0.0,
+            "rotation": 30.0,
             "mass": 1.0,
             "inverseMass": 1.0,
             "hasGravity": true,
@@ -168,8 +168,8 @@
               "y": 20.0
             },
             "rotation": 0.0,
-            "mass": 1.0,
-            "inverseMass": 1.0,
+            "mass": 0.0,
+            "inverseMass": 0.0,
             "hasGravity": false,
             "restitution": 1.0,
             "forceAcc": {
@@ -279,8 +279,8 @@
                 "y": 0.0
               },
               "rotation": 0.0,
-              "mass": 0.0,
-              "inverseMass": 0.0,
+              "mass": 1.0,
+              "inverseMass": 1.0,
               "hasGravity": false,
               "restitution": 1.0,
               "forceAcc": {
