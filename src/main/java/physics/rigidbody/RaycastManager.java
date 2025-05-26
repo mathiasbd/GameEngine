@@ -166,6 +166,7 @@ public class RaycastManager {
         return distance <= radiusSum*radiusSum;
     }
 
+
     //AlignedBox vs circle
     // Checks for collision between a circle and an Axis Aligned Box
     public static boolean circleAndAlignedBox (Circle circle, AlignedBox aBox){
@@ -197,8 +198,6 @@ public class RaycastManager {
         Vector2f r = new Vector2f(circle.getCenter()).sub(square.getRigidbody().getPosition());// Translate to box origin
         DTUMath.rotate(r, -square.getRigidbody().getRotation(), new Vector2f());
         Vector2f localCircle= new Vector2f(r).add(square.getHalfSize());
-
-
 
         // This gives us the closest point on the ABox to the circle
         float closestX = Math.max(min.x, Math.min(localCircle.x, max.x));

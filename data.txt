@@ -112,7 +112,7 @@
       "transform": {
         "position": {
           "x": 587.5,
-          "y": 300.555
+          "y": 500.555
         },
         "scale": {
           "x": 100.0,
@@ -241,82 +241,6 @@
       }
     },
     {
-      "name": "circle1",
-      "components": [
-        {
-          "type": "physics.rigidbody.Rigidbody2D",
-          "properties": {
-            "position": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "rotation": 0.0,
-            "mass": 0.0,
-            "inverseMass": 0.0,
-            "hasGravity": false,
-            "restitution": 1.0,
-            "forceAcc": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "linearVelocity": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "angularVelocity": 0.0,
-            "linearDamping": 0.0,
-            "angularDamping": 0.0,
-            "fixedRotation": false
-          }
-        },
-        {
-          "type": "physics.primitives.Circle",
-          "properties": {
-            "radius": 20.0,
-            "rigidbody": {
-              "position": {
-                "x": 0.0,
-                "y": 0.0
-              },
-              "rotation": 0.0,
-              "mass": 1.0,
-              "inverseMass": 1.0,
-              "hasGravity": false,
-              "restitution": 1.0,
-              "forceAcc": {
-                "x": 0.0,
-                "y": 0.0
-              },
-              "linearVelocity": {
-                "x": 0.0,
-                "y": 0.0
-              },
-              "angularVelocity": 0.0,
-              "linearDamping": 0.0,
-              "angularDamping": 0.0,
-              "fixedRotation": false
-            },
-            "offset": {
-              "x": 0.0,
-              "y": 0.0
-            }
-          }
-        }
-      ],
-      "zIndex": 0,
-      "inScene": false,
-      "transform": {
-        "position": {
-          "x": 900.0,
-          "y": 100.0
-        },
-        "scale": {
-          "x": 0.0,
-          "y": 0.0
-        }
-      }
-    },
-    {
       "name": "circle2",
       "components": [
         {
@@ -327,9 +251,9 @@
               "y": 0.0
             },
             "rotation": 0.0,
-            "mass": 1.0,
-            "inverseMass": 1.0,
-            "hasGravity": true,
+            "mass": 0.1,
+            "inverseMass": 10.0,
+            "hasGravity": false,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -383,7 +307,7 @@
       "inScene": false,
       "transform": {
         "position": {
-          "x": 900.0,
+          "x": 582.0,
           "y": 300.0
         },
         "scale": {

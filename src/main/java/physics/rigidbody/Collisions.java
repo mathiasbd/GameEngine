@@ -16,6 +16,8 @@ public class Collisions {
             return findCollisionFeatures((Circle)c1, (Circle)c2);
         } if (c1 instanceof Square && c2 instanceof  Square) {
             return findCollisionFeatures((Square)c1, (Square)c2);
+        } if (c1 instanceof Square && c2 instanceof Circle) {
+            return findCollisionFeatures((Circle)c2, (Square)c1);
         }
         return null;
     }
@@ -42,6 +44,58 @@ public class Collisions {
         manifold.addContactPoint(contactPointA);
         return manifold;
     }
+
+    public static CollisionManifold findCollisionFeatures(Circle circle, Square square) {
+        CollisionManifold result = new CollisionManifold();
+
+        // Step 1: Convert circle center to square local space
+        Vector2f squarePos = square.getRigidbody().getPosition();
+        float squareRot = square.getRigidbody().getRotation();
+        Vector2f halfSize = square.getHalfSize();
+        Vector2f localCenter = new Vector2f(circle.getCenter()).sub(squarePos);
+        DTUMath.rotate(localCenter, -squareRot, new Vector2f());
+        localCenter.add(halfSize); // shift origin to square's local min corner
+
+        // Step 2: Compute closest point on local AABB
+        Vector2f min = new Vector2f(0, 0);
+        Vector2f max = new Vector2f(halfSize).mul(2.0f);
+        float closestX = Math.max(min.x, Math.min(localCenter.x, max.x));
+        float closestY = Math.max(min.y, Math.min(localCenter.y, max.y));
+        Vector2f closestPointLocal = new Vector2f(closestX, closestY);
+
+        // Step 3: Compute local normal and distance
+        Vector2f normalLocal = new Vector2f(localCenter).sub(closestPointLocal);
+        float distSquared = normalLocal.lengthSquared();
+
+        if (distSquared > circle.getRadius() * circle.getRadius()) {
+            return result; // no collision
+        }
+
+        // Step 4: Resolve collision manifold
+        float distance = (float) Math.sqrt(distSquared);
+        Vector2f normalWorld;
+        if (distance == 0) {
+            // Circle center is exactly at closest point — use arbitrary normal
+            normalWorld = new Vector2f(1, 0);
+            closestPointLocal.set(localCenter); // fallback
+        } else {
+            normalLocal.div(distance); // normalize
+            normalWorld = new Vector2f(normalLocal);
+            DTUMath.rotate(normalWorld, squareRot, new Vector2f());
+        }
+
+        // Step 5: Rotate closest point back to world space
+        Vector2f contactPointWorld = new Vector2f(closestPointLocal).sub(halfSize);
+        DTUMath.rotate(contactPointWorld, squareRot, new Vector2f());
+        contactPointWorld.add(squarePos);
+
+        float penetration = circle.getRadius() - distance;
+
+        result = new CollisionManifold(normalWorld, penetration);
+        result.addContactPoint(contactPointWorld);
+        return result;
+    }
+
 
     public static CollisionManifold findCollisionFeatures(Square s1, Square s2) {
         Vector2f[] axes = new Vector2f[4];
