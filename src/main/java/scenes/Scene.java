@@ -96,6 +96,7 @@ public abstract class Scene {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("Saved on exit");
     }
 
     public void load() {
