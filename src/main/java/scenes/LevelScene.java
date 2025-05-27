@@ -61,6 +61,10 @@ public class LevelScene extends Scene {
                     transform.setPosition(rb.getPosition());
                     collider.setRigidbody(rb);
                     rb.setCollider(collider);
+                    if (collider instanceof OBBCollider obb) {
+                        // Sync rotation directly
+                        obb.getRigidbody().setRotation(rb.getRotation());
+                    }
                 } else {
                     System.err.println("Collider without Rigidbody2D: " + go.getName());
                 }
