@@ -29,7 +29,7 @@ public class Rigidbody2D extends Component {
     private Vector2f linearVelocity = new Vector2f();
 
     private float angularVelocity = 0.0f;
-    private float linearDamping = 0.0f;
+    private float linearDamping = 0.05f;
     private float angularDamping = 0.0f;
     private boolean fixedRotation = false;
 
@@ -37,6 +37,7 @@ public class Rigidbody2D extends Component {
     public void update(float dt) {}
 
     public void physicsUpdate(float dt) {
+        linearDamping = 0.05f; // temporary value, can be set externally
         if (this.mass == 0.0f || bodyType == BodyType.STATIC) return;
 
         Vector2f acceleration = new Vector2f(forceAcc).mul(this.inverseMass);

@@ -116,4 +116,16 @@ public class PhysicsSystem {
             this.fr.add(body, gravity);
         }
     }
+
+    // used for angular rotation
+    public static float cross(Vector2f a, Vector2f b) {
+        return a.x * b.y - a.y * b.x;
+    }
+    public static Vector2f cross(Vector2f v, float a) {
+        return new Vector2f(-a * v.y, a * v.x);
+    }
+    public static Vector2f cross(float a, Vector2f v) {
+        return new Vector2f(a * v.y, -a * v.x);
+    }
+
 }
