@@ -33,6 +33,10 @@ public class Rigidbody2D extends Component {
     private float angularDamping = 0.0f;
     private boolean fixedRotation = false;
 
+    private float torque = 0.0f;
+    private float inertia = 1.0f;
+    private float inverseInertia = 1.0f;
+
     @Override
     public void update(float dt) {}
 
@@ -49,6 +53,15 @@ public class Rigidbody2D extends Component {
         }
 
         this.position.add(new Vector2f(linearVelocity).mul(dt));
+
+        // Angular motion
+        if (!fixedRotation) {
+            float angularAcceleration = torque * inverseInertia;
+            angularVelocity += angularAcceleration * dt;
+            angularVelocity *= (1.0f - angularDamping * dt);
+            rotation += angularVelocity * dt;
+        }
+        
         synchCollisionTransforms();
         clearAccumulators();
     }
@@ -61,6 +74,8 @@ public class Rigidbody2D extends Component {
 
     public void clearAccumulators() {
         this.forceAcc.zero();
+        this.torque = 0.0f;
+
     }
 
     public boolean hasInfiniteMass() {
@@ -117,6 +132,28 @@ public class Rigidbody2D extends Component {
     public void setRawTransform(Transform rawTransform) {
         this.rawTransform = rawTransform;
         this.position.set(rawTransform.position);
+    }
+
+    public void addTorque(float torque) {
+        this.torque += torque;
+    }
+
+    public void setInertia(float inertia) {
+        this.inertia = inertia;
+        if (inertia != 0) this.inverseInertia = 1.0f / inertia;
+        else this.inverseInertia = 0.0f;
+    }
+
+    public float getInverseInertia() {
+        return inverseInertia;
+    }
+
+    public float getAngularVelocity() {
+        return angularVelocity;
+    }
+
+    public void setAngularVelocity(float angularVelocity) {
+        this.angularVelocity = angularVelocity;
     }
 
     public void setCollider(Collider collider) {
