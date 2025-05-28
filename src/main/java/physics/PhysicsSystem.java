@@ -80,6 +80,12 @@ public class PhysicsSystem {
             }
         }
 
+        // Positional correction
+        for (int i = 0; i < collisions.size(); i++) {
+            positionalCorrection(bodies1.get(i), bodies2.get(i), collisions.get(i));
+        }
+
+
         for (Rigidbody2D body : rb) {
             if (body.getBodyType() != BodyType.STATIC) {
                 body.physicsUpdate(fixedUpdate);
@@ -110,12 +116,33 @@ public class PhysicsSystem {
         }
     }
 
+    private void positionalCorrection(Rigidbody2D r1, Rigidbody2D r2, CollisionManifold m) {
+        final float percent = 0.2f;
+        final float slop = 0.01f;
+
+        float penetration = m.getPenetrationDepth();
+        if (penetration <= slop) return;
+
+        Vector2f correction = new Vector2f(m.getNormal())
+                .mul(Math.max(penetration - slop, 0.0f) / (r1.getInverseMass() + r2.getInverseMass()))
+                .mul(percent);
+
+        if (!r1.hasInfiniteMass()) {
+            r1.setPosition(new Vector2f(r1.getPosition()).sub(new Vector2f(correction).mul(r1.getInverseMass())));
+        }
+        if (!r2.hasInfiniteMass()) {
+            r2.setPosition(new Vector2f(r2.getPosition()).add(new Vector2f(correction).mul(r2.getInverseMass())));
+        }
+    }
+
+
     public void addRigidbody(Rigidbody2D body) {
         this.rb.add(body);
         if (body.getBodyType() != BodyType.STATIC) {
             this.fr.add(body, gravity);
         }
     }
+
 
     // used for angular rotation
     public static float cross(Vector2f a, Vector2f b) {

@@ -14,15 +14,12 @@ public class Rigidbody2D extends Component {
     }
 
     private BodyType bodyType = BodyType.DYNAMIC;
-    private boolean isGrounded = false;
-
     private Transform rawTransform;
     private Collider collider;
 
     private Vector2f position = new Vector2f();
     private float rotation = 0.0f;
     private float mass = 1f;
-    private float inverseMass = 1f;
 
     private float restitution = 1.0f;
     private Vector2f forceAcc = new Vector2f();
@@ -30,33 +27,30 @@ public class Rigidbody2D extends Component {
 
     private float angularVelocity = 0.0f;
     private float linearDamping = 0.05f;
-    private float angularDamping = 0.0f;
+    private float angularDamping = 0.05f;
     private boolean fixedRotation = false;
 
     private float torque = 0.0f;
     private float inertia = 1.0f;
-    private float inverseInertia = 1.0f;
 
     @Override
     public void update(float dt) {}
 
     public void physicsUpdate(float dt) {
         linearDamping = 0.05f; // temporary value, can be set externally
+        angularDamping = 0.05f; // temporary value, can be set externally
+
         if (this.mass == 0.0f || bodyType == BodyType.STATIC) return;
 
-        Vector2f acceleration = new Vector2f(forceAcc).mul(this.inverseMass);
+        Vector2f acceleration = new Vector2f(forceAcc).mul(getInverseMass());
         linearVelocity.add(acceleration.mul(dt));
         linearVelocity.mul(1.0f - linearDamping * dt);
-
-        if (isGrounded && linearVelocity.y < 0) {
-            linearVelocity.y = 0;
-        }
 
         this.position.add(new Vector2f(linearVelocity).mul(dt));
 
         // Angular motion
         if (!fixedRotation) {
-            float angularAcceleration = torque * inverseInertia;
+            float angularAcceleration = torque * getInverseInertia();
             angularVelocity += angularAcceleration * dt;
             angularVelocity *= (1.0f - angularDamping * dt);
             rotation += angularVelocity * dt;
@@ -111,7 +105,10 @@ public class Rigidbody2D extends Component {
     }
 
     public float getInverseMass() {
-        return inverseMass;
+        if (mass == 0.0f) {
+            return 0.0f;
+        }
+        return 1.0f / mass;
     }
 
     public Vector2f getForceAccumulator() {
@@ -121,7 +118,7 @@ public class Rigidbody2D extends Component {
     public void setMass(float mass) {
         this.mass = mass;
         if (this.mass != 0.0f) {
-            this.inverseMass = 1.0f / this.mass;
+            //this.inverseMass = 1.0f / this.mass;
         }
     }
 
@@ -138,14 +135,11 @@ public class Rigidbody2D extends Component {
         this.torque += torque;
     }
 
-    public void setInertia(float inertia) {
-        this.inertia = inertia;
-        if (inertia != 0) this.inverseInertia = 1.0f / inertia;
-        else this.inverseInertia = 0.0f;
-    }
-
     public float getInverseInertia() {
-        return inverseInertia;
+        if (inertia == 0.0f) {
+            return 0.0f;
+        }
+        return 1.0f / inertia;
     }
 
     public float getAngularVelocity() {
@@ -176,15 +170,4 @@ public class Rigidbody2D extends Component {
         return bodyType;
     }
 
-    public void setBodyType(BodyType bodyType) {
-        this.bodyType = bodyType;
-    }
-
-    public boolean isGrounded() {
-        return isGrounded;
-    }
-
-    public void setGrounded(boolean grounded) {
-        isGrounded = grounded;
-    }
 }

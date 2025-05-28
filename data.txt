@@ -44,14 +44,12 @@
           "type": "physics.rigidbody.Rigidbody2D",
           "properties": {
             "bodyType": "DYNAMIC",
-            "isGrounded": false,
             "position": {
               "x": 587.5,
               "y": 500.555
             },
             "rotation": 30.0,
             "mass": 1.0,
-            "inverseMass": 1.0,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -64,7 +62,9 @@
             "angularVelocity": 0.0,
             "linearDamping": 0.0,
             "angularDamping": 0.0,
-            "fixedRotation": false
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0
           }
         },
         {
@@ -80,14 +80,12 @@
             },
             "rigidbody": {
               "bodyType": "DYNAMIC",
-              "isGrounded": false,
               "position": {
                 "x": 587.5,
                 "y": 500.555
               },
               "rotation": 30.0,
               "mass": 1.0,
-              "inverseMass": 1.0,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -100,7 +98,9 @@
               "angularVelocity": 0.0,
               "linearDamping": 0.0,
               "angularDamping": 0.0,
-              "fixedRotation": false
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0
             },
             "offset": {
               "x": 0.0,
@@ -166,14 +166,12 @@
           "type": "physics.rigidbody.Rigidbody2D",
           "properties": {
             "bodyType": "STATIC",
-            "isGrounded": false,
             "position": {
               "x": 512.0,
               "y": 20.0
             },
             "rotation": 0.0,
             "mass": 0.0,
-            "inverseMass": 0.0,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -186,7 +184,9 @@
             "angularVelocity": 0.0,
             "linearDamping": 0.0,
             "angularDamping": 0.0,
-            "fixedRotation": false
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0
           }
         },
         {
@@ -202,14 +202,12 @@
             },
             "rigidbody": {
               "bodyType": "STATIC",
-              "isGrounded": false,
               "position": {
                 "x": 512.0,
                 "y": 20.0
               },
               "rotation": 0.0,
               "mass": 0.0,
-              "inverseMass": 0.0,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -222,7 +220,9 @@
               "angularVelocity": 0.0,
               "linearDamping": 0.0,
               "angularDamping": 0.0,
-              "fixedRotation": false
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0
             },
             "offset": {
               "x": 0.0,
@@ -251,14 +251,12 @@
           "type": "physics.rigidbody.Rigidbody2D",
           "properties": {
             "bodyType": "DYNAMIC",
-            "isGrounded": false,
             "position": {
               "x": 812.0,
               "y": 300.0
             },
             "rotation": 0.0,
             "mass": 0.1,
-            "inverseMass": 10.0,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -271,7 +269,9 @@
             "angularVelocity": 0.0,
             "linearDamping": 0.0,
             "angularDamping": 0.0,
-            "fixedRotation": false
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0
           }
         },
         {
@@ -280,14 +280,12 @@
             "radius": 20.0,
             "rigidbody": {
               "bodyType": "DYNAMIC",
-              "isGrounded": false,
               "position": {
                 "x": 812.0,
                 "y": 300.0
               },
               "rotation": 0.0,
               "mass": 0.1,
-              "inverseMass": 10.0,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -300,7 +298,9 @@
               "angularVelocity": 0.0,
               "linearDamping": 0.0,
               "angularDamping": 0.0,
-              "fixedRotation": false
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0
             },
             "offset": {
               "x": 0.0,
@@ -329,14 +329,12 @@
           "type": "physics.rigidbody.Rigidbody2D",
           "properties": {
             "bodyType": "STATIC",
-            "isGrounded": false,
             "position": {
               "x": 25.0,
               "y": 0.0
             },
             "rotation": 0.0,
             "mass": 1.0,
-            "inverseMass": 1.0,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -349,7 +347,9 @@
             "angularVelocity": 0.0,
             "linearDamping": 0.0,
             "angularDamping": 0.0,
-            "fixedRotation": false
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0
           }
         },
         {
@@ -365,14 +365,12 @@
             },
             "rigidbody": {
               "bodyType": "STATIC",
-              "isGrounded": false,
               "position": {
                 "x": 25.0,
                 "y": 0.0
               },
               "rotation": 0.0,
               "mass": 1.0,
-              "inverseMass": 1.0,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -385,7 +383,9 @@
               "angularVelocity": 0.0,
               "linearDamping": 0.0,
               "angularDamping": 0.0,
-              "fixedRotation": false
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0
             },
             "offset": {
               "x": 0.0,
@@ -414,14 +414,12 @@
           "type": "physics.rigidbody.Rigidbody2D",
           "properties": {
             "bodyType": "STATIC",
-            "isGrounded": false,
             "position": {
               "x": 1250.0,
               "y": 0.0
             },
             "rotation": 0.0,
             "mass": 1.0,
-            "inverseMass": 1.0,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -434,7 +432,9 @@
             "angularVelocity": 0.0,
             "linearDamping": 0.0,
             "angularDamping": 0.0,
-            "fixedRotation": false
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0
           }
         },
         {
@@ -450,14 +450,12 @@
             },
             "rigidbody": {
               "bodyType": "STATIC",
-              "isGrounded": false,
               "position": {
                 "x": 1250.0,
                 "y": 0.0
               },
               "rotation": 0.0,
               "mass": 1.0,
-              "inverseMass": 1.0,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -470,7 +468,9 @@
               "angularVelocity": 0.0,
               "linearDamping": 0.0,
               "angularDamping": 0.0,
-              "fixedRotation": false
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0
             },
             "offset": {
               "x": 0.0,
@@ -499,14 +499,12 @@
           "type": "physics.rigidbody.Rigidbody2D",
           "properties": {
             "bodyType": "STATIC",
-            "isGrounded": false,
             "position": {
               "x": 600.0,
               "y": 615.0
             },
             "rotation": 0.0,
             "mass": 1.0,
-            "inverseMass": 1.0,
             "restitution": 1.0,
             "forceAcc": {
               "x": 0.0,
@@ -519,7 +517,9 @@
             "angularVelocity": 0.0,
             "linearDamping": 0.0,
             "angularDamping": 0.0,
-            "fixedRotation": false
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0
           }
         },
         {
@@ -535,14 +535,12 @@
             },
             "rigidbody": {
               "bodyType": "STATIC",
-              "isGrounded": false,
               "position": {
                 "x": 600.0,
                 "y": 615.0
               },
               "rotation": 0.0,
               "mass": 1.0,
-              "inverseMass": 1.0,
               "restitution": 1.0,
               "forceAcc": {
                 "x": 0.0,
@@ -555,7 +553,9 @@
               "angularVelocity": 0.0,
               "linearDamping": 0.0,
               "angularDamping": 0.0,
-              "fixedRotation": false
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0
             },
             "offset": {
               "x": 0.0,
