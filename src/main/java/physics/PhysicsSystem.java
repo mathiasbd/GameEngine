@@ -61,6 +61,11 @@ public class PhysicsSystem {
 
                     CollisionManifold result = Collisions.findCollisionFeatures(c1, c2);
                     if (result != null && result.isColliding()) {
+                        for (Vector2f mpoint : result.getContactPoints()) {
+                            System.out.println(mpoint);
+                            System.out.println("___________________");
+                        }
+                        System.out.println(result.getNormal());
                         bodies1.add(r1);
                         bodies2.add(r2);
                         collisions.add(result);
@@ -109,10 +114,26 @@ public class PhysicsSystem {
         float numerator = -(1.0f + e) * relativeVelocity.dot(relativeNormal);
         float j = numerator / invMassSum;
 
-        if (!m.getContactPoints().isEmpty() && j != 0.0f) {
+        List<Vector2f> vecMPoint1 = new ArrayList<>();
+        List<Vector2f> vecMPoint2 = new ArrayList<>();
+        for (Vector2f mPoint : m.getContactPoints()) {
+            vecMPoint1.add(mPoint.sub(r1.getPosition()));
+            vecMPoint2.add(mPoint.sub(r2.getPosition()));
+        }
+
+        if (!vecMPoint1.isEmpty() && j != 0.0f) {
+            float friction = (r1.getFriction() + r2.getFriction())*0.5f;
+            r1.setTorque(-friction*r1.getAngularVelocity());
             Vector2f impulse = new Vector2f(relativeNormal).mul(j);
+            float angularMoment1 = cross(vecMPoint1.get(0), impulse);
+            float angularMoment2 = cross(vecMPoint2.get(0), impulse);
+            System.out.println("angular moment: " + angularMoment1);
+            System.out.println("Contact points:" + vecMPoint1.size());
+            float angularVelocity1 = r1.getAngularVelocity() - (angularMoment1/r1.getInertia()/6);
+            float angularVelocity2 = r2.getAngularVelocity() - angularMoment2/r2.getInertia();
             r1.setVelocity(new Vector2f(r1.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass1).mul(-1.0f)));
             r2.setVelocity(new Vector2f(r2.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass2)));
+            r1.setAngularVelocity(angularVelocity1);
         }
     }
 

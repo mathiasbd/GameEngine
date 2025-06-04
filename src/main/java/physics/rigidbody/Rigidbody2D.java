@@ -4,6 +4,7 @@ import components.Component;
 import org.example.Transform;
 import org.joml.Vector2f;
 import physics.primitives.Collider;
+import physics.primitives.OBBCollider;
 
 public class Rigidbody2D extends Component {
 
@@ -27,11 +28,12 @@ public class Rigidbody2D extends Component {
 
     private float angularVelocity = 0.0f;
     private float linearDamping = 0.05f;
-    private float angularDamping = 0.05f;
+    private float angularDamping = 0.90f;
     private boolean fixedRotation = false;
 
     private float torque = 0.0f;
     private float inertia = 1.0f;
+    private float friction = 0.5f;
 
     @Override
     public void update(float dt) {}
@@ -104,6 +106,14 @@ public class Rigidbody2D extends Component {
         return mass;
     }
 
+    public float getFriction() {
+        return friction;
+    }
+
+    public void setTorque(float torque) {
+        this.torque = torque;
+    }
+
     public float getInverseMass() {
         if (mass == 0.0f) {
             return 0.0f;
@@ -152,6 +162,9 @@ public class Rigidbody2D extends Component {
 
     public void setCollider(Collider collider) {
         this.collider = collider;
+        if(collider instanceof OBBCollider && bodyType != BodyType.STATIC) {
+            inertia = (mass*(((OBBCollider) collider).getHalfSize().x*2*((OBBCollider) collider).getHalfSize().y*2))/6;
+        }
     }
 
     public Collider getCollider() {
@@ -170,4 +183,7 @@ public class Rigidbody2D extends Component {
         return bodyType;
     }
 
+    public float getInertia() {
+        return inertia;
+    }
 }
