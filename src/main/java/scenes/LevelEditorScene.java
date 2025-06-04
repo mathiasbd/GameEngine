@@ -40,6 +40,7 @@ public class LevelEditorScene extends Scene {
         this.imGuiLayer = new ImGuiLayer();
         this.physicsSystem = GameEngineManager.getPhysicsSystem();
         this.gameObjects = gameObjects;
+
     }
 
     private void loadResources() {
@@ -70,6 +71,7 @@ public class LevelEditorScene extends Scene {
                 if (rb != null) {
                     rb.setPosition(transform.getPosition());
                     collider.setRigidbody(rb);
+                    transform.setRotation(rb.getRotation());
                 } else {
                     System.err.println("Collider without Rigidbody2D: " + go.getName());
                 }

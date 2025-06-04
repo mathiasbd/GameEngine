@@ -45,6 +45,7 @@ public class LevelScene extends Scene {
             if (rb != null) {
                 rb.setPosition(transform.getPosition());
                 physicsSystem.addRigidbody(rb);
+                transform.setRotation(rb.getRotation());
             }
         }
     }

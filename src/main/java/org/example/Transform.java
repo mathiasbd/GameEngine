@@ -6,6 +6,7 @@ public class Transform {
 
     public Vector2f position;
     public Vector2f scale;
+    public float rotation;
 
     public Transform() {
         this.position = new Vector2f();
@@ -37,6 +38,14 @@ public class Transform {
 
     public Vector2f getPosition() {
         return new Vector2f(this.position);
+    }
+
+    public float getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
     }
 
     @Override

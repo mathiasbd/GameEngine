@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 import rendering.Shader;
 import util.AssetPool;
+import util.DTUMath;
 import util.Time;
 import org.joml.Vector2f;
 
@@ -249,9 +250,13 @@ public class RenderBatch implements Comparable<RenderBatch> {
             } else if(i == 3) {
                 ys = 1.0f;
             }
+            Vector2f leftCorner = new Vector2f(sprite.gameObject.transform.position.x + (xs * sprite.gameObject.transform.scale.x) -
+                    (sprite.gameObject.transform.scale.x / 2), sprite.gameObject.transform.position.y + (ys * sprite.gameObject.transform.scale.y) -
+                    (sprite.gameObject.transform.scale.y / 2));
+            DTUMath.rotate(leftCorner, sprite.gameObject.transform.getRotation(), sprite.gameObject.transform.getPosition());
             //load position
-            vertices[offset] = sprite.gameObject.transform.position.x + (xs * sprite.gameObject.transform.scale.x);
-            vertices[offset + 1] = sprite.gameObject.transform.position.y + (ys * sprite.gameObject.transform.scale.y);
+            vertices[offset] = leftCorner.x;
+            vertices[offset + 1] = leftCorner.y;
             //load color
             vertices[offset + 2] = color.x;
             vertices[offset + 3] = color.y;
