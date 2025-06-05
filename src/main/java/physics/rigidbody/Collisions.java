@@ -257,21 +257,26 @@ public class Collisions {
         Vector2f[] verts1 = c1 instanceof OBBCollider ? ((OBBCollider) c1).getVertices() : ((AABBCollider) c1).getVertices();
         Vector2f[] verts2 = c2 instanceof OBBCollider ? ((OBBCollider) c2).getVertices() : ((AABBCollider) c2).getVertices();
 
-        float maxDist = 0.01f;
-        for (Vector2f v1 : verts1) {
-            for (Vector2f v2 : verts2) {
-                if (v1.distance(v2) < maxDist) {
-                    contacts.add(new Vector2f(v1).lerp(v2, 0.5f));
-                }
+        for (Vector2f v : verts1) {
+            if (RaycastManager.pointInPolygon(v, verts2)) {
+                contacts.add(new Vector2f(v));
             }
         }
+        for (Vector2f v : verts2) {
+            if (RaycastManager.pointInPolygon(v, verts1)) {
+                contacts.add(new Vector2f(v));
+            }
+        }
+
         if (contacts.isEmpty()) {
             Vector2f center1 = c1.getRigidbody().getPosition();
             Vector2f center2 = c2.getRigidbody().getPosition();
             contacts.add(new Vector2f(center1).add(center2).mul(0.5f));
         }
+
         return contacts;
     }
+
 
     private static AABBCollider convertToAlignedBox(OBBCollider OBBCollider) {
         Vector2f center = OBBCollider.getRigidbody().getPosition();

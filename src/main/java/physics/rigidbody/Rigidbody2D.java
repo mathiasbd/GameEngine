@@ -28,7 +28,7 @@ public class Rigidbody2D extends Component {
 
     private float angularVelocity = 0.0f;
     private float linearDamping = 0.05f;
-    private float angularDamping = 0.90f;
+    private float angularDamping = 0.15f;
     private boolean fixedRotation = false;
 
     private float torque = 0.0f;
@@ -72,6 +72,10 @@ public class Rigidbody2D extends Component {
         this.forceAcc.zero();
         this.torque = 0.0f;
 
+    }
+
+    public float getTorque() {
+        return torque;
     }
 
     public boolean hasInfiniteMass() {

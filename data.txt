@@ -50,7 +50,7 @@
             },
             "rotation": 30.0,
             "mass": 1.0,
-            "restitution": 1.0,
+            "restitution": 0.8,
             "forceAcc": {
               "x": 0.0,
               "y": 0.0
@@ -87,7 +87,7 @@
               },
               "rotation": 30.0,
               "mass": 1.0,
-              "restitution": 1.0,
+              "restitution": 0.8,
               "forceAcc": {
                 "x": 0.0,
                 "y": 0.0

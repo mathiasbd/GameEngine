@@ -117,23 +117,30 @@ public class PhysicsSystem {
         List<Vector2f> vecMPoint1 = new ArrayList<>();
         List<Vector2f> vecMPoint2 = new ArrayList<>();
         for (Vector2f mPoint : m.getContactPoints()) {
-            vecMPoint1.add(mPoint.sub(r1.getPosition()));
-            vecMPoint2.add(mPoint.sub(r2.getPosition()));
+            vecMPoint1.add(new Vector2f(mPoint).sub(r1.getPosition()));
+            vecMPoint2.add(new Vector2f(mPoint).sub(r2.getPosition()));
         }
 
         if (!vecMPoint1.isEmpty() && j != 0.0f) {
             float friction = (r1.getFriction() + r2.getFriction())*0.5f;
             r1.setTorque(-friction*r1.getAngularVelocity());
-            Vector2f impulse = new Vector2f(relativeNormal).mul(j);
-            float angularMoment1 = cross(vecMPoint1.get(0), impulse);
-            float angularMoment2 = cross(vecMPoint2.get(0), impulse);
+            Vector2f impulse = new Vector2f(relativeNormal).mul(j).mul(-1.0f);
+            System.out.println("Impulse: " + impulse + " vecMPoint: " + vecMPoint1.get(0));
+            float angularMoment1 = 0.0f;
+            int count = 0;
+            for(Vector2f vecMPoint : vecMPoint1) {
+                angularMoment1 += cross(vecMPoint, impulse);
+                count++;
+            }
+            float avgAngularMoment1 = angularMoment1/count;
+            //float angularMoment2 = cross(vecMPoint2.get(0), impulse);
             System.out.println("angular moment: " + angularMoment1);
             System.out.println("Contact points:" + vecMPoint1.size());
-            float angularVelocity1 = r1.getAngularVelocity() - (angularMoment1/r1.getInertia()/6);
-            float angularVelocity2 = r2.getAngularVelocity() - angularMoment2/r2.getInertia();
-            r1.setVelocity(new Vector2f(r1.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass1).mul(-1.0f)));
-            r2.setVelocity(new Vector2f(r2.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass2)));
-            r1.setAngularVelocity(angularVelocity1);
+            float angularVelocity1 = (avgAngularMoment1 / r1.getInertia());
+            //float angularVelocity2 = r2.getAngularVelocity() + angularMoment2/r2.getInertia();
+            r1.setVelocity(new Vector2f(r1.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass1)));
+            r2.setVelocity(new Vector2f(r2.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass2)).mul(-1.0f));
+            r1.setAngularVelocity(angularVelocity1*4);
         }
     }
 

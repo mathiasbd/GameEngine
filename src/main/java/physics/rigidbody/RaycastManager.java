@@ -309,4 +309,34 @@ public class RaycastManager {
         }
         return result;
     }
+
+    public static boolean pointInPolygon(Vector2f point, Vector2f[] polygon) {
+        int vertexCount = polygon.length;
+        for (int i = 0; i < vertexCount; i++) {
+            Vector2f current = polygon[i];
+            Vector2f next = polygon[(i + 1) % vertexCount];
+
+            // Get the edge
+            Vector2f edge = new Vector2f(next).sub(current);
+            // Get the axis perpendicular to the edge (the normal)
+            Vector2f axis = new Vector2f(-edge.y, edge.x).normalize();
+
+            // Project the point onto the axis
+            float projection = axis.dot(point);
+            float min = axis.dot(polygon[0]);
+            float max = min;
+            for (int j = 1; j < vertexCount; j++) {
+                float p = axis.dot(polygon[j]);
+                min = Math.min(min, p);
+                max = Math.max(max, p);
+            }
+
+            if (projection < min || projection > max) {
+                return false; // Point is outside on this axis
+            }
+        }
+
+        return true; // Inside all axes
+    }
+
 }
