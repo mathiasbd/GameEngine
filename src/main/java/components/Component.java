@@ -30,12 +30,13 @@ public abstract class Component {
                 Class type = field.getType();
                 Object value = field.get(this);
                 String name = field.getName();
+                ImGui.pushID(name);
                 if(type == int.class) {
                     int val = (int)value;
                     int[] imInt = {val};
                     ImGui.text(name);
                     ImGui.sameLine();
-                    if(ImGui.dragInt("",imInt)) {
+                    if(ImGui.dragInt("##Int",imInt)) {
                         field.set(this, imInt[0]);
                     }
                 }
@@ -75,6 +76,7 @@ public abstract class Component {
                 if(isPrivate) {
                     field.setAccessible(false);
                 }
+                ImGui.popID();
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
