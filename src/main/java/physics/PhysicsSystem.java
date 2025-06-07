@@ -61,11 +61,11 @@ public class PhysicsSystem {
 
                     CollisionManifold result = Collisions.findCollisionFeatures(c1, c2);
                     if (result != null && result.isColliding()) {
-                        for (Vector2f mpoint : result.getContactPoints()) {
-                            System.out.println(mpoint);
-                            System.out.println("___________________");
-                        }
-                        System.out.println(result.getNormal());
+//                        for (Vector2f mpoint : result.getContactPoints()) {
+//                            System.out.println(mpoint);
+//                            System.out.println("___________________");
+//                        }
+//                        System.out.println(result.getNormal());
                         bodies1.add(r1);
                         bodies2.add(r2);
                         collisions.add(result);
@@ -120,12 +120,14 @@ public class PhysicsSystem {
             vecMPoint1.add(new Vector2f(mPoint).sub(r1.getPosition()));
             vecMPoint2.add(new Vector2f(mPoint).sub(r2.getPosition()));
         }
+//        System.out.println("angular moment: " + m.getContactPoints());
+
 
         if (!vecMPoint1.isEmpty() && j != 0.0f) {
             float friction = (r1.getFriction() + r2.getFriction())*0.5f;
             r1.setTorque(-friction*r1.getAngularVelocity());
             Vector2f impulse = new Vector2f(relativeNormal).mul(j).mul(-1.0f);
-            System.out.println("Impulse: " + impulse + " vecMPoint: " + vecMPoint1.get(0));
+//            System.out.println("Impulse: " + impulse + " vecMPoint: " + vecMPoint1.get(0));
             float angularMoment1 = 0.0f;
             int count1 = 0;
             for(Vector2f vecMPoint : vecMPoint1) {
@@ -140,8 +142,8 @@ public class PhysicsSystem {
             }
             float avgAngularMoment1 = angularMoment1/count1;
             float avgAngularMoment2 = angularMoment2/count2;
-            System.out.println("angular moment: " + angularMoment1);
-            System.out.println("Contact points:" + vecMPoint1.size());
+//            System.out.println("angular moment: " + angularMoment1);
+//            System.out.println("Contact points:" + vecMPoint1.size());
             float angularVelocity1 = (avgAngularMoment1 / r1.getInertia());
             float angularVelocity2 = (avgAngularMoment2 / r2.getInertia());
             r1.setVelocity(new Vector2f(r1.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass1)));

@@ -45,10 +45,10 @@
           "properties": {
             "bodyType": "DYNAMIC",
             "position": {
-              "x": 428.75,
-              "y": 384.70007
+              "x": 807.5,
+              "y": 189.40002
             },
-            "rotation": 20.0,
+            "rotation": 0.0,
             "mass": 1.0,
             "restitution": 0.4,
             "forceAcc": {
@@ -82,10 +82,10 @@
             "rigidbody": {
               "bodyType": "DYNAMIC",
               "position": {
-                "x": 428.75,
-                "y": 384.70007
+                "x": 807.5,
+                "y": 189.40002
               },
-              "rotation": 20.0,
+              "rotation": 0.0,
               "mass": 1.0,
               "restitution": 0.4,
               "forceAcc": {
@@ -115,14 +115,14 @@
       "inScene": true,
       "transform": {
         "position": {
-          "x": 428.75,
-          "y": 384.70007
+          "x": 807.5,
+          "y": 189.40002
         },
         "scale": {
           "x": 100.0,
           "y": 100.0
         },
-        "rotation": 20.0
+        "rotation": 0.0
       }
     },
     {
@@ -525,7 +525,7 @@
               "x": 605.0,
               "y": 200.0
             },
-            "rotation": 29.0,
+            "rotation": 0.0,
             "mass": 1.0,
             "restitution": 0.6,
             "forceAcc": {
@@ -562,7 +562,7 @@
                 "x": 605.0,
                 "y": 200.0
               },
-              "rotation": 29.0,
+              "rotation": 0.0,
               "mass": 1.0,
               "restitution": 0.6,
               "forceAcc": {
@@ -599,24 +599,24 @@
           "x": 10.0,
           "y": 0.0
         },
-        "rotation": 29.0
+        "rotation": 0.0
       }
     }
   ],
   "spriteSheets": {
-    "\\assets\\Spritesheets\\Blue_Slime\\Attack_2.png": {
+    "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png": {
       "texture": {
-        "filepath": "\\assets\\Spritesheets\\Blue_Slime\\Attack_2.png",
-        "texID": 4,
+        "filepath": "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png",
+        "texID": 2,
         "width": 512,
         "height": 128
       },
-      "spriteWidth": 20,
-      "spriteHeight": 20,
+      "spriteWidth": 80,
+      "spriteHeight": 34,
       "numSprites": 4,
-      "xSpacing": 2,
-      "ySpacing": 2,
-      "startX": 5
+      "xSpacing": 46,
+      "ySpacing": 94,
+      "startX": 27
     }
   }
 }

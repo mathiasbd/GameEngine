@@ -189,21 +189,37 @@ public class Collisions {
         float overlapX = Math.min(aMax.x, bMax.x) - Math.max(aMin.x, bMin.x);
         float overlapY = Math.min(aMax.y, bMax.y) - Math.max(aMin.y, bMin.y);
 
+        Vector2f centerA = a.getRigidbody().getPosition();
+        Vector2f centerB = b.getRigidbody().getPosition();
+        Vector2f diff = new Vector2f(centerB).sub(centerA);
+
         Vector2f normal;
         float penetration;
         if (overlapX < overlapY) {
-            normal = a.getRigidbody().getPosition().x < b.getRigidbody().getPosition().x ? new Vector2f(-1, 0) : new Vector2f(1, 0);
+            normal = diff.x < 0 ? new Vector2f(-1, 0) : new Vector2f(1, 0);
             penetration = overlapX;
         } else {
-            normal = a.getRigidbody().getPosition().y < b.getRigidbody().getPosition().y ? new Vector2f(0, -1) : new Vector2f(0, 1);
+            normal = diff.y < 0 ? new Vector2f(0, -1) : new Vector2f(0, 1);
             penetration = overlapY;
         }
 
-        Vector2f contact = new Vector2f(a.getRigidbody().getPosition()).add(b.getRigidbody().getPosition()).mul(0.5f);
         manifold = new CollisionManifold(normal, penetration);
-        manifold.addContactPoint(contact);
+
+        // here we get multiple contacts points in a list
+        List<Vector2f> contacts = getContactPoints(a, b, normal);
+        for (Vector2f p : contacts) {
+            manifold.addContactPoint(p);
+        }
+
+        //  debug
+        System.out.println("[AABB-AABB] Contacts: " + contacts.size());
+        for (Vector2f p : contacts) {
+            System.out.println(" -> " + p);
+        }
+
         return manifold;
     }
+
 
     // === SAT Collision Detection ===
     private static CollisionManifold runSAT(Collider a, Collider b, Vector2f[] axes, boolean useContactPoints) {
