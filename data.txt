@@ -45,12 +45,12 @@
           "properties": {
             "bodyType": "DYNAMIC",
             "position": {
-              "x": 837.5,
+              "x": 825.0,
               "y": 339.40002
             },
-            "rotation": 36.0,
+            "rotation": 21.0,
             "mass": 1.0,
-            "restitution": 0.4,
+            "restitution": 0.3,
             "forceAcc": {
               "x": 0.0,
               "y": 0.0
@@ -82,12 +82,12 @@
             "rigidbody": {
               "bodyType": "DYNAMIC",
               "position": {
-                "x": 837.5,
+                "x": 825.0,
                 "y": 339.40002
               },
-              "rotation": 36.0,
+              "rotation": 21.0,
               "mass": 1.0,
-              "restitution": 0.4,
+              "restitution": 0.3,
               "forceAcc": {
                 "x": 0.0,
                 "y": 0.0
@@ -115,14 +115,14 @@
       "inScene": true,
       "transform": {
         "position": {
-          "x": 837.5,
+          "x": 825.0,
           "y": 339.40002
         },
         "scale": {
           "x": 100.0,
           "y": 100.0
         },
-        "rotation": 36.0
+        "rotation": 21.0
       }
     },
     {
@@ -527,7 +527,7 @@
             },
             "rotation": 35.0,
             "mass": 1.0,
-            "restitution": 0.6,
+            "restitution": 0.4,
             "forceAcc": {
               "x": 0.0,
               "y": 0.0
@@ -564,7 +564,7 @@
               },
               "rotation": 35.0,
               "mass": 1.0,
-              "restitution": 0.6,
+              "restitution": 0.4,
               "forceAcc": {
                 "x": 0.0,
                 "y": 0.0
@@ -607,7 +607,7 @@
     "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png": {
       "texture": {
         "filepath": "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png",
-        "texID": 2,
+        "texID": 7,
         "width": 512,
         "height": 128
       },
