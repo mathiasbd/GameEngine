@@ -8,6 +8,7 @@ import physics.primitives.OBBCollider;
 
 public class Rigidbody2D extends Component {
 
+
     public enum BodyType {
         STATIC,
         DYNAMIC,
@@ -185,6 +186,10 @@ public class Rigidbody2D extends Component {
 
     public BodyType getBodyType() {
         return bodyType;
+    }
+
+    public void setBodyType(BodyType bodyType) {
+        this.bodyType = bodyType;
     }
 
     public float getInertia() {
