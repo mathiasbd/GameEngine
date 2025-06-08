@@ -99,7 +99,9 @@ public class PhysicsSystem {
     }
 
     private void applyImpulse(Rigidbody2D r1, Rigidbody2D r2, CollisionManifold m) {
-        if (r1.getBodyType() == BodyType.STATIC && r2.getBodyType() == BodyType.STATIC) return;
+        if ((r1.getBodyType() == BodyType.STATIC || r1.getBodyType() == BodyType.KINEMATIC) &&
+                (r2.getBodyType() == BodyType.STATIC || r2.getBodyType() == BodyType.KINEMATIC)) return;
+        // if both bodies are static or kinematic, no impulse is applied
 
         float invMass1 = r1.getInverseMass();
         float invMass2 = r2.getInverseMass();
@@ -144,12 +146,18 @@ public class PhysicsSystem {
             float avgAngularMoment2 = angularMoment2/count2;
 //            System.out.println("angular moment: " + angularMoment1);
 //            System.out.println("Contact points:" + vecMPoint1.size());
-            float angularVelocity1 = (avgAngularMoment1 / r1.getInertia());
-            float angularVelocity2 = (avgAngularMoment2 / r2.getInertia());
-            r1.setVelocity(new Vector2f(r1.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass1)));
-            r2.setVelocity(new Vector2f(r2.getLinearVelocity()).sub(new Vector2f(impulse).mul(invMass2)));
-            r1.setAngularVelocity(angularVelocity1*4);
-            r2.setAngularVelocity(angularVelocity2*4);
+
+            // Only apply to dynamic bodies
+            if (r1.getBodyType() == BodyType.DYNAMIC) {
+                float angularVelocity1 = (avgAngularMoment1 / r1.getInertia());
+                r1.setVelocity(new Vector2f(r1.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass1)));
+                r1.setAngularVelocity(angularVelocity1*4);
+            }
+            if (r2.getBodyType() == BodyType.DYNAMIC) {
+                float angularVelocity2 = (avgAngularMoment2 / r2.getInertia());
+                r2.setVelocity(new Vector2f(r2.getLinearVelocity()).sub(new Vector2f(impulse).mul(invMass2)));
+                r2.setAngularVelocity(angularVelocity2*4);
+            }
         }
     }
 
