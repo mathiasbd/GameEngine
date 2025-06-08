@@ -45,10 +45,10 @@
           "properties": {
             "bodyType": "DYNAMIC",
             "position": {
-              "x": 825.0,
-              "y": 339.40002
+              "x": 512.5,
+              "y": 514.9501
             },
-            "rotation": 21.0,
+            "rotation": 12.1,
             "mass": 1.0,
             "restitution": 0.3,
             "forceAcc": {
@@ -82,10 +82,10 @@
             "rigidbody": {
               "bodyType": "DYNAMIC",
               "position": {
-                "x": 825.0,
-                "y": 339.40002
+                "x": 512.5,
+                "y": 514.9501
               },
-              "rotation": 21.0,
+              "rotation": 12.1,
               "mass": 1.0,
               "restitution": 0.3,
               "forceAcc": {
@@ -115,14 +115,14 @@
       "inScene": true,
       "transform": {
         "position": {
-          "x": 825.0,
-          "y": 339.40002
+          "x": 512.5,
+          "y": 514.9501
         },
         "scale": {
           "x": 100.0,
           "y": 100.0
         },
-        "rotation": 21.0
+        "rotation": 12.1
       }
     },
     {
@@ -522,10 +522,10 @@
           "properties": {
             "bodyType": "DYNAMIC",
             "position": {
-              "x": 605.0,
-              "y": 445.0
+              "x": 630.0,
+              "y": 400.0
             },
-            "rotation": 35.0,
+            "rotation": 23.3,
             "mass": 1.0,
             "restitution": 0.4,
             "forceAcc": {
@@ -559,10 +559,10 @@
             "rigidbody": {
               "bodyType": "DYNAMIC",
               "position": {
-                "x": 605.0,
-                "y": 445.0
+                "x": 630.0,
+                "y": 400.0
               },
-              "rotation": 35.0,
+              "rotation": 23.3,
               "mass": 1.0,
               "restitution": 0.4,
               "forceAcc": {
@@ -592,14 +592,14 @@
       "inScene": false,
       "transform": {
         "position": {
-          "x": 605.0,
-          "y": 445.0
+          "x": 630.0,
+          "y": 400.0
         },
         "scale": {
           "x": 10.0,
           "y": 0.0
         },
-        "rotation": 35.0
+        "rotation": 23.3
       }
     }
   ],
@@ -607,7 +607,7 @@
     "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png": {
       "texture": {
         "filepath": "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png",
-        "texID": 7,
+        "texID": 6,
         "width": 512,
         "height": 128
       },

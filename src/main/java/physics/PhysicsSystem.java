@@ -116,6 +116,32 @@ public class PhysicsSystem {
         float numerator = -(1.0f + e) * relativeVelocity.dot(relativeNormal);
         float j = numerator / invMassSum;
 
+        Vector2f impulse = new Vector2f(relativeNormal).mul(j);
+
+        // Friction
+        Vector2f tangent = new Vector2f(relativeVelocity)
+                .sub(new Vector2f(relativeNormal).mul(relativeVelocity.dot(relativeNormal)));
+
+        if (tangent.lengthSquared() > 0.001f) {
+            tangent.normalize();
+
+            float impulseAlongTangent = -relativeVelocity.dot(tangent);
+            impulseAlongTangent /= invMassSum;
+
+            float mu = (r1.getFriction() + r2.getFriction()) * 0.1f;
+            float maxFriction = j * mu;
+            impulseAlongTangent = Math.max(-maxFriction, Math.min(impulseAlongTangent, maxFriction));
+
+            Vector2f frictionImpulse = new Vector2f(tangent).mul(impulseAlongTangent);
+
+            if (r1.getBodyType() == BodyType.DYNAMIC) {
+                r1.setVelocity(r1.getLinearVelocity().sub(new Vector2f(frictionImpulse).mul(invMass1)));
+            }
+            if (r2.getBodyType() == BodyType.DYNAMIC) {
+                r2.setVelocity(r2.getLinearVelocity().add(new Vector2f(frictionImpulse).mul(invMass2)));
+            }
+        }
+
         List<Vector2f> vecMPoint1 = new ArrayList<>();
         List<Vector2f> vecMPoint2 = new ArrayList<>();
         for (Vector2f mPoint : m.getContactPoints()) {
@@ -129,7 +155,6 @@ public class PhysicsSystem {
             float friction = (r1.getFriction() + r2.getFriction())*0.5f;
             r1.addTorque(-friction*r1.getAngularVelocity());
             r2.addTorque(-friction*r2.getAngularVelocity());
-            Vector2f impulse = new Vector2f(relativeNormal).mul(j);
 //            System.out.println("Impulse: " + impulse + " vecMPoint: " + vecMPoint1.get(0));
             float angularMoment1 = 0.0f;
             float torque1 = 0.0f;
