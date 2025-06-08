@@ -45,10 +45,10 @@
           "properties": {
             "bodyType": "DYNAMIC",
             "position": {
-              "x": 807.5,
-              "y": 189.40002
+              "x": 837.5,
+              "y": 339.40002
             },
-            "rotation": 0.0,
+            "rotation": 36.0,
             "mass": 1.0,
             "restitution": 0.4,
             "forceAcc": {
@@ -82,10 +82,10 @@
             "rigidbody": {
               "bodyType": "DYNAMIC",
               "position": {
-                "x": 807.5,
-                "y": 189.40002
+                "x": 837.5,
+                "y": 339.40002
               },
-              "rotation": 0.0,
+              "rotation": 36.0,
               "mass": 1.0,
               "restitution": 0.4,
               "forceAcc": {
@@ -115,14 +115,14 @@
       "inScene": true,
       "transform": {
         "position": {
-          "x": 807.5,
-          "y": 189.40002
+          "x": 837.5,
+          "y": 339.40002
         },
         "scale": {
           "x": 100.0,
           "y": 100.0
         },
-        "rotation": 0.0
+        "rotation": 36.0
       }
     },
     {
@@ -523,9 +523,9 @@
             "bodyType": "DYNAMIC",
             "position": {
               "x": 605.0,
-              "y": 200.0
+              "y": 445.0
             },
-            "rotation": 0.0,
+            "rotation": 35.0,
             "mass": 1.0,
             "restitution": 0.6,
             "forceAcc": {
@@ -560,9 +560,9 @@
               "bodyType": "DYNAMIC",
               "position": {
                 "x": 605.0,
-                "y": 200.0
+                "y": 445.0
               },
-              "rotation": 0.0,
+              "rotation": 35.0,
               "mass": 1.0,
               "restitution": 0.6,
               "forceAcc": {
@@ -593,13 +593,13 @@
       "transform": {
         "position": {
           "x": 605.0,
-          "y": 200.0
+          "y": 445.0
         },
         "scale": {
           "x": 10.0,
           "y": 0.0
         },
-        "rotation": 0.0
+        "rotation": 35.0
       }
     }
   ],

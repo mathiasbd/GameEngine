@@ -53,6 +53,9 @@ public class Rigidbody2D extends Component {
         // Angular motion
         if (!fixedRotation) {
             float angularAcceleration = torque * getInverseInertia();
+            if(angularAcceleration != 0.0f) {
+                System.out.println(angularAcceleration);
+            }
             angularVelocity += angularAcceleration * dt;
             angularVelocity *= (1.0f - angularDamping * dt);
             rotation += angularVelocity * dt;
