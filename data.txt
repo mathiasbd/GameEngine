@@ -45,7 +45,7 @@
           "properties": {
             "bodyType": "DYNAMIC",
             "position": {
-              "x": 512.5,
+              "x": 527.5,
               "y": 514.9501
             },
             "rotation": 12.1,
@@ -82,7 +82,7 @@
             "rigidbody": {
               "bodyType": "DYNAMIC",
               "position": {
-                "x": 512.5,
+                "x": 527.5,
                 "y": 514.9501
               },
               "rotation": 12.1,
@@ -115,7 +115,7 @@
       "inScene": true,
       "transform": {
         "position": {
-          "x": 512.5,
+          "x": 527.5,
           "y": 514.9501
         },
         "scale": {
@@ -600,6 +600,101 @@
           "y": 0.0
         },
         "rotation": 23.3
+      }
+    },
+    {
+      "name": "Player1",
+      "components": [
+        {
+          "type": "physics.rigidbody.Rigidbody2D",
+          "properties": {
+            "bodyType": "KINEMATIC",
+            "position": {
+              "x": 365.0,
+              "y": 160.0
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.15,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "size": {
+              "x": 100.0,
+              "y": 100.0
+            },
+            "halfSize": {
+              "x": 50.0,
+              "y": 50.0
+            },
+            "rigidbody": {
+              "bodyType": "KINEMATIC",
+              "position": {
+                "x": 365.0,
+                "y": 160.0
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.15,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        },
+        {
+          "type": "components.PlayerController",
+          "properties": {
+            "walkSpeed": 2.0,
+            "jumpImpulse": 3.0
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 365.0,
+          "y": 160.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
       }
     }
   ],

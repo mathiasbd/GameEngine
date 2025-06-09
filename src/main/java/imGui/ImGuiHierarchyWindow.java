@@ -1,9 +1,6 @@
 package imGui;
 
-import components.Component;
-import components.Sprite;
-import components.SpriteRenderer;
-import components.SpriteSheet;
+import components.*;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.ImVec4;
@@ -147,6 +144,10 @@ public class ImGuiHierarchyWindow {
                             }
                             ImGui.endMenu();
                         }
+                    }
+                    if(ImGui.menuItem("PlayerController")) {
+                        PlayerController playerCtrl = new PlayerController();
+                        go.addComponent(playerCtrl);
                     }
                     ImGui.endMenu();
                 }

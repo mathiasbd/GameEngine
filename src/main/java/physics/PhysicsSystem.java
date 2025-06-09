@@ -56,16 +56,10 @@ public class PhysicsSystem {
                 Collider c2 = r2.getCollider();
 
                 if (c1 != null && c2 != null &&
-                        !(r1.hasInfiniteMass() && r2.hasInfiniteMass()) &&
                         !(r1.getBodyType() == BodyType.STATIC && r2.getBodyType() == BodyType.STATIC)) {
 
                     CollisionManifold result = Collisions.findCollisionFeatures(c1, c2);
                     if (result != null && result.isColliding()) {
-//                        for (Vector2f mpoint : result.getContactPoints()) {
-//                            System.out.println(mpoint);
-//                            System.out.println("___________________");
-//                        }
-//                        System.out.println(result.getNormal());
                         bodies1.add(r1);
                         bodies2.add(r2);
                         collisions.add(result);
@@ -99,9 +93,9 @@ public class PhysicsSystem {
     }
 
     private void applyImpulse(Rigidbody2D r1, Rigidbody2D r2, CollisionManifold m) {
-        if ((r1.getBodyType() == BodyType.STATIC || r1.getBodyType() == BodyType.KINEMATIC) &&
-                (r2.getBodyType() == BodyType.STATIC || r2.getBodyType() == BodyType.KINEMATIC)) return;
-        // if both bodies are static or kinematic, no impulse is applied
+        boolean imm1 = (r1.getBodyType() != BodyType.DYNAMIC);
+        boolean imm2 = (r2.getBodyType() != BodyType.DYNAMIC);
+        if (imm1 && imm2) return;
 
         float invMass1 = r1.getInverseMass();
         float invMass2 = r2.getInverseMass();
@@ -113,9 +107,7 @@ public class PhysicsSystem {
         if (relativeVelocity.dot(relativeNormal) > 0.0f) return;
 
         float e = Math.min(r1.getRestitution(), r2.getRestitution());
-        float numerator = -(1.0f + e) * relativeVelocity.dot(relativeNormal);
-        float j = numerator / invMassSum;
-
+        float j = -(1.0f + e) * relativeVelocity.dot(relativeNormal) / invMassSum;
         Vector2f impulse = new Vector2f(relativeNormal).mul(j);
 
         // Friction
@@ -172,16 +164,16 @@ public class PhysicsSystem {
                 angularMoment2 += cross(vecMPoint, impulse);
                 count2++;
             }
-            r1.addTorque(-torque1*8);
-            r2.addTorque(-torque2*8);
 
             // Only apply to dynamic bodies
             if (r1.getBodyType() == BodyType.DYNAMIC) {
+                r1.addTorque(-torque1*8);
                 float angularVelocity1 = (angularMoment1 / r1.getInertia());
                 r1.setVelocity(new Vector2f(r1.getLinearVelocity()).sub(new Vector2f(impulse).mul(invMass1)));
                 r1.setAngularVelocity(r1.getAngularVelocity()-angularVelocity1*4);
             }
             if (r2.getBodyType() == BodyType.DYNAMIC) {
+                r2.addTorque(-torque2*8);
                 float angularVelocity2 = (angularMoment2 / r2.getInertia());
                 r2.setVelocity(new Vector2f(r2.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass2)));
                 r2.setAngularVelocity(r2.getAngularVelocity()+angularVelocity2*4);
@@ -190,23 +182,56 @@ public class PhysicsSystem {
     }
 
     private void positionalCorrection(Rigidbody2D r1, Rigidbody2D r2, CollisionManifold m) {
-        final float percent = 0.2f;
-        final float slop = 0.01f;
-
         float penetration = m.getPenetrationDepth();
-        if (penetration <= slop) return;
+        if (penetration <= 0f) return;
 
-        Vector2f correction = new Vector2f(m.getNormal())
-                .mul(Math.max(penetration - slop, 0.0f) / (r1.getInverseMass() + r2.getInverseMass()))
-                .mul(percent);
+        Vector2f normal = m.getNormal();
 
-        if (!r1.hasInfiniteMass()) {
-            r1.setPosition(new Vector2f(r1.getPosition()).sub(new Vector2f(correction).mul(r1.getInverseMass())));
+        // Kinematic vs Static → push kinematic out fully & zero its normal velocity
+        if (r1.getBodyType() == BodyType.KINEMATIC && r2.getBodyType() == BodyType.STATIC) {
+            // move r1 *up* by full penetration
+            Vector2f sep = new Vector2f(normal).mul(penetration);
+            r1.setPosition(r1.getPosition().sub(sep));
+
+            // zero the downward component so it won't sink next frame
+            Vector2f v1 = r1.getLinearVelocity();
+            v1.y = Math.max(v1.y, 0f);
+            r1.setVelocity(v1);
+            return;
         }
-        if (!r2.hasInfiniteMass()) {
-            r2.setPosition(new Vector2f(r2.getPosition()).add(new Vector2f(correction).mul(r2.getInverseMass())));
+        if (r2.getBodyType() == BodyType.KINEMATIC && r1.getBodyType() == BodyType.STATIC) {
+            Vector2f sep = new Vector2f(normal).mul(penetration);
+            r2.setPosition(r2.getPosition().add(sep));
+
+            Vector2f v2 = r2.getLinearVelocity();
+            v2.y = Math.max(v2.y, 0f);
+            r2.setVelocity(v2);
+            return;
+        }
+
+        // Otherwise (dynamic vs dynamic, or dynamic vs kinematic),
+        // fall back to your usual mass-weighted correction:
+        final float percent = 0.8f;
+        final float slop    = 0.01f;
+        float corrMag = Math.max(penetration - slop, 0f) * percent;
+
+        float invMass1 = (r1.getBodyType() == BodyType.DYNAMIC) ? r1.getInverseMass() : 0f;
+        float invMass2 = (r2.getBodyType() == BodyType.DYNAMIC) ? r2.getInverseMass() : 0f;
+        float totalInv = invMass1 + invMass2;
+        if (totalInv == 0f) return;
+
+        Vector2f correction = new Vector2f(normal).mul(corrMag / totalInv);
+
+        if (invMass1 > 0f) {
+            Vector2f shift1 = new Vector2f(correction).mul(invMass1);
+            r1.setPosition(r1.getPosition().sub(shift1));
+        }
+        if (invMass2 > 0f) {
+            Vector2f shift2 = new Vector2f(correction).mul(invMass2);
+            r2.setPosition(r2.getPosition().add(shift2));
         }
     }
+
 
 
     public void addRigidbody(Rigidbody2D body) {
