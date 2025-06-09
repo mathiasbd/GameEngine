@@ -84,6 +84,8 @@ public class WindowManager {
         MouseHandler.setWindowWidth(width);
         MouseHandler.setWindowHeight(height);
 
+        glfwSetKeyCallback(window, KeyboardHandler::keyCallback);
+
         //Setting up the mouse handler and keyboard handler
         glfwSetMouseButtonCallback(window, MouseHandler::mouseButtonCallback);
         glfwSetCursorPosCallback(window, MouseHandler::mousePositionCallback);
@@ -122,6 +124,7 @@ public class WindowManager {
         glfwSwapInterval(1);
 
         glfwShowWindow(window);
+
     }
 
     //Function that closes the window

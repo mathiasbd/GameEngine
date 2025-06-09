@@ -1,5 +1,6 @@
 package scenes;
 
+import components.PlayerController;
 import imGui.ImGuiLayer;
 import org.example.Camera;
 import org.example.GameEngineManager;
@@ -40,12 +41,17 @@ public class LevelScene extends Scene {
         this.gameObjects = gameObjects;
 
         for (GameObject go : this.gameObjects) {
+            go.start();
             Transform transform = go.getTransform();
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+            PlayerController playerController = go.getComponent(PlayerController.class);
             if (rb != null) {
                 rb.setPosition(transform.getPosition());
                 physicsSystem.addRigidbody(rb);
                 transform.setRotation(rb.getRotation());
+                if (playerController != null) {
+                    playerController.setRigidbody(rb);
+                }
             }
         }
     }

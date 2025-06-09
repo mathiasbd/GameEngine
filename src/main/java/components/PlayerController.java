@@ -6,46 +6,48 @@ import input.KeyboardHandler;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class PlayerController extends Component {
-    public float walkSpeed = 2.0f;
-    public float jumpImpulse = 3.0f;
+    /** units per second */
+    public float walkSpeed = 5000.0f;
 
-    public transient boolean isGrounded = false;
-    private transient Rigidbody2D rb;
+    private Rigidbody2D rb;
 
+    @Override
     public void start() {
-        this.rb = gameObject.getComponent(Rigidbody2D.class);
-        if (this.rb == null) {
-            System.err.println("PlayerController requires a Rigidbody2D.");
-        } else {
-            this.rb.setBodyType(Rigidbody2D.BodyType.DYNAMIC);
+        rb = gameObject.getComponent(Rigidbody2D.class);
+        if (rb == null) {
+            throw new IllegalStateException("PlayerController requires a Rigidbody2D");
         }
+        System.out.println("PlayerController started with Rigidbody2D");
+        // Make sure it’s kinematic so it doesn’t get pushed by collisions
+        rb.setBodyType(Rigidbody2D.BodyType.KINEMATIC);
     }
 
+    @Override
     public void update(float dt) {
-        if (this.rb == null) return;
+        if (rb == null) return;
 
-        Vector2f velocity = rb.getLinearVelocity();
+        // Read existing velocity (so vertical is untouched)
+        Vector2f vel = rb.getLinearVelocity();
 
-        if (KeyboardHandler.isKeyPressed(GLFW_KEY_RIGHT) || KeyboardHandler.isKeyPressed(GLFW_KEY_D)) { // Move Right
-            velocity.x = walkSpeed;
-        } else if (KeyboardHandler.isKeyPressed(GLFW_KEY_LEFT) || KeyboardHandler.isKeyPressed(GLFW_KEY_A)) { // Move Left
-            velocity.x = -walkSpeed;
-        } else { // Idle
-            velocity.x = 0f;
+        // Determine horizontal input
+        float h = 0f;
+        if (KeyboardHandler.isKeyPressed(GLFW_KEY_D) || KeyboardHandler.isKeyPressed(GLFW_KEY_RIGHT)) {
+            h += 1f;
+            System.out.println("Right key pressed");
+        }
+        if (KeyboardHandler.isKeyPressed(GLFW_KEY_A) || KeyboardHandler.isKeyPressed(GLFW_KEY_LEFT)) {
+            h -= 1f;
+            System.out.println("Left key pressed");
         }
 
-        if (KeyboardHandler.isKeyPressed(GLFW_KEY_SPACE)) {
-            jump();
-        }
-        rb.setVelocity(velocity);
+        // Apply horizontal speed
+        vel.x = h * walkSpeed;
+        // Commit back to the rigidbody
+        rb.setVelocity(vel);
     }
 
-    public void jump() {
-        if (isGrounded && rb != null) {
-            Vector2f velocity = rb.getLinearVelocity();
-            velocity.y = jumpImpulse;
-            rb.setVelocity(velocity);
-            isGrounded = false;
-        }
+    public void setRigidbody(Rigidbody2D rb) {
+        this.rb = rb;
     }
+
 }
