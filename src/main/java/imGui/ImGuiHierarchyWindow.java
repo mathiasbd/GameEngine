@@ -17,6 +17,8 @@ import physics.rigidbody.Rigidbody2D;
 import scenes.Scene;
 import util.AssetPool;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImGuiHierarchyWindow {
@@ -31,10 +33,20 @@ public class ImGuiHierarchyWindow {
     private int objectToEditFields = -1;
     private boolean showEditFieldsWindow = false;
 
+    private boolean showScriptFiles = false;
+
     private List<GameObject> gameObjects;
     private Scene currentScene;
 
     private ImGuiCommonFun imGuiCommonFun = new ImGuiCommonFun();
+
+
+    private List<File> folders = new ArrayList<>();
+    private List<File> regularFiles = new ArrayList<>();
+    private File currentDir = null;
+    private File selectedFile = null;
+    private String selectedAsset = null;
+    private GameObject goScript = null;
 
     public void showContent(Scene currentScene) {
         this.currentScene = currentScene;
@@ -46,6 +58,49 @@ public class ImGuiHierarchyWindow {
             }
         }
         queedProcess();
+    }
+
+    public Component createComponentFromFile(File file) {
+        try {
+            // Extract fully qualified class name from file path
+            String absolutePath = file.getAbsolutePath().replace("\\", "/");
+            String srcRoot = new File("src/main/java").getAbsolutePath().replace("\\", "/");
+
+            if (!absolutePath.startsWith(srcRoot)) {
+                System.err.println("Selected file is not inside the src directory.");
+                return null;
+            }
+
+            String relativePath = absolutePath.substring(srcRoot.length() + 1); // +1 to skip slash
+            String className = relativePath.replace("/", ".").replace(".java", "");
+
+            // Load class
+            Class<?> clazz = Class.forName(className);
+            if (Component.class.isAssignableFrom(clazz)) {
+                return (Component) clazz.getDeclaredConstructor().newInstance();
+            } else {
+                System.err.println("Class does not extend Component: " + className);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void initDirectory(String filepath) {
+        currentDir = new File(filepath); // Or wherever you want to start
+        File[] files = currentDir.listFiles();
+        folders.clear();
+        regularFiles.clear();
+        if(files != null) {
+            for (File file : files) {
+                if(file.isDirectory()) {
+                    folders.add(file);
+                } else {
+                    regularFiles.add(file);
+                }
+            }
+        }
     }
 
     private void queedProcess() {
@@ -80,6 +135,17 @@ public class ImGuiHierarchyWindow {
     }
 
     private void showObject() {
+        if(showScriptFiles) {
+            addScript();
+            if(selectedFile != null && selectedFile.getName().endsWith(".java")) {
+                Component co = createComponentFromFile(selectedFile);
+                if(co != null) {
+                    goScript.addComponent(co);
+                }
+                showScriptFiles = false;
+                selectedFile = null;
+            }
+        }
         this.gameObjects = currentScene.getGameObjects();
         boolean treeNode;
         int flags;
@@ -148,6 +214,11 @@ public class ImGuiHierarchyWindow {
                     if(ImGui.menuItem("PlayerController")) {
                         PlayerController playerCtrl = new PlayerController();
                         go.addComponent(playerCtrl);
+                    }
+                    if(ImGui.menuItem("Add script")) {
+                        initDirectory("src");
+                        goScript = go;
+                        showScriptFiles = true;
                     }
                     ImGui.endMenu();
                 }
@@ -256,5 +327,42 @@ public class ImGuiHierarchyWindow {
             ImGui.end();
             showEditFieldsWindow = open.get();
         }
+    }
+
+
+    private void addScript() {
+        float fileDirectoryWidth = 200;
+        float fileDirectoryHeight = 200;
+        ImGui.setNextWindowPos(new ImVec2(ImGui.getWindowPosX()+ImGui.getMainViewport().getSizeX()*0.5f,
+                ImGui.getWindowPosY()+ImGui.getWindowHeight()*0.5f), ImGuiCond.Once);
+        ImGui.setNextWindowSize(new ImVec2(fileDirectoryWidth, fileDirectoryHeight), ImGuiCond.Once);
+        ImGui.begin("FileDirectory");
+        int flags = ImGuiTreeNodeFlags.DefaultOpen;
+        if(ImGui.treeNodeEx("Scripts", flags)) {
+            if (ImGui.button("..")) {
+                currentDir = currentDir.getParentFile();
+                if (currentDir != null) {
+                    initDirectory(currentDir.getPath());
+                }
+            }
+            for (int i = 0; i < folders.size(); i++) {
+                ImGui.pushID(i);
+                if (ImGui.selectable("[Dir] " + folders.get(i).getName())) {
+                    currentDir = folders.get(i);
+                    initDirectory(folders.get(i).getPath());
+                }
+                ImGui.popID();
+            }
+
+            for (int j = 0; j < regularFiles.size(); j++) {
+                ImGui.pushID(j);
+                if (ImGui.selectable(regularFiles.get(j).getName())) {
+                    selectedFile = regularFiles.get(j);
+                }
+                ImGui.popID();
+            }
+            ImGui.treePop();
+        }
+        ImGui.end();
     }
 }
