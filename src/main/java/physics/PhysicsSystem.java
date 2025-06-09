@@ -241,6 +241,10 @@ public class PhysicsSystem {
         }
     }
 
+    public List<Rigidbody2D> getRigidbodies() {
+        return rb;
+    }
+
 
     // used for angular rotation
     public static float cross(Vector2f a, Vector2f b) {
