@@ -15,6 +15,8 @@ import java.util.List;
 public class PhysicsSystem {
     private ForceRegistry fr;
     private Gravity gravity;
+    private List<CollisionManifold> currentFrameCollisions = new ArrayList<>();
+
 
     private List<Rigidbody2D> rb;
     private List<Rigidbody2D> bodies1;
@@ -60,6 +62,7 @@ public class PhysicsSystem {
 
                     CollisionManifold result = Collisions.findCollisionFeatures(c1, c2);
                     if (result != null && result.isColliding()) {
+                        result.setBodies(r1, r2);
                         bodies1.add(r1);
                         bodies2.add(r2);
                         collisions.add(result);
@@ -90,12 +93,20 @@ public class PhysicsSystem {
                 body.physicsUpdate(fixedUpdate);
             }
         }
+        currentFrameCollisions = new ArrayList<>(collisions);
+        //        System.out.println("Detected : " + GameEngineManager.getPhysicsSystem().getCollisions());
+//        System.out.println("Detected : " + collisions.size());
+
     }
 
     private void applyImpulse(Rigidbody2D r1, Rigidbody2D r2, CollisionManifold m) {
         boolean imm1 = (r1.getBodyType() != BodyType.DYNAMIC);
         boolean imm2 = (r2.getBodyType() != BodyType.DYNAMIC);
         if (imm1 && imm2) return;
+        if (r1.getBodyType() == BodyType.NO_IMPULSE ||
+                r2.getBodyType() == BodyType.NO_IMPULSE) {
+            return; // Skip impulse logic entirely for spawning only
+        }
 
         float invMass1 = r1.getInverseMass();
         float invMass2 = r2.getInverseMass();
@@ -256,5 +267,29 @@ public class PhysicsSystem {
     public static Vector2f cross(float a, Vector2f v) {
         return new Vector2f(a * v.y, -a * v.x);
     }
+    // Spawning
+    public ForceRegistry getForceRegistry() {
+        return this.fr;
+    }
+    public List<CollisionManifold> getCollisions() {
+        return currentFrameCollisions;
+    }
+
+    public void removeRigidbody(Rigidbody2D body) {
+        this.rb.remove(body);
+    }
+    private final Gravity gravity2 = new Gravity(new Vector2f(0, -9.8f));
+
+    public Gravity getGravity() {
+        return gravity2;
+    }
+    public void reset() {
+        this.rb.clear();
+        this.bodies1.clear();
+        this.bodies2.clear();
+        this.collisions.clear();
+        this.fr.clearAll();
+    }
+
 
 }

@@ -123,6 +123,6 @@ public class GameEngineManager {
     }
 
     public static PhysicsSystem getPhysicsSystem() {
-        return new PhysicsSystem(0.016f, new Vector2f(0.0f, -9.82f));
+        return physicsSystem;
     }
 }

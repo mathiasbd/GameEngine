@@ -15,10 +15,12 @@ import physics.primitives.Collider;
 import physics.primitives.OBBCollider;
 import physics.rigidbody.Rigidbody2D;
 import util.DebugDraw;
+import components.Spawner;
 
 import java.util.List;
 
 public class LevelScene extends Scene {
+    private Spawner spawner;
 
     private static List<GameObject> gameObjectsToLoad = null;
     private ImGuiLayer imGuiLayer;
@@ -35,11 +37,13 @@ public class LevelScene extends Scene {
 
     @Override
     public void init(List<GameObject> gameObjects) {
+        this.physicsSystem = GameEngineManager.getPhysicsSystem();
+        this.physicsSystem.reset();
         this.camera = new Camera(new Vector2f());
         this.imGuiLayer = new ImGuiLayer();
         this.physicsSystem = GameEngineManager.getPhysicsSystem();
         this.gameObjects = gameObjects;
-
+        this.spawner = new Spawner(this);
         for (GameObject go : this.gameObjects) {
             go.start();
             Transform transform = go.getTransform();
@@ -78,12 +82,41 @@ public class LevelScene extends Scene {
                 }
                 drawCollider(collider);
             }
-            if (physicsSystem != null) {
-                physicsSystem.update(dt);
-            }
         }
+        if (physicsSystem != null) {
+            physicsSystem.update(dt);
+        }
+        if (spawner != null) {
+            spawner.update(dt);
+        }
+
         imGuiLayer.process(this);
         this.renderer.render();
+    }
+    public void addGameObject(GameObject go) {
+        if (go != null) {
+            gameObjects.add(go);
+            go.setInScene(true);
+            go.start();
+
+            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+            if (rb != null) {
+                rb.setPosition(go.getTransform().getPosition());
+                physicsSystem.addRigidbody(rb);
+                physicsSystem.getForceRegistry().add(rb, physicsSystem.getGravity());
+            }
+        }
+    }
+    public void removeGameObject(GameObject go) {
+        if (go != null) {
+            System.out.println("Removing: " + go.getName());
+
+            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+            if (rb != null) {
+                physicsSystem.removeRigidbody(rb);
+            }
+            gameObjects.remove(go);
+        }
     }
 
     private void drawCollider(Collider collider) {

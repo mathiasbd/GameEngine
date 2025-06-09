@@ -197,7 +197,7 @@ public class ImGuiHierarchyWindow {
                         if(ImGui.beginMenu("Collider")) {
                             if(ImGui.menuItem("Square")) {
                                 //System.out.println("Trying to add square shape");
-                                OBBCollider OBBCollider = new OBBCollider(new Vector2f(5,5), new Vector2f(10,10));
+                                OBBCollider OBBCollider = new OBBCollider(new Vector2f(5,5));
                                 OBBCollider.setRigidbody(go.getComponent(Rigidbody2D.class));
                                 go.addComponent(OBBCollider);
                             }

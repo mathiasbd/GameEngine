@@ -9,6 +9,7 @@ import components.SpriteRenderer;
 import components.SpriteSheet;
 import imGui.DragDropper;
 import org.example.Camera;
+import org.example.GameEngineManager;
 import org.example.GameObject;
 import org.example.SaveFile;
 import org.joml.Vector2f;
@@ -140,5 +141,28 @@ public abstract class Scene {
 
     public boolean isDataLoaded() {
         return dataLoaded;
+    }
+    public void addGameObject(GameObject go) {
+        if (go != null && !gameObjects.contains(go)) {
+            gameObjects.add(go);
+
+            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+            if (rb != null) {
+                GameEngineManager.getPhysicsSystem().addRigidbody(rb);
+            }
+
+            go.setInScene(true);
+            go.start();
+        }
+    }
+
+    public void removeGameObject(GameObject go) {
+        if (go != null && gameObjects.contains(go)) {
+            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+
+
+            gameObjects.remove(go);
+            go.setInScene(false);
+        }
     }
 }

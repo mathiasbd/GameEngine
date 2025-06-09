@@ -1,6 +1,7 @@
 package physics.rigidbody;
 
 import components.Component;
+import org.example.GameObject;
 import org.example.Transform;
 import org.joml.Vector2f;
 import physics.primitives.Collider;
@@ -12,7 +13,8 @@ public class Rigidbody2D extends Component {
     public enum BodyType {
         STATIC,
         DYNAMIC,
-        KINEMATIC
+        KINEMATIC,
+        NO_IMPULSE
     }
 
     private BodyType bodyType = BodyType.DYNAMIC;
@@ -55,7 +57,7 @@ public class Rigidbody2D extends Component {
         if (!fixedRotation) {
             float angularAcceleration = torque * getInverseInertia();
             if(angularAcceleration != 0.0f) {
-                System.out.println(angularAcceleration);
+//                System.out.println(angularAcceleration);
             }
             angularVelocity += angularAcceleration * dt;
             angularVelocity *= (1.0f - angularDamping * dt);
@@ -198,4 +200,9 @@ public class Rigidbody2D extends Component {
     public float getInertia() {
         return inertia;
     }
+
+    public GameObject getGameObject() {
+        return this.gameObject;
+    }
+
 }

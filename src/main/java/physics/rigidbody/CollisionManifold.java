@@ -11,6 +11,8 @@ public class CollisionManifold {
     private float penetrationDepth;
 
     private boolean isColliding;
+    private Rigidbody2D bodyA;
+    private Rigidbody2D bodyB;
 
     public CollisionManifold() {
         this.normal = new Vector2f();
@@ -43,5 +45,17 @@ public class CollisionManifold {
     }
     public boolean isColliding() {
         return this.isColliding;
+    }
+    public void setBodies(Rigidbody2D a, Rigidbody2D b) {
+        this.bodyA = a;
+        this.bodyB = b;
+    }
+
+    public Rigidbody2D getA() {
+        return bodyA;
+    }
+
+    public Rigidbody2D getB() {
+        return bodyB;
     }
 }
