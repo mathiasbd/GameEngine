@@ -121,6 +121,11 @@ public class PhysicsSystem {
         float j = -(1.0f + e) * relativeVelocity.dot(relativeNormal) / invMassSum;
         Vector2f impulse = new Vector2f(relativeNormal).mul(j);
 
+//        System.out.println("Relative velocity: " + relativeVelocity);
+//        System.out.println("Relative Normal : " + relativeNormal);
+//        System.out.println("Dot with normal: " + relativeVelocity.dot(relativeNormal));
+//        System.out.println("invMass1: " + invMass1 + ", invMass2: " + invMass2);
+
         // Friction
         Vector2f tangent = new Vector2f(relativeVelocity)
                 .sub(new Vector2f(relativeNormal).mul(relativeVelocity.dot(relativeNormal)));
@@ -151,7 +156,6 @@ public class PhysicsSystem {
             vecMPoint1.add(new Vector2f(mPoint).sub(r1.getPosition()));
             vecMPoint2.add(new Vector2f(mPoint).sub(r2.getPosition()));
         }
-//        System.out.println("angular moment: " + m.getContactPoints());
 
 
         if (!vecMPoint1.isEmpty() && j != 0.0f) {
@@ -189,7 +193,7 @@ public class PhysicsSystem {
                 r2.setVelocity(new Vector2f(r2.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass2)));
                 r2.setAngularVelocity(r2.getAngularVelocity()+angularVelocity2*4);
             }
-        }
+            }
     }
 
     private void positionalCorrection(Rigidbody2D r1, Rigidbody2D r2, CollisionManifold m) {

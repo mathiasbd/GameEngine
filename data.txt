@@ -401,13 +401,94 @@
         },
         "rotation": 0.0
       }
+    },
+    {
+      "name": "Unnamed",
+      "components": [
+        {
+          "type": "physics.rigidbody.Rigidbody2D",
+          "properties": {
+            "bodyType": "DYNAMIC",
+            "position": {
+              "x": 430.0,
+              "y": 415.0
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "restitution": 0.3,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": -195.92671
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.05,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.Circle",
+          "properties": {
+            "radius": 55.0,
+            "rigidbody": {
+              "bodyType": "DYNAMIC",
+              "position": {
+                "x": 430.0,
+                "y": 415.0
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 0.3,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": -195.92671
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.05,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 430.0,
+          "y": 415.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      }
     }
   ],
   "spriteSheets": {
     "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png": {
       "texture": {
         "filepath": "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png",
-        "texID": 2,
+        "texID": 7,
         "width": 512,
         "height": 128
       },
