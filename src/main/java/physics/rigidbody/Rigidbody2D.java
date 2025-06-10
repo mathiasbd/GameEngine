@@ -176,6 +176,10 @@ public class Rigidbody2D extends Component {
         if(collider instanceof OBBCollider && bodyType != BodyType.STATIC) {
             inertia = (mass*(((OBBCollider) collider).getHalfSize().x*2*((OBBCollider) collider).getHalfSize().y*2))/6;
         }
+        else if (collider instanceof Circle circle && bodyType != BodyType.STATIC) {
+            float radius = circle.getRadius();
+            inertia = 0.05f * mass * radius * radius;
+        }
     }
 
     public Collider getCollider() {
