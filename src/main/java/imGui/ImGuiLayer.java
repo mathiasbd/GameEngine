@@ -69,6 +69,7 @@ public class ImGuiLayer {
         if (!isInEditor) {
             if (ImGui.button("Stop", buttonWidth, 0)) {
                 if (isInGame) {
+                    GameEngineManager.getPhysicsSystem().reset();
                     GameEngineManager.changeScene("EditorScene", new ArrayList<>());
                 }
             }
