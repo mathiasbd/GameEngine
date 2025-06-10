@@ -81,7 +81,7 @@ public class PlayerController extends Component {
             if (otherCollider != null) {
                 if (otherCollider instanceof OBBCollider) {
                     OBBCollider obb = (OBBCollider) otherCollider;
-                    RaycastResult result = RaycastManager.raycastSquare(downRay, obb, new RaycastResult());
+                    RaycastResult result = RaycastManager.raycastOBB(downRay, obb, new RaycastResult());
                     if (result.getDistance() < rayLength && result.getDistance() > 0.0f) {
                         DebugDraw.addLine2D(origin, result.getPoint());
                         if (result.isHit() && result.getPoint().y >= position.y - halfsizeY) {
