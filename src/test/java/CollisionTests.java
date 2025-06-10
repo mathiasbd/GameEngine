@@ -134,11 +134,6 @@ public class CollisionTests {
         boxRb.setRotation(45f);
         obb.setRigidbody(boxRb);
 
-        // get vertices and print
-        Vector2f[] vertices = obb.getVertices();
-        for (Vector2f vertex : vertices) {
-            System.out.println("Vertex: " + vertex);
-        }
         assertTrue(RaycastManager.lineInSquare(line, obb));
     }
 
@@ -170,47 +165,196 @@ public class CollisionTests {
 
     // Raycast vs Circle
 
-//    @Test
-//    public void raycastCircleDiagonalIntersection() {
-//        Circle circle = new Circle(1f);
-//        Rigidbody2D circleRigidbody = new Rigidbody2D();
-//        circleRigidbody.setPosition(new Vector2f(2f, 2f));
-//        circle.setRigidbody(circleRigidbody);
-//
-//        Raycast ray = new Raycast(new Vector2f(0f, 0f), new Vector2f(1f, 1f));
-//        RaycastResult rayResult = new RaycastResult();
-//
-//        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
-//        assertTrue(hit);
-//    }
-//
-//    @Test
-//    public void raycastCircleTangentIntersection() {
-//        Circle circle = new Circle(1f);
-//        Rigidbody2D circleRigidbody = new Rigidbody2D();
-//        circleRigidbody.setPosition(new Vector2f(0f, 1f));
-//        circle.setRigidbody(circleRigidbody);
-//
-//        Raycast ray = new Raycast(new Vector2f(-2f, 0f), new Vector2f(1f, 0f));
-//        RaycastResult rayResult = new RaycastResult();
-//
-//        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
-//        assertTrue(hit);
-//    }
-//
-//    @Test
-//    public void raycastCircleNoIntersection() {
-//        Circle circle = new Circle(1f);
-//        Rigidbody2D circleRigidbody = new Rigidbody2D();
-//        circleRigidbody.setPosition(new Vector2f(2f, 2f));
-//        circle.setRigidbody(circleRigidbody);
-//
-//        Raycast ray = new Raycast(new Vector2f(0f, 0f), new Vector2f(0.5f, 2f));
-//        RaycastResult rayResult = new RaycastResult();
-//
-//        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
-//        assertFalse(hit);
-//    }
+    @Test
+    public void raycastOnCircle() {
+        Circle circle = new Circle(1f);
+
+        Rigidbody2D circleRigidbody = new Rigidbody2D();
+        circleRigidbody.setPosition(new Vector2f(0f, 0f));
+        circle.setRigidbody(circleRigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(-2f, 0f), new Vector2f(1f, 0f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
+        assertTrue(hit);
+    }
+
+
+    @Test
+    public void raycastOnCircleCircumference() {
+        Circle circle = new Circle(1f);
+
+        Rigidbody2D circleRigidbody = new Rigidbody2D();
+        circleRigidbody.setPosition(new Vector2f(0f, 0f));
+        circle.setRigidbody(circleRigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(-1f, -1f), new Vector2f(0f, 1f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
+        assertTrue(hit);
+    }
+
+    @Test
+    public void raycastNotOnCircle() {
+        Circle circle = new Circle(1f);
+        Rigidbody2D circleRigidbody = new Rigidbody2D();
+        circleRigidbody.setPosition(new Vector2f(0f, 0f));
+        circle.setRigidbody(circleRigidbody);
+
+        Raycast ray = new Raycast(new Vector2f(2f, 0f), new Vector2f(0f, 1f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
+        assertFalse(hit);
+    }
+
+    // Raycast vs AABB
+
+    @Test
+    public void raycastOnAABB() {
+        AABBCollider aabb = new AABBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(0f, 0f));
+        aabb.setRigidbody(boxRb);
+
+        Raycast ray = new Raycast(new Vector2f(-2f, 0f), new Vector2f(1f, 0f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult);
+        assertTrue(hit);
+    }
+
+    @Test
+    public void raycastOnAABBFace() {
+        AABBCollider aabb = new AABBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(0f, 0f));
+        aabb.setRigidbody(boxRb);
+
+        Raycast ray = new Raycast(new Vector2f(-1f, -2f), new Vector2f(0f, 1f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult);
+        assertTrue(hit);
+    }
+
+    @Test
+    public void raycastOnAABBCorner() {
+        AABBCollider aabb = new AABBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(0f, 0f));
+        aabb.setRigidbody(boxRb);
+
+        Raycast ray = new Raycast(new Vector2f(-2f, -2f), new Vector2f(1f, 1f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult);
+        assertTrue(hit);
+    }
+
+    @Test
+    public void raycastNotOnAABB() {
+        AABBCollider aabb = new AABBCollider(new Vector2f(-1f, -1f), new Vector2f(1f, 1f));
+
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(0f, 0f));
+        aabb.setRigidbody(boxRb);
+
+        Raycast ray = new Raycast(new Vector2f(2f, 0f), new Vector2f(0f, 1f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult);
+        assertFalse(hit);
+    }
+
+
+    //  Raycast vs OBB
+
+    @Test
+    public void RaycastOnNonRotatedOBB() {
+        OBBCollider obb = new OBBCollider(new Vector2f(-1, -1), new Vector2f(1, 1));
+
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(0, 0));
+        boxRb.setRotation(0f);
+        obb.setRigidbody(boxRb);
+
+        Raycast ray = new Raycast(new Vector2f(-2, 0), new Vector2f(1, 0));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult);
+        assertTrue(hit);
+    }
+
+    @Test
+    public void RaycastOnRotatedOBB() {
+        OBBCollider obb = new OBBCollider(new Vector2f(-1, -1), new Vector2f(1, 1));
+
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(0, 0));
+        boxRb.setRotation(45f);
+        obb.setRigidbody(boxRb);
+
+        Raycast ray = new Raycast(new Vector2f(-2, 0), new Vector2f(1, 0));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult);
+        assertTrue(hit);
+    }
+
+    @Test
+    public void RaycastOnRotatedOBBFace() {
+        OBBCollider obb = new OBBCollider(new Vector2f(-1, -1), new Vector2f(1, 1));
+
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(0, 0));
+        boxRb.setRotation(45f);
+        obb.setRigidbody(boxRb);
+
+        Raycast ray = new Raycast(new Vector2f(-2, -0.59f), new Vector2f(0.70710677f, 0.70710677f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult);
+        assertTrue(hit);
+    }
+
+    @Test
+    public void RaycastOnRotatedOBBCorner() {
+        OBBCollider obb = new OBBCollider(new Vector2f(-1, -1), new Vector2f(1, 1));
+
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(0, 0));
+        boxRb.setRotation(45f);
+        obb.setRigidbody(boxRb);
+
+        Raycast ray = new Raycast(new Vector2f(-1, -1.41f), new Vector2f(0.5787f, 0.8156f));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult);
+        assertTrue(hit);
+    }
+
+    @Test
+    public void RaycastNotOnOBB() {
+        OBBCollider obb = new OBBCollider(new Vector2f(-1, -1), new Vector2f(1, 1));
+
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(0, 0));
+        boxRb.setRotation(45f);
+        obb.setRigidbody(boxRb);
+
+        Raycast ray = new Raycast(new Vector2f(2, 0), new Vector2f(0, 1));
+        RaycastResult rayResult = new RaycastResult();
+
+        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult);
+        assertFalse(hit);
+    }
+
 //    @Test
 //    public void testCircleCompletelyOutsideBox() {
 //        Circle circle = new Circle(1f);

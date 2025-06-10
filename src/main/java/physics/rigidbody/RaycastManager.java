@@ -106,17 +106,12 @@ public class RaycastManager {
         float circleRadius = circle.getRadius();
 
         Vector2f centerToRay = new Vector2f(rayStart).sub(circleCenter);
-        System.out.println("centerToRay: " + centerToRay);
 
         float a = rayDirection.dot(rayDirection);
         float b = 2.0f * rayDirection.dot(centerToRay);
         float c = centerToRay.dot(centerToRay) - circleRadius * circleRadius;
-        System.out.println("a: " + a);
-        System.out.println("b: " + b);
-        System.out.println("c: " + c);
 
         float discriminant = b * b - 4.0f * a * c;
-        System.out.println("discriminant: " + discriminant);
 
         if (discriminant < 0.0f) {
             RaycastResult.reset(rayResult);
@@ -127,8 +122,7 @@ public class RaycastManager {
         float sqrtDiscriminant = (float) Math.sqrt(discriminant);
         float t1 = (-b - sqrtDiscriminant) / (2.0f * a);
         float t2 = (-b + sqrtDiscriminant) / (2.0f * a);
-        System.out.println("t1: " + t1);
-        System.out.println("t2: " + t2);
+
 
         if (t1 < 0.0f && t2 < 0.0f) {
             RaycastResult.reset(rayResult);
@@ -148,13 +142,80 @@ public class RaycastManager {
     }
 
     public static boolean raycastABox(Raycast ray, AABBCollider box, RaycastResult rayResult) {
-        return false;
+        Vector2f origin = ray.getStart();
+        Vector2f dir = ray.getDirection();
+
+        Vector2f min = new Vector2f(box.getMin()).add(box.getRigidbody().getPosition());
+        Vector2f max = new Vector2f(box.getMax()).add(box.getRigidbody().getPosition());
+
+        float t1 = (min.x - origin.x) / dir.x;
+        float t2 = (max.x - origin.x) / dir.x;
+        float tNearX = Math.min(t1, t2);
+        float tFarX  = Math.max(t1, t2);
+
+        float t3 = (min.y - origin.y) / dir.y;
+        float t4 = (max.y - origin.y) / dir.y;
+        float tNearY = Math.min(t3, t4);
+        float tFarY  = Math.max(t3, t4);
+
+        float tNear = Math.max(tNearX, tNearY);
+        float tFar  = Math.min(tFarX,  tFarY);
+
+        if (tNear > tFar || tFar < 0.0f) {
+            RaycastResult.reset(rayResult);
+            return false;
+        }
+
+        float tHit = (tNear >= 0.0f) ? tNear : tFar;
+        if (tHit < 0.0f) {
+            RaycastResult.reset(rayResult);
+            return false;
+        }
+
+        Vector2f hitPoint = new Vector2f(dir).mul(tHit).add(origin);
+
+        Vector2f normal = new Vector2f();
+        if (tNearX > tNearY) {
+            normal.x = dir.x > 0 ? -1 : 1;
+        } else {
+            normal.y = dir.y > 0 ? -1 : 1;
+        }
+
+        rayResult.init(hitPoint, normal, tHit, true);
+        return true;
     }
 
-    public static boolean raycastSquare(Raycast ray, OBBCollider OBBCollider, RaycastResult rayResult) {
-        return false;
-    }
+    public static boolean raycastSquare(Raycast ray, OBBCollider box, RaycastResult rayResult) {
+        float theta = -box.getRigidbody().getRotation();
+        Vector2f center = box.getRigidbody().getPosition();
 
+        Vector2f localStart = new Vector2f(ray.getStart());
+        DTUMath.rotate(localStart, theta, center);
+
+        Vector2f localDir = new Vector2f(ray.getDirection());
+        DTUMath.rotate(localDir, theta, new Vector2f());
+
+        Raycast localRay = new Raycast(localStart, localDir);
+
+        AABBCollider localBox = new AABBCollider(box.getMin(), box.getMax());
+        localBox.setRigidbody(box.getRigidbody());
+
+        RaycastResult localResult = new RaycastResult();
+
+        if (!raycastABox(localRay, localBox, localResult)) {
+            RaycastResult.reset(rayResult);
+            return false;
+        }
+
+        Vector2f worldHit = new Vector2f(localResult.getPoint());
+        DTUMath.rotate(worldHit, box.getRigidbody().getRotation(), center);
+
+        Vector2f worldNorm = new Vector2f(localResult.getNormal());
+        DTUMath.rotate(worldNorm, box.getRigidbody().getRotation(), new Vector2f());
+
+        rayResult.init(worldHit, worldNorm, localResult.getDistance(), true);
+        return true;
+    }
 
     //Shapes dectecter
     //Circle vs Circle detecter
