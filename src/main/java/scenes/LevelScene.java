@@ -84,9 +84,7 @@ public class LevelScene extends Scene {
             }
         }
         if (physicsSystem != null) {
-            for(int i=0; i < 5; i++) {
-                physicsSystem.update(dt);
-            }
+            physicsSystem.update(dt);
         }
         if (spawner != null) {
             spawner.update(dt);
