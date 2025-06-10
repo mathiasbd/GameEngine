@@ -15,6 +15,7 @@ import physics.primitives.Collider;
 import physics.primitives.OBBCollider;
 import physics.rigidbody.Rigidbody2D;
 import util.AssetPool;
+import util.DTUMath;
 import util.DebugDraw;
 
 import java.util.List;
@@ -106,7 +107,20 @@ public class LevelEditorScene extends Scene {
     private void drawCollider(Collider collider) {
 
         switch (collider) {
-            case Circle circle -> DebugDraw.addCircle(circle.getCenter(), circle.getRadius(), new Vector3f(1, 0, 0), 1);
+            case Circle circle -> {
+                Vector2f center =circle.getCenter();
+                float radius = circle.getRadius();
+                Rigidbody2D rb =circle.getRigidbody();
+                float rotation = rb.getRotation();
+
+                DebugDraw.addCircle(center,radius, new Vector3f(1, 0, 0), 1);
+
+                Vector2f endpoint = new Vector2f(0,radius);
+                DTUMath.rotate(endpoint,rotation,new Vector2f());
+                endpoint.add(center);
+
+                DebugDraw.addLine2D(center,endpoint,new Vector3f(1, 0, 0), 1);
+            }
             case OBBCollider OBBCollider -> {
                 Vector2f center = OBBCollider.getRigidbody().getPosition();
                 Vector2f dimensions = OBBCollider.getHalfSize().mul(2, new Vector2f());

@@ -4,6 +4,7 @@ import components.Component;
 import org.example.GameObject;
 import org.example.Transform;
 import org.joml.Vector2f;
+import physics.primitives.Circle;
 import physics.primitives.Collider;
 import physics.primitives.OBBCollider;
 
