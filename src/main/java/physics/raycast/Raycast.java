@@ -1,4 +1,4 @@
-package physics.primitives;
+package physics.raycast;
 
 import org.joml.Vector2f;
 

@@ -1,5 +1,5 @@
 package physics.forces;
-import physics.rigidbody.Rigidbody2D;
+import physics.collisions.Rigidbody2D;
 
 public class ForceRegistration {
     public ForceGenerator fg;

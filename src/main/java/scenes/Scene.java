@@ -2,8 +2,6 @@ package scenes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import components.Component;
 import components.SpriteRenderer;
 import components.SpriteSheet;
@@ -12,25 +10,19 @@ import org.example.Camera;
 import org.example.GameEngineManager;
 import org.example.GameObject;
 import org.example.SaveFile;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 import physics.PhysicsSystem;
-import physics.rigidbody.Rigidbody2D;
+import physics.collisions.Rigidbody2D;
 import rendering.Renderer;
 import serializers.ComponentSerializer;
 import serializers.GameObjectSerializer;
 import serializers.SpriteSheetSerializer;
 import util.AssetPool;
-import util.DebugDraw;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

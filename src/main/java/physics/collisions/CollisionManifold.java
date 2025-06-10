@@ -1,4 +1,4 @@
-package physics.rigidbody;
+package physics.collisions;
 
 import org.joml.Vector2f;
 

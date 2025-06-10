@@ -1,7 +1,7 @@
 package physics.primitives;
 
 import org.joml.Vector2f;
-import physics.rigidbody.Rigidbody2D;
+import physics.collisions.Rigidbody2D;
 import util.DTUMath;
 
 public class OBBCollider extends Collider {
@@ -28,6 +28,10 @@ public class OBBCollider extends Collider {
     }
     public Vector2f getHalfSize() {
         return this.halfSize;
+    }
+
+    public Vector2f getSize() {
+        return this.size;
     }
     public Vector2f getMax() {
         return new Vector2f(this.rigidbody.getPosition()).add(this.halfSize);

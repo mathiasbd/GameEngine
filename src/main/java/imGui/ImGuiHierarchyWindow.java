@@ -13,9 +13,8 @@ import org.joml.Vector2f;
 import org.joml.Vector4f;
 import physics.primitives.Circle;
 import physics.primitives.OBBCollider;
-import physics.rigidbody.Rigidbody2D;
+import physics.collisions.Rigidbody2D;
 import scenes.Scene;
-import scripts.PlayerController;
 import util.AssetPool;
 
 import java.io.File;

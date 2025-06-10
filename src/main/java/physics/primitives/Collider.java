@@ -2,7 +2,7 @@ package physics.primitives;
 
 import components.Component;
 import org.joml.Vector2f;
-import physics.rigidbody.Rigidbody2D;
+import physics.collisions.Rigidbody2D;
 
 public abstract class Collider extends Component {
     protected Vector2f offset = new Vector2f();

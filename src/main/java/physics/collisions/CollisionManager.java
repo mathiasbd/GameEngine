@@ -1,16 +1,17 @@
-package physics.rigidbody;
+package physics.collisions;
 
 import org.joml.Vector2f;
 import physics.primitives.AABBCollider;
 import physics.primitives.Circle;
 import physics.primitives.Collider;
 import physics.primitives.OBBCollider;
+import physics.raycast.RaycastManager;
 import util.DTUMath;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Collisions {
+public class CollisionManager {
     public static CollisionManifold findCollisionFeatures(Collider c1, Collider c2) {
         if (c1 instanceof Circle && c2 instanceof Circle) {
             return findCollisionFeatures((Circle)c1, (Circle)c2);

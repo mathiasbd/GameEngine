@@ -13,7 +13,7 @@ import physics.primitives.AABBCollider;
 import physics.primitives.Circle;
 import physics.primitives.Collider;
 import physics.primitives.OBBCollider;
-import physics.rigidbody.Rigidbody2D;
+import physics.collisions.Rigidbody2D;
 import util.DTUMath;
 import util.DebugDraw;
 import scripts.Spawner;

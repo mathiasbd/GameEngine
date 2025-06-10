@@ -1,6 +1,6 @@
 package physics.forces;
 
-import physics.rigidbody.Rigidbody2D;
+import physics.collisions.Rigidbody2D;
 
 import java.util.ArrayList;
 import java.util.List;

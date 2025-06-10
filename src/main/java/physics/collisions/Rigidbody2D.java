@@ -1,4 +1,4 @@
-package physics.rigidbody;
+package physics.collisions;
 
 import components.Component;
 import org.example.GameObject;

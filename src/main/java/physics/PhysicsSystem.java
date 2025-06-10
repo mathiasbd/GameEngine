@@ -4,10 +4,10 @@ import org.joml.Vector2f;
 import physics.forces.ForceRegistry;
 import physics.forces.Gravity;
 import physics.primitives.Collider;
-import physics.rigidbody.CollisionManifold;
-import physics.rigidbody.Collisions;
-import physics.rigidbody.Rigidbody2D;
-import physics.rigidbody.Rigidbody2D.BodyType;
+import physics.collisions.CollisionManifold;
+import physics.collisions.CollisionManager;
+import physics.collisions.Rigidbody2D;
+import physics.collisions.Rigidbody2D.BodyType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class PhysicsSystem {
                 if (c1 != null && c2 != null &&
                         !(r1.getBodyType() == BodyType.STATIC && r2.getBodyType() == BodyType.STATIC)) {
 
-                    CollisionManifold result = Collisions.findCollisionFeatures(c1, c2);
+                    CollisionManifold result = CollisionManager.findCollisionFeatures(c1, c2);
                     if (result != null && result.isColliding()) {
                         result.setBodies(r1, r2);
                         bodies1.add(r1);

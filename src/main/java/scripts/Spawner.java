@@ -5,9 +5,9 @@ import org.example.GameObject;
 import org.example.Transform;
 import org.joml.Vector2f;
 import physics.primitives.OBBCollider;
-import physics.rigidbody.Rigidbody2D;
+import physics.collisions.Rigidbody2D;
 import scenes.Scene;
-import physics.rigidbody.CollisionManifold;
+import physics.collisions.CollisionManifold;
 
 import java.util.List;
 import java.util.Random;

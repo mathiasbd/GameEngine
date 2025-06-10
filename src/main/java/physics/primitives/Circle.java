@@ -1,8 +1,7 @@
 package physics.primitives;
 
 import org.joml.Vector2f;
-import physics.rigidbody.RaycastManager;
-import physics.rigidbody.Rigidbody2D;
+import physics.collisions.Rigidbody2D;
 
 public class Circle extends Collider {
     private float radius;

@@ -4,13 +4,14 @@ import components.Component;
 import org.example.GameEngineManager;
 import org.joml.Vector2f;
 import physics.primitives.*;
-import physics.rigidbody.RaycastManager;
-import physics.rigidbody.Rigidbody2D;
+import physics.raycast.Raycast;
+import physics.raycast.RaycastManager;
+import physics.raycast.RaycastResult;
+import physics.collisions.Rigidbody2D;
 import input.KeyboardHandler;
 import util.DebugDraw;
 
 import java.util.List;
-import java.util.Vector;
 
 import static org.lwjgl.glfw.GLFW.*;
 

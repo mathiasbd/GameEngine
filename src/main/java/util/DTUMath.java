@@ -21,16 +21,10 @@ public class DTUMath {
     public static boolean compare(float a, float b, float epsilon) { // Custom float comparison that allows for a small error margin (epsilon)
         return Math.abs(a - b) <= epsilon * Math.max(1.0f, Math.max(Math.abs(a), Math.abs(b)));
     }
-
-    public static boolean compare(Vector2f a, Vector2f b, float epsilon) { // Custom vector comparison
-        return compare(a.x, b.x, epsilon) && compare(a.y, b.y, epsilon);
-    }
-
-    public static boolean compare(float a, float b) { // Custom float comparison with default epsilon
-        return Math.abs(a - b) <= Float.MIN_VALUE * Math.max(1.0f, Math.max(Math.abs(a), Math.abs(b)));
-    }
-
     public static boolean compare(Vector2f a, Vector2f b) { // Custom vector comparison with default epsilon
         return compare(a.x, b.x) && compare(a.y, b.y); // ignore variable name warning
+    }
+    public static boolean compare(float a, float b) { // Custom float comparison with default epsilon
+        return Math.abs(a - b) <= Float.MIN_VALUE * Math.max(1.0f, Math.max(Math.abs(a), Math.abs(b)));
     }
 }

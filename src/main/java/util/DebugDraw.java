@@ -3,7 +3,7 @@ package util;
 import org.example.GameEngineManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import physics.primitives.Line;
+import physics.primitives.Line2D;
 import rendering.Shader;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class DebugDraw {
     private static final int MAX_LINES = 1000;
-    private static List<Line> lines = new ArrayList<>();
+    private static List<Line2D> line2DS = new ArrayList<>();
     // 6 floats per vertex, 2 vertices per line
     private static float[] vertexArray = new float[MAX_LINES * 6 * 2];
     private static Shader shader = AssetPool.getShader("assets/shaders/lineVertex.glsl", "assets/shaders/lineFragment.glsl");
@@ -52,19 +52,19 @@ public class DebugDraw {
             started = true;
         }
 
-        for (int i = 0; i < lines.size(); i++) {
-            if (lines.get(i).beginFrame() < 0) { // if found dead line, remove it and decrement i so we don't skip the next line
-                lines.remove(i);
+        for (int i = 0; i < line2DS.size(); i++) {
+            if (line2DS.get(i).beginFrame() < 0) { // if found dead line, remove it and decrement i so we don't skip the next line
+                line2DS.remove(i);
                 i--;
             }
         }
     }
 
     public static void drawLines() {
-        if (lines.size() <= 0) return;
+        if (line2DS.size() <= 0) return;
         //System.out.println("Drawing " + lines.size() + " lines");
         int index = 0;
-        for (Line l : lines) {
+        for (Line2D l : line2DS) {
             for (int i = 0; i < 2; i++) {
                 Vector2f position = i == 0 ? l.getFrom() : l.getTo();
                 Vector3f color = l.getColor();
@@ -84,7 +84,7 @@ public class DebugDraw {
         }
         // update the vbo with the new data
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, Arrays.copyOfRange(vertexArray, 0, lines.size() * 6 * 2));
+        glBufferSubData(GL_ARRAY_BUFFER, 0, Arrays.copyOfRange(vertexArray, 0, line2DS.size() * 6 * 2));
 
         // draw the lines
         shader.useProgram();
@@ -95,7 +95,7 @@ public class DebugDraw {
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
 
-        glDrawArrays(GL_LINES, 0, lines.size()*2);
+        glDrawArrays(GL_LINES, 0, line2DS.size()*2);
 
         // disable Location
         glDisableVertexAttribArray(0);
@@ -117,11 +117,11 @@ public class DebugDraw {
     }
 
     public static void addLine2D(Vector2f from, Vector2f to, Vector3f color, int lifetime) {
-        if (lines.size() >= MAX_LINES) {
+        if (line2DS.size() >= MAX_LINES) {
             System.out.println("Max lines reached, not adding line");
             return;
         }
-        DebugDraw.lines.add(new Line(from, to, color, lifetime));
+        DebugDraw.line2DS.add(new Line2D(from, to, color, lifetime));
     }
 
     /// addBox methods

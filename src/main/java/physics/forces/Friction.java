@@ -1,7 +1,7 @@
 package physics.forces;
 
 import org.joml.Vector2f;
-import physics.rigidbody.Rigidbody2D;
+import physics.collisions.Rigidbody2D;
 
 public class Friction implements ForceGenerator {
     private float staticCoefficient;
