@@ -99,7 +99,7 @@ public class RaycastManager {
         return lineInABox(localLine, AABBCollider);
     }
 
-    public static boolean raycastCircle(Raycast ray, Circle circle, RaycastResult rayResult) {
+    public static RaycastResult raycastCircle(Raycast ray, Circle circle, RaycastResult rayResult) {
         Vector2f rayStart = ray.getStart();
         Vector2f rayDirection = ray.getDirection();
         Vector2f circleCenter = circle.getCenter();
@@ -115,7 +115,7 @@ public class RaycastManager {
 
         if (discriminant < 0.0f) {
             RaycastResult.reset(rayResult);
-            return false;
+            return rayResult; // no intersection
         }
 
         // t values tell us how far along the ray we hit the circle (length of the ray at the hit point)
@@ -126,7 +126,7 @@ public class RaycastManager {
 
         if (t1 < 0.0f && t2 < 0.0f) {
             RaycastResult.reset(rayResult);
-            return false;
+            return rayResult; // both hits are behind the ray start
         }
 
         float t = t1 >= 0.0f ? t1 : t2;
@@ -138,38 +138,64 @@ public class RaycastManager {
         }
 
         rayResult.init(intersectionPoint, normal, t, true);
-        return true;
+        return rayResult;
     }
 
-    public static boolean raycastABox(Raycast ray, AABBCollider box, RaycastResult rayResult) {
+    public static RaycastResult raycastABox(Raycast ray, AABBCollider box, RaycastResult rayResult) {
         Vector2f origin = ray.getStart();
         Vector2f dir = ray.getDirection();
 
-        Vector2f min = new Vector2f(box.getMin()).add(box.getRigidbody().getPosition());
-        Vector2f max = new Vector2f(box.getMax()).add(box.getRigidbody().getPosition());
+        Vector2f min = box.getMin();
+        Vector2f max = box.getMax();
 
-        float t1 = (min.x - origin.x) / dir.x;
-        float t2 = (max.x - origin.x) / dir.x;
+        float t1, t2, t3, t4;
+
+        // X direction handling
+        if (dir.x == 0.0f) {
+            if (origin.x < min.x || origin.x > max.x) {
+                RaycastResult.reset(rayResult);
+                return rayResult;
+            }
+            t1 = Float.NEGATIVE_INFINITY;
+            t2 = Float.POSITIVE_INFINITY;
+        } else {
+            t1 = (min.x - origin.x) / dir.x;
+            t2 = (max.x - origin.x) / dir.x;
+        }
+
+        // Y direction handling
+        if (dir.y == 0.0f) {
+            if (origin.y < min.y || origin.y > max.y) {
+                System.out.println("Raycast ABox: Ray is parallel to Y-axis and outside box bounds.");
+                RaycastResult.reset(rayResult);
+                return rayResult;
+            }
+            t3 = Float.NEGATIVE_INFINITY;
+            t4 = Float.POSITIVE_INFINITY;
+        } else {
+            t3 = (min.y - origin.y) / dir.y;
+            t4 = (max.y - origin.y) / dir.y;
+        }
+
         float tNearX = Math.min(t1, t2);
         float tFarX  = Math.max(t1, t2);
-
-        float t3 = (min.y - origin.y) / dir.y;
-        float t4 = (max.y - origin.y) / dir.y;
         float tNearY = Math.min(t3, t4);
         float tFarY  = Math.max(t3, t4);
 
         float tNear = Math.max(tNearX, tNearY);
-        float tFar  = Math.min(tFarX,  tFarY);
+        float tFar  = Math.min(tFarX, tFarY);
 
         if (tNear > tFar || tFar < 0.0f) {
+            System.out.println("Raycast ABox: No intersection with the box.");
             RaycastResult.reset(rayResult);
-            return false;
+            return rayResult;
         }
 
         float tHit = (tNear >= 0.0f) ? tNear : tFar;
         if (tHit < 0.0f) {
+            System.out.println("Raycast ABox: Hit is behind the ray start.");
             RaycastResult.reset(rayResult);
-            return false;
+            return rayResult;
         }
 
         Vector2f hitPoint = new Vector2f(dir).mul(tHit).add(origin);
@@ -182,10 +208,11 @@ public class RaycastManager {
         }
 
         rayResult.init(hitPoint, normal, tHit, true);
-        return true;
+        return rayResult;
     }
 
-    public static boolean raycastSquare(Raycast ray, OBBCollider box, RaycastResult rayResult) {
+
+    public static RaycastResult raycastSquare(Raycast ray, OBBCollider box, RaycastResult rayResult) {
         float theta = -box.getRigidbody().getRotation();
         Vector2f center = box.getRigidbody().getPosition();
 
@@ -197,14 +224,15 @@ public class RaycastManager {
 
         Raycast localRay = new Raycast(localStart, localDir);
 
+
         AABBCollider localBox = new AABBCollider(box.getMin(), box.getMax());
         localBox.setRigidbody(box.getRigidbody());
 
         RaycastResult localResult = new RaycastResult();
 
-        if (!raycastABox(localRay, localBox, localResult)) {
+        if (!raycastABox(localRay, localBox, localResult).isHit()) {
             RaycastResult.reset(rayResult);
-            return false;
+            return rayResult;
         }
 
         Vector2f worldHit = new Vector2f(localResult.getPoint());
@@ -214,7 +242,7 @@ public class RaycastManager {
         DTUMath.rotate(worldNorm, box.getRigidbody().getRotation(), new Vector2f());
 
         rayResult.init(worldHit, worldNorm, localResult.getDistance(), true);
-        return true;
+        return rayResult;
     }
 
     //Shapes dectecter

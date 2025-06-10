@@ -176,7 +176,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(-2f, 0f), new Vector2f(1f, 0f));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
+        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult).isHit();
         assertTrue(hit);
     }
 
@@ -192,7 +192,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(-1f, -1f), new Vector2f(0f, 1f));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
+        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult).isHit();
         assertTrue(hit);
     }
 
@@ -206,7 +206,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(2f, 0f), new Vector2f(0f, 1f));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult);
+        boolean hit = RaycastManager.raycastCircle(ray, circle, rayResult).isHit();
         assertFalse(hit);
     }
 
@@ -223,7 +223,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(-2f, 0f), new Vector2f(1f, 0f));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult);
+        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult).isHit();
         assertTrue(hit);
     }
 
@@ -238,7 +238,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(-1f, -2f), new Vector2f(0f, 1f));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult);
+        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult).isHit();
         assertTrue(hit);
     }
 
@@ -253,7 +253,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(-2f, -2f), new Vector2f(1f, 1f));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult);
+        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult).isHit();
         assertTrue(hit);
     }
 
@@ -268,7 +268,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(2f, 0f), new Vector2f(0f, 1f));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult);
+        boolean hit = RaycastManager.raycastABox(ray, aabb, rayResult).isHit();
         assertFalse(hit);
     }
 
@@ -287,7 +287,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(-2, 0), new Vector2f(1, 0));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult);
+        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult).isHit();
         assertTrue(hit);
     }
 
@@ -303,7 +303,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(-2, 0), new Vector2f(1, 0));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult);
+        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult).isHit();
         assertTrue(hit);
     }
 
@@ -319,7 +319,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(-2, -0.59f), new Vector2f(0.70710677f, 0.70710677f));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult);
+        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult).isHit();
         assertTrue(hit);
     }
 
@@ -335,7 +335,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(-1, -1.41f), new Vector2f(0.5787f, 0.8156f));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult);
+        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult).isHit();
         assertTrue(hit);
     }
 
@@ -351,7 +351,7 @@ public class CollisionTests {
         Raycast ray = new Raycast(new Vector2f(2, 0), new Vector2f(0, 1));
         RaycastResult rayResult = new RaycastResult();
 
-        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult);
+        boolean hit = RaycastManager.raycastSquare(ray, obb, rayResult).isHit();
         assertFalse(hit);
     }
 
