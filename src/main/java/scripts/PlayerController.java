@@ -1,5 +1,6 @@
-package components;
+package scripts;
 
+import components.Component;
 import org.example.GameEngineManager;
 import org.joml.Vector2f;
 import physics.primitives.*;

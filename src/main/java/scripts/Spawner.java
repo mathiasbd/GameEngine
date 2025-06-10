@@ -1,4 +1,4 @@
-package components;
+package scripts;
 
 import org.example.GameEngineManager;
 import org.example.GameObject;

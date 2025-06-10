@@ -1,6 +1,6 @@
 package scenes;
 
-import components.PlayerController;
+import scripts.PlayerController;
 import imGui.ImGuiLayer;
 import org.example.Camera;
 import org.example.GameEngineManager;
@@ -15,7 +15,7 @@ import physics.primitives.Collider;
 import physics.primitives.OBBCollider;
 import physics.rigidbody.Rigidbody2D;
 import util.DebugDraw;
-import components.Spawner;
+import scripts.Spawner;
 
 import java.util.List;
 
@@ -84,7 +84,9 @@ public class LevelScene extends Scene {
             }
         }
         if (physicsSystem != null) {
-            physicsSystem.update(dt);
+            for(int i=0; i < 5; i++) {
+                physicsSystem.update(dt);
+            }
         }
         if (spawner != null) {
             spawner.update(dt);

@@ -15,6 +15,7 @@ import physics.primitives.Circle;
 import physics.primitives.OBBCollider;
 import physics.rigidbody.Rigidbody2D;
 import scenes.Scene;
+import scripts.PlayerController;
 import util.AssetPool;
 
 import java.io.File;
@@ -210,10 +211,6 @@ public class ImGuiHierarchyWindow {
                             }
                             ImGui.endMenu();
                         }
-                    }
-                    if(ImGui.menuItem("PlayerController")) {
-                        PlayerController playerCtrl = new PlayerController();
-                        go.addComponent(playerCtrl);
                     }
                     if(ImGui.menuItem("Add script")) {
                         initDirectory("src");

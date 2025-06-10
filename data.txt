@@ -676,9 +676,16 @@
           }
         },
         {
-          "type": "components.PlayerController",
+          "type": "scripts.PlayerController",
           "properties": {
-            "walkSpeed": 12.0
+            "walkSpeed": 10.0,
+            "skinWidth": 0.02,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "halfsizeY": 0.0,
+            "rayLength": 0.1
           }
         }
       ],
