@@ -201,7 +201,7 @@
         {
           "type": "scripts.PlayerController",
           "properties": {
-            "walkSpeed": 10.0,
+            "walkSpeed": 20.0,
             "skinWidth": 0.02,
             "origin": {
               "x": 0.0,
@@ -218,6 +218,182 @@
         "position": {
           "x": 365.0,
           "y": 160.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      }
+    },
+    {
+      "name": "Platform1",
+      "components": [
+        {
+          "type": "physics.rigidbody.Rigidbody2D",
+          "properties": {
+            "bodyType": "STATIC",
+            "position": {
+              "x": 260.0,
+              "y": 250.0
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.05,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "size": {
+              "x": 5.0,
+              "y": 5.0
+            },
+            "halfSize": {
+              "x": 150.0,
+              "y": 20.0
+            },
+            "rigidbody": {
+              "bodyType": "STATIC",
+              "position": {
+                "x": 260.0,
+                "y": 250.0
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.05,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 260.0,
+          "y": 250.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      }
+    },
+    {
+      "name": "Playform2",
+      "components": [
+        {
+          "type": "physics.rigidbody.Rigidbody2D",
+          "properties": {
+            "bodyType": "STATIC",
+            "position": {
+              "x": 975.0,
+              "y": 385.0
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.05,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "size": {
+              "x": 5.0,
+              "y": 5.0
+            },
+            "halfSize": {
+              "x": 150.0,
+              "y": 20.0
+            },
+            "rigidbody": {
+              "bodyType": "STATIC",
+              "position": {
+                "x": 975.0,
+                "y": 385.0
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.05,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 975.0,
+          "y": 385.0
         },
         "scale": {
           "x": 0.0,
