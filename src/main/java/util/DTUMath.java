@@ -26,8 +26,8 @@ public class DTUMath {
         return compare(a.x, b.x, epsilon) && compare(a.y, b.y, epsilon);
     }
 
-    public static boolean compare(float x, float y) { // Custom float comparison with default epsilon
-        return Math.abs(x - y) <= Float.MIN_VALUE * Math.max(1.0f, Math.max(Math.abs(x), Math.abs(y)));
+    public static boolean compare(float a, float b) { // Custom float comparison with default epsilon
+        return Math.abs(a - b) <= Float.MIN_VALUE * Math.max(1.0f, Math.max(Math.abs(a), Math.abs(b)));
     }
 
     public static boolean compare(Vector2f a, Vector2f b) { // Custom vector comparison with default epsilon
