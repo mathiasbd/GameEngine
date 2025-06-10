@@ -18,6 +18,11 @@ public class OBBCollider extends Collider {
         this.halfSize = new Vector2f(size).mul(0.5f);
     }
 
+    public OBBCollider(Vector2f min, Vector2f max) {
+        this.size = new Vector2f(max).sub(min);
+        this.halfSize = new Vector2f(this.size).mul(0.5f);
+    }
+
     public Vector2f getMin() {
         return new Vector2f(this.rigidbody.getPosition()).sub(this.halfSize); // assume the position is the center of the box
     }

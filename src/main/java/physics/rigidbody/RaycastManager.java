@@ -38,7 +38,7 @@ public class RaycastManager {
 
         return localPoint.x <= max.x && min.x
                 <= localPoint.x && localPoint.y <= max.y && min.y
-                <= localPoint.y; // if the point is within the bounds of the box
+                <= localPoint.y;
     }
 
     public static boolean lineInCircle(Line line, Circle circle) { // test if a line is in a circle
