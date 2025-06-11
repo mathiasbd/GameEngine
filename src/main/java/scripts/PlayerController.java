@@ -17,15 +17,13 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class PlayerController extends Component {
     public float walkSpeed = 10.0f;
-    float skinWidth = 0.02f;
-    Vector2f origin = new Vector2f(0, 0);
-    float halfsizeY = 0.0f;
+    private Vector2f origin = new Vector2f(0, 0);
+    private float halfsizeY = 0.0f;
     private float rayLength = 500f;
     private Rigidbody2D rb;
 
     @Override
     public void start() {
-        System.out.println("PlayerController started");
         rb = gameObject.getComponent(Rigidbody2D.class);
         if (rb == null) {
             throw new IllegalStateException("PlayerController requires a Rigidbody2D");
@@ -42,18 +40,13 @@ public class PlayerController extends Component {
         float h = 0f;
         if (KeyboardHandler.isKeyPressed(GLFW_KEY_D) || KeyboardHandler.isKeyPressed(GLFW_KEY_RIGHT)) {
             h = 1f;
-            System.out.println("Right key pressed");
         }
         if (KeyboardHandler.isKeyPressed(GLFW_KEY_A) || KeyboardHandler.isKeyPressed(GLFW_KEY_LEFT)) {
             h -= 1f;
-            System.out.println("Left key pressed");
         }
         if (KeyboardHandler.isKeyPressed(GLFW_KEY_SPACE)) {
             if (isGrounded()) {
-                System.out.println("Space key pressed");
                 vel.y = 80.0f;
-            } else {
-                System.out.println("Space key pressed but not grounded");
             }
         }
 

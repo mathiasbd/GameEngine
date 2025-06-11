@@ -14,14 +14,14 @@ public class Rigidbody2D extends Component {
     public enum BodyType {
         STATIC,
         DYNAMIC,
-        KINEMATIC,
-        NO_IMPULSE
+        KINEMATIC
     }
 
     private BodyType bodyType = BodyType.DYNAMIC;
     private Transform rawTransform;
     private Collider collider;
 
+    private String tag;
     private Vector2f position = new Vector2f();
     private float rotation = 0.0f;
     private float mass = 1f;
@@ -206,8 +206,15 @@ public class Rigidbody2D extends Component {
         return inertia;
     }
 
-    public GameObject getGameObject() {
-        return this.gameObject;
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getTag() {
+        if (tag == null) {
+            return "";
+        }
+        return tag;
     }
 
 }

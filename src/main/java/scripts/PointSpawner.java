@@ -33,25 +33,27 @@ public class PointSpawner extends Component {
 
     @Override
     public void update(float dt) {
-        // Remove any objects that have collided
+
         Iterator<GameObject> iter = pointObjects.iterator();
         while (iter.hasNext()) {
             GameObject go = iter.next();
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
             if (rb != null) {
-                List<CollisionManifold> collisions = GameEngineManager.getPhysicsSystem().getCollisions();
+                List<CollisionManifold> collisions = GameEngineManager.getPhysicsSystem().getGhostCollisions();
                 for (CollisionManifold m : collisions) {
-                    if (m.getA() == rb || m.getB() == rb) {
-                        scene.removeGameObject(go);
-                        System.out.println("Removing point after collision: " + rb.getPosition());
-                        iter.remove();
-                        break;
+                    Rigidbody2D rbA = m.getA();
+                    Rigidbody2D rbB = m.getB();
+                    if (rbA == rb || rbB == rb) {
+                        if (rbA.getTag().equals("Player") || rbB.getTag().equals("Player")) {
+                            scene.removeGameObject(go);
+                            iter.remove();
+                            break;
+                        }
                     }
                 }
             }
         }
 
-        // Spawn new objects up to maxPoints
         if (pointObjects.size() < maxPoints) {
             spawnNewObject();
         }
@@ -73,6 +75,7 @@ public class PointSpawner extends Component {
         Vector2f size = new Vector2f(25.0f, 25.0f);
         Transform transform = new Transform(spawnPos, size);
         GameObject pointObject = new GameObject("Point Object", transform, 0, true);
+        pointObject.setTag("Point");
 
         Rigidbody2D rb = new Rigidbody2D();
         rb.setBodyType(Rigidbody2D.BodyType.STATIC);
@@ -80,6 +83,7 @@ public class PointSpawner extends Component {
         pointObject.addComponent(rb);
 
         OBBCollider collider = new OBBCollider(size);
+        collider.setSolid(false);
         collider.setRigidbody(rb);
         rb.setCollider(collider);
         pointObject.addComponent(collider);

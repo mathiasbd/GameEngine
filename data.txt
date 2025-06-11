@@ -7,6 +7,7 @@
           "type": "physics.collisions.Rigidbody2D",
           "properties": {
             "bodyType": "STATIC",
+            "tag": "Floor",
             "position": {
               "x": 650.0,
               "y": 20.0
@@ -44,6 +45,7 @@
             },
             "rigidbody": {
               "bodyType": "STATIC",
+              "tag": "Floor",
               "position": {
                 "x": 650.0,
                 "y": 20.0
@@ -70,7 +72,8 @@
             "offset": {
               "x": 0.0,
               "y": 0.0
-            }
+            },
+            "isSolid": true
           }
         }
       ],
@@ -86,7 +89,8 @@
           "y": 0.0
         },
         "rotation": 0.0
-      }
+      },
+      "tag": "Floor"
     },
     {
       "name": "Player",
@@ -95,6 +99,7 @@
           "type": "physics.collisions.Rigidbody2D",
           "properties": {
             "bodyType": "KINEMATIC",
+            "tag": "Player",
             "position": {
               "x": 460.0,
               "y": 334.30002
@@ -132,6 +137,7 @@
             },
             "rigidbody": {
               "bodyType": "KINEMATIC",
+              "tag": "Player",
               "position": {
                 "x": 460.0,
                 "y": 334.30002
@@ -158,14 +164,14 @@
             "offset": {
               "x": 0.0,
               "y": 0.0
-            }
+            },
+            "isSolid": true
           }
         },
         {
           "type": "scripts.PlayerController",
           "properties": {
             "walkSpeed": 25.0,
-            "skinWidth": 0.02,
             "origin": {
               "x": 0.0,
               "y": 0.0
@@ -212,7 +218,8 @@
           "y": 100.0
         },
         "rotation": 0.0
-      }
+      },
+      "tag": "Player"
     },
     {
       "name": "SpawnPoint1",
@@ -229,7 +236,8 @@
           "y": 0.0
         },
         "rotation": 0.0
-      }
+      },
+      "tag": "None"
     },
     {
       "name": "SpawnPoint2",
@@ -246,7 +254,8 @@
           "y": 0.0
         },
         "rotation": 0.0
-      }
+      },
+      "tag": "None"
     },
     {
       "name": "SpawnPoint3",
@@ -263,7 +272,8 @@
           "y": 0.0
         },
         "rotation": 0.0
-      }
+      },
+      "tag": "None"
     },
     {
       "name": "SpawnPoint4",
@@ -272,7 +282,7 @@
       "inScene": false,
       "transform": {
         "position": {
-          "x": 200.0,
+          "x": 100.0,
           "y": 100.0
         },
         "scale": {
@@ -280,7 +290,8 @@
           "y": 0.0
         },
         "rotation": 0.0
-      }
+      },
+      "tag": "None"
     },
     {
       "name": "SpawnPoint5",
@@ -289,7 +300,7 @@
       "inScene": false,
       "transform": {
         "position": {
-          "x": 500.0,
+          "x": 600.0,
           "y": 100.0
         },
         "scale": {
@@ -297,7 +308,8 @@
           "y": 0.0
         },
         "rotation": 0.0
-      }
+      },
+      "tag": "None"
     },
     {
       "name": "SpawnPoint6",
@@ -306,7 +318,7 @@
       "inScene": false,
       "transform": {
         "position": {
-          "x": 1100.0,
+          "x": 1200.0,
           "y": 100.0
         },
         "scale": {
@@ -314,7 +326,8 @@
           "y": 0.0
         },
         "rotation": 0.0
-      }
+      },
+      "tag": "None"
     },
     {
       "name": "Spawner",
@@ -322,12 +335,17 @@
         {
           "type": "scripts.Spawner",
           "properties": {
+            "fallingObjects": [],
             "spawnPoints": [
               "SpawnPoint1",
               "SpawnPoint2",
               "SpawnPoint3"
             ],
-            "hasSpawned": false
+            "timeSinceLastSpawn": 0.0,
+            "nextSpawnInterval": 0.7833384,
+            "minSpawnInterval": 0.3,
+            "maxSpawnInterval": 0.8,
+            "maxPoints": 1
           }
         },
         {
@@ -355,14 +373,33 @@
           "y": 0.0
         },
         "rotation": 0.0
-      }
+      },
+      "tag": "None"
+    },
+    {
+      "name": "Unnamed",
+      "components": [],
+      "zIndex": 0,
+      "inScene": true,
+      "transform": {
+        "position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      },
+      "tag": "None"
     }
   ],
   "spriteSheets": {
     "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png": {
       "texture": {
         "filepath": "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png",
-        "texID": 5,
+        "texID": 2,
         "width": 512,
         "height": 128
       },

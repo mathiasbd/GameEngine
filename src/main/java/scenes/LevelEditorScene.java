@@ -51,6 +51,7 @@ public class LevelEditorScene extends Scene {
             if (collider != null) {
                 if (rb != null) {
                     rb.setPosition(transform.getPosition());
+                    rb.setTag(go.getTag());
                     collider.setRigidbody(rb);
                     transform.setRotation(rb.getRotation());
                 } else {

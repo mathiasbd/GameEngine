@@ -16,14 +16,17 @@ public class GameObject {
     private List<Component> components;
     private int zIndex;
     private boolean inScene;
+
     public Transform transform;
+    public String tag;
 
     public GameObject(String name) {
         this.name = name;
         this.components = new ArrayList<Component>();
         this.transform = new Transform();
         this.zIndex = 0;
-        this.inScene = false;
+        this.inScene = true;
+        this.tag = "None";
     }
 
     public GameObject(String name, Transform transform, int zIndex, boolean inScene) {
@@ -32,6 +35,16 @@ public class GameObject {
         this.transform = transform;
         this.zIndex = zIndex;
         this.inScene = inScene;
+        this.tag = "None";
+    }
+
+    public GameObject(String name, Transform transform, int zIndex, boolean inScene, String tag) {
+        this.name = name;
+        this.components = new ArrayList<Component>();
+        this.transform = transform;
+        this.zIndex = zIndex;
+        this.inScene = inScene;
+        this.tag = tag;
     }
 
     public <T extends Component> T getComponent(Class<T> componentClass) {
@@ -109,6 +122,14 @@ public class GameObject {
 
     public void setInScene(boolean inScene) {
         this.inScene = inScene;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     @Override
