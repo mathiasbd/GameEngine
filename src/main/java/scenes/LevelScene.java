@@ -16,15 +16,14 @@ import physics.primitives.OBBCollider;
 import physics.collisions.Rigidbody2D;
 import util.DTUMath;
 import util.DebugDraw;
-import scripts.Spawner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LevelScene extends Scene {
     private static List<GameObject> gameObjectsToLoad = null;
     private ImGuiLayer imGuiLayer;
     private PhysicsSystem physicsSystem;
-
 
     public LevelScene() {
         System.out.println("Inside the game scene");
@@ -36,7 +35,6 @@ public class LevelScene extends Scene {
         this.physicsSystem.reset();
         this.camera = new Camera(new Vector2f());
         this.imGuiLayer = new ImGuiLayer();
-        this.physicsSystem = GameEngineManager.getPhysicsSystem();
         this.gameObjects = gameObjects;
         for (GameObject go : this.gameObjects) {
             go.start();
@@ -52,7 +50,8 @@ public class LevelScene extends Scene {
 
     @Override
     public void update(float dt) {
-        for (GameObject go : this.gameObjects) {
+        List<GameObject> snapshot = new ArrayList<>(this.gameObjects);
+        for (GameObject go : snapshot) {
             go.update(dt);
             Transform transform = go.getTransform();
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
@@ -72,6 +71,7 @@ public class LevelScene extends Scene {
                 drawCollider(collider);
             }
         }
+
         if (physicsSystem != null) {
             physicsSystem.update(dt);
         }
@@ -79,6 +79,7 @@ public class LevelScene extends Scene {
         imGuiLayer.process(this);
         this.renderer.render();
     }
+
     public void addGameObject(GameObject go) {
         if (go != null) {
             gameObjects.add(go);
@@ -93,6 +94,7 @@ public class LevelScene extends Scene {
             }
         }
     }
+
     public void removeGameObject(GameObject go) {
         if (go != null) {
             System.out.println("Removing: " + go.getName());
@@ -106,21 +108,18 @@ public class LevelScene extends Scene {
     }
 
     private void drawCollider(Collider collider) {
-
         switch (collider) {
             case Circle circle -> {
-                Vector2f center =circle.getCenter();
+                Vector2f center = circle.getCenter();
                 float radius = circle.getRadius();
-                Rigidbody2D rb =circle.getRigidbody();
+                Rigidbody2D rb = circle.getRigidbody();
                 float rotation = rb.getRotation();
 
-                DebugDraw.addCircle(center,radius, new Vector3f(1, 0, 0), 1);
-
-                Vector2f endpoint = new Vector2f(0,radius);
-                DTUMath.rotate(endpoint,rotation,new Vector2f());
+                DebugDraw.addCircle(center, radius, new Vector3f(1, 0, 0), 1);
+                Vector2f endpoint = new Vector2f(0, radius);
+                DTUMath.rotate(endpoint, rotation, new Vector2f());
                 endpoint.add(center);
-
-                DebugDraw.addLine2D(center,endpoint,new Vector3f(1, 0, 0), 1);
+                DebugDraw.addLine2D(center, endpoint, new Vector3f(1, 0, 0), 1);
             }
             case OBBCollider OBBCollider -> {
                 Vector2f center = OBBCollider.getRigidbody().getPosition();
@@ -131,9 +130,9 @@ public class LevelScene extends Scene {
             case AABBCollider AABBCollider -> {
                 Vector2f center = AABBCollider.getRigidbody().getPosition();
                 Vector2f dimensions = AABBCollider.getHalfSize().mul(2, new Vector2f());
-                DebugDraw.addBox(center, dimensions, 0, new Vector3f(1, 0, 0), 1); // No rotation
+                DebugDraw.addBox(center, dimensions, 0, new Vector3f(1, 0, 0), 1);
             }
-            case null, default -> System.err.println("Unknown collider type");
+            default -> System.err.println("Unknown collider type");
         }
     }
 }

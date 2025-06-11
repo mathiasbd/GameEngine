@@ -29,17 +29,43 @@ public class Spawner extends Component {
         this.scene = GameEngineManager.getCurrentScene();
         if (scene == null) {
             System.err.println("Scene is null in Spawner");
-            return;
         }
-        spawnNewObject();
+    }
+
+    @Override
+    public void update(float dt) {
+        if (!hasSpawned) {
+            spawnNewObject();
+        }
+
+        if (fallingObject != null) {
+            Rigidbody2D rb = fallingObject.getComponent(Rigidbody2D.class);
+            if (rb != null) {
+
+                List<CollisionManifold> collisions = GameEngineManager.getPhysicsSystem().getCollisions();
+
+                for (CollisionManifold m : collisions) {
+                    Rigidbody2D a = m.getA();
+                    Rigidbody2D b = m.getB();
+
+                    if (a == rb || b == rb) {
+                        scene.removeGameObject(fallingObject);
+                        System.out.println("Removing box after collision: " + rb.getPosition());
+                        fallingObject = null;
+                        hasSpawned = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (fallingObject == null && !hasSpawned) {
+            spawnNewObject();
+        }
     }
 
     private void spawnNewObject() {
-        if (hasSpawned) return;
-
-        if (scene == null) {
-            return;
-        }
+        if (scene == null || hasSpawned) return;
 
         String spawnName = spawnPoints.get(random.nextInt(spawnPoints.size()));
         GameObject spawnPoint = scene.getGameObjectByName(spawnName);
@@ -69,33 +95,5 @@ public class Spawner extends Component {
 
         scene.addGameObject(fallingObject);
         hasSpawned = true;
-    }
-
-    @Override
-    public void update(float dt) {
-        if (fallingObject != null) {
-            Rigidbody2D rb = fallingObject.getComponent(Rigidbody2D.class);
-            if (rb != null) {
-
-                List<CollisionManifold> collisions = GameEngineManager.getPhysicsSystem().getCollisions();
-
-                for (CollisionManifold m : collisions) {
-                    Rigidbody2D a = m.getA();
-                    Rigidbody2D b = m.getB();
-
-                    if (a == rb || b == rb) {
-                        scene.removeGameObject(fallingObject);
-                        System.out.println("Removing box after collision: " + rb.getPosition());
-                        fallingObject = null;
-                        hasSpawned = false;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (fallingObject == null && !hasSpawned) {
-            spawnNewObject();
-        }
     }
 }
