@@ -96,8 +96,8 @@
           "properties": {
             "bodyType": "KINEMATIC",
             "position": {
-              "x": 650.0,
-              "y": 200.0
+              "x": 460.0,
+              "y": 334.30002
             },
             "rotation": 0.0,
             "mass": 1.0,
@@ -133,8 +133,8 @@
             "rigidbody": {
               "bodyType": "KINEMATIC",
               "position": {
-                "x": 650.0,
-                "y": 200.0
+                "x": 460.0,
+                "y": 334.30002
               },
               "rotation": 0.0,
               "mass": 1.0,
@@ -171,20 +171,45 @@
               "y": 0.0
             },
             "halfsizeY": 0.0,
-            "rayLength": 150.0
+            "rayLength": 150.0,
+            "rb": {
+              "bodyType": "KINEMATIC",
+              "position": {
+                "x": 460.0,
+                "y": 334.30002
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.05,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            }
           }
         }
       ],
       "zIndex": 0,
-      "inScene": false,
+      "inScene": true,
       "transform": {
         "position": {
-          "x": 650.0,
-          "y": 200.0
+          "x": 460.0,
+          "y": 334.30002
         },
         "scale": {
-          "x": 0.0,
-          "y": 0.0
+          "x": 100.0,
+          "y": 100.0
         },
         "rotation": 0.0
       }

@@ -165,10 +165,8 @@ public class ImGuiHierarchyWindow {
             }
             treeNode = ImGui.treeNodeEx("##treeObject_" + i, flags);
             if(ImGui.beginDragDropSource()) {
-                if(currentScene.getGameObjects().get(i).getComponent(SpriteRenderer.class) != null) {
-                    currentScene.getDragDropper().setDragging(true);
-                    currentScene.getDragDropper().setDraggedObject(go);
-                }
+                currentScene.getDragDropper().setDragging(true);
+                currentScene.getDragDropper().setDraggedObject(go);
                 ImGui.text("Dragging " + go.getName());
                 ImGui.endDragDropSource();
             }
