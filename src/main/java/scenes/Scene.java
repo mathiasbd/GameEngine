@@ -148,6 +148,15 @@ public abstract class Scene {
         }
     }
 
+    public GameObject getGameObjectByName(String name) { // Name of gameobjects should be unique.
+        for (GameObject go : gameObjects) {
+            if (go.getName().equals(name)) {
+                return go;
+            }
+        }
+        return null;
+    }
+
     public void removeGameObject(GameObject go) {
         if (go != null && gameObjects.contains(go)) {
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);

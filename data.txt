@@ -213,6 +213,57 @@
         },
         "rotation": 0.0
       }
+    },
+    {
+      "name": "SpawnPoint1",
+      "components": [],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 100.0,
+          "y": 700.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      }
+    },
+    {
+      "name": "SpawnPoint2",
+      "components": [],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 600.0,
+          "y": 700.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      }
+    },
+    {
+      "name": "SpawnPoint3",
+      "components": [],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 1200.0,
+          "y": 700.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      }
     }
   ],
   "spriteSheets": {
