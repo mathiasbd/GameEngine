@@ -8,6 +8,7 @@ import physics.collisions.CollisionManifold;
 import physics.collisions.CollisionManager;
 import physics.collisions.Rigidbody2D;
 import physics.collisions.Rigidbody2D.BodyType;
+import util.DTUMath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,16 +159,16 @@ public class PhysicsSystem {
             float torque1 = 0.0f;
             int count1 = 0;
             for(Vector2f vecMPoint : vecMPoint1) {
-                torque1 += cross(vecMPoint, r1.getForceAccumulator());
-                angularMoment1 += cross(vecMPoint, impulse);
+                torque1 += DTUMath.cross(vecMPoint, r1.getForceAccumulator());
+                angularMoment1 += DTUMath.cross(vecMPoint, impulse);
                 count1++;
             }
             float angularMoment2 = 0.0f;
             float torque2 = 0.0f;
             int count2 = 0;
             for(Vector2f vecMPoint : vecMPoint2) {
-                torque2 += cross(vecMPoint, r2.getForceAccumulator());
-                angularMoment2 += cross(vecMPoint, impulse);
+                torque2 += DTUMath.cross(vecMPoint, r2.getForceAccumulator());
+                angularMoment2 += DTUMath.cross(vecMPoint, impulse);
                 count2++;
             }
 
@@ -238,8 +239,6 @@ public class PhysicsSystem {
         }
     }
 
-
-
     public void addRigidbody(Rigidbody2D body) {
         this.rb.add(body);
         if (body.getBodyType() != BodyType.STATIC) {
@@ -251,17 +250,6 @@ public class PhysicsSystem {
         return rb;
     }
 
-
-    // used for angular rotation
-    public static float cross(Vector2f a, Vector2f b) {
-        return a.x * b.y - a.y * b.x;
-    }
-    public static Vector2f cross(Vector2f v, float a) {
-        return new Vector2f(-a * v.y, a * v.x);
-    }
-    public static Vector2f cross(float a, Vector2f v) {
-        return new Vector2f(a * v.y, -a * v.x);
-    }
     // Spawning
     public ForceRegistry getForceRegistry() {
         return this.fr;
@@ -275,7 +263,6 @@ public class PhysicsSystem {
     }
 
     public Gravity getGravity() {
-
         return gravity;
     }
     public void reset() {

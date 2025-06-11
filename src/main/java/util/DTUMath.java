@@ -18,6 +18,16 @@ public class DTUMath {
         vec.y = yNew;
     }
 
+    public static float cross(Vector2f a, Vector2f b) {
+        return a.x * b.y - a.y * b.x;
+    }
+    public static Vector2f cross(Vector2f v, float a) {
+        return new Vector2f(-a * v.y, a * v.x);
+    }
+    public static Vector2f cross(float a, Vector2f v) {
+        return new Vector2f(a * v.y, -a * v.x);
+    }
+
     public static boolean compare(float a, float b, float epsilon) { // Custom float comparison that allows for a small error margin (epsilon)
         return Math.abs(a - b) <= epsilon * Math.max(1.0f, Math.max(Math.abs(a), Math.abs(b)));
     }
@@ -27,4 +37,6 @@ public class DTUMath {
     public static boolean compare(float a, float b) { // Custom float comparison with default epsilon
         return Math.abs(a - b) <= Float.MIN_VALUE * Math.max(1.0f, Math.max(Math.abs(a), Math.abs(b)));
     }
+
+
 }
