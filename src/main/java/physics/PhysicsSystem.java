@@ -251,9 +251,7 @@ public class PhysicsSystem {
     }
 
     // Spawning
-    public ForceRegistry getForceRegistry() {
-        return this.fr;
-    }
+
     public List<CollisionManifold> getGhostCollisions() {
         return ghostCollisions;
     }
@@ -262,9 +260,7 @@ public class PhysicsSystem {
         this.rb.remove(body);
     }
 
-    public Gravity getGravity() {
-        return gravity;
-    }
+
     public void reset() {
         this.rb.clear();
         this.bodies1.clear();

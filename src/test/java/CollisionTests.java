@@ -448,6 +448,20 @@ public class CollisionTests {
         boolean collision = CollisionManager.findCollisionFeatures(circle1, circle2).isColliding();
         assertFalse(collision);
     }
+    public void circleInsideCircleCollision() {
+        Circle circle1 = new Circle(1f);
+        Rigidbody2D circle1Rb = new Rigidbody2D();
+        circle1Rb.setPosition(new Vector2f(0f, 0f));
+        circle1.setRigidbody(circle1Rb);
+
+        Circle circle2 = new Circle(1f);
+        Rigidbody2D circle2Rb = new Rigidbody2D();
+        circle2Rb.setPosition(new Vector2f(0f, 0f)); // touching
+        circle2.setRigidbody(circle2Rb);
+
+        boolean collision = CollisionManager.findCollisionFeatures(circle1, circle2).isColliding();
+        assertTrue(collision);
+    }
 
     // Circle vs OBB
 
@@ -517,6 +531,41 @@ public class CollisionTests {
 
         boolean collision = CollisionManager.findCollisionFeatures(circle, obb).isColliding();
         assertFalse(collision);
+    }
+
+    @Test
+    public void circleVsOBBNonRotatedCollisionCorner() {
+        Circle circle = new Circle(1f);
+        Rigidbody2D circleRb = new Rigidbody2D();
+        circleRb.setPosition(new Vector2f(0f, -1f));
+        circle.setRigidbody(circleRb);
+
+
+        OBBCollider obb = new OBBCollider(new Vector2f(-1, -1), new Vector2f(1, 1));
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(1f, 1f));
+        boxRb.setRotation(0f);
+        obb.setRigidbody(boxRb);
+
+        boolean collision = CollisionManager.findCollisionFeatures(circle, obb).isColliding();
+        assertTrue(collision);
+    }
+    @Test
+    public void circleVsOBBRotatedCollisionCorner() {
+        Circle circle = new Circle(1f);
+        Rigidbody2D circleRb = new Rigidbody2D();
+        circleRb.setPosition(new Vector2f(0f, -1f));
+        circle.setRigidbody(circleRb);
+
+
+        OBBCollider obb = new OBBCollider(new Vector2f(-1, -1), new Vector2f(1, 1));
+        Rigidbody2D boxRb = new Rigidbody2D();
+        boxRb.setPosition(new Vector2f(1f, 1f));
+        boxRb.setRotation(10f);
+        obb.setRigidbody(boxRb);
+
+        boolean collision = CollisionManager.findCollisionFeatures(circle, obb).isColliding();
+        assertTrue(collision);
     }
 
     // OBB vs OBB

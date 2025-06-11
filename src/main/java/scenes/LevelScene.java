@@ -91,7 +91,6 @@ public class LevelScene extends Scene {
             if (rb != null) {
                 rb.setPosition(go.getTransform().getPosition());
                 physicsSystem.addRigidbody(rb);
-                physicsSystem.getForceRegistry().add(rb, physicsSystem.getGravity());
             }
         }
     }
