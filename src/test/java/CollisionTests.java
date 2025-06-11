@@ -13,6 +13,62 @@ import static physics.raycast.RaycastManager.pointInPolygon;
 
 public class CollisionTests {
 
+    //point vs polygon
+    @Test
+    public void pointInsideConvexPolygon() {
+        Vector2f[] polygon = new Vector2f[] {
+                new Vector2f(0, 0),
+                new Vector2f(2, 0),
+                new Vector2f(2, 2),
+                new Vector2f(0, 2)
+        };
+
+        Vector2f pointInside = new Vector2f(1, 1);
+        boolean result = pointInPolygon(pointInside, polygon);
+        assertTrue(result);
+    }
+
+    @Test
+    public void pointOutsideConvexPolygon() {
+        Vector2f[] polygon = new Vector2f[] {
+                new Vector2f(0, 0),
+                new Vector2f(2, 0),
+                new Vector2f(2, 2),
+                new Vector2f(0, 2)
+        };
+
+        Vector2f pointOutside = new Vector2f(3, 3);
+        boolean result = pointInPolygon(pointOutside, polygon);
+        assertFalse(result);
+    }
+
+    @Test
+    public void pointOnEdgeOfPolygon() {
+        Vector2f[] polygon = new Vector2f[] {
+                new Vector2f(0, 0),
+                new Vector2f(2, 0),
+                new Vector2f(2, 2),
+                new Vector2f(0, 2)
+        };
+
+        Vector2f pointOnEdge = new Vector2f(1, 0);
+        boolean result = pointInPolygon(pointOnEdge, polygon);
+        assertTrue(result);
+    }
+    @Test
+    public void pointOnCornerPolygon() {
+        Vector2f[] polygon = new Vector2f[] {
+                new Vector2f(0, 0),
+                new Vector2f(2, 0),
+                new Vector2f(2, 2),
+                new Vector2f(0, 2)
+        };
+
+        Vector2f pointOnCorner = new Vector2f(2, 2);
+        boolean result = pointInPolygon(pointOnCorner, polygon);
+        assertTrue(result);
+    }
+    
     // Line vs circle
     @Test
     public void lineOnCircle() {
@@ -537,58 +593,5 @@ public class CollisionTests {
         assertFalse(collision);
     }
 
-    @Test
-    public void pointInsideConvexPolygon() {
-        Vector2f[] polygon = new Vector2f[] {
-                new Vector2f(0, 0),
-                new Vector2f(2, 0),
-                new Vector2f(2, 2),
-                new Vector2f(0, 2)
-        };
 
-        Vector2f pointInside = new Vector2f(1, 1);
-        boolean result = pointInPolygon(pointInside, polygon);
-        assertTrue(result);
-    }
-
-    @Test
-    public void pointOutsideConvexPolygon() {
-        Vector2f[] polygon = new Vector2f[] {
-                new Vector2f(0, 0),
-                new Vector2f(2, 0),
-                new Vector2f(2, 2),
-                new Vector2f(0, 2)
-        };
-
-        Vector2f pointOutside = new Vector2f(3, 3);
-        boolean result = pointInPolygon(pointOutside, polygon);
-        assertFalse(result);
-    }
-
-    @Test
-    public void pointOnEdgeOfPolygon() {
-        Vector2f[] polygon = new Vector2f[] {
-                new Vector2f(0, 0),
-                new Vector2f(2, 0),
-                new Vector2f(2, 2),
-                new Vector2f(0, 2)
-        };
-
-        Vector2f pointOnEdge = new Vector2f(1, 0);
-        boolean result = pointInPolygon(pointOnEdge, polygon);
-        assertTrue(result);
-    }
-    @Test
-    public void pointOnCornerPolygon() {
-        Vector2f[] polygon = new Vector2f[] {
-                new Vector2f(0, 0),
-                new Vector2f(2, 0),
-                new Vector2f(2, 2),
-                new Vector2f(0, 2)
-        };
-
-        Vector2f pointOnCorner = new Vector2f(2, 2);
-        boolean result = pointInPolygon(pointOnCorner, polygon);
-        assertTrue(result);
-    }
 }

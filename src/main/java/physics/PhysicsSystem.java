@@ -15,7 +15,6 @@ import java.util.List;
 public class PhysicsSystem {
     private ForceRegistry fr;
     private Gravity gravity;
-    private List<CollisionManifold> currentFrameCollisions = new ArrayList<>();
     private List<Rigidbody2D> rb;
     private List<Rigidbody2D> bodies1;
     private List<Rigidbody2D> bodies2;
@@ -274,10 +273,10 @@ public class PhysicsSystem {
     public void removeRigidbody(Rigidbody2D body) {
         this.rb.remove(body);
     }
-    private final Gravity gravity2 = new Gravity(new Vector2f(0, -9.8f));
 
     public Gravity getGravity() {
-        return gravity2;
+
+        return gravity;
     }
     public void reset() {
         this.rb.clear();
