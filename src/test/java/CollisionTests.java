@@ -9,6 +9,7 @@ import physics.collisions.Rigidbody2D;
 import physics.collisions.CollisionManager;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static physics.raycast.RaycastManager.pointInPolygon;
 
 public class CollisionTests {
 
@@ -534,5 +535,60 @@ public class CollisionTests {
 
         boolean collision = CollisionManager.findCollisionFeatures(obb1, obb2).isColliding();
         assertFalse(collision);
+    }
+
+    @Test
+    public void pointInsideConvexPolygon() {
+        Vector2f[] polygon = new Vector2f[] {
+                new Vector2f(0, 0),
+                new Vector2f(2, 0),
+                new Vector2f(2, 2),
+                new Vector2f(0, 2)
+        };
+
+        Vector2f pointInside = new Vector2f(1, 1);
+        boolean result = pointInPolygon(pointInside, polygon);
+        assertTrue(result);
+    }
+
+    @Test
+    public void pointOutsideConvexPolygon() {
+        Vector2f[] polygon = new Vector2f[] {
+                new Vector2f(0, 0),
+                new Vector2f(2, 0),
+                new Vector2f(2, 2),
+                new Vector2f(0, 2)
+        };
+
+        Vector2f pointOutside = new Vector2f(3, 3);
+        boolean result = pointInPolygon(pointOutside, polygon);
+        assertFalse(result);
+    }
+
+    @Test
+    public void pointOnEdgeOfPolygon() {
+        Vector2f[] polygon = new Vector2f[] {
+                new Vector2f(0, 0),
+                new Vector2f(2, 0),
+                new Vector2f(2, 2),
+                new Vector2f(0, 2)
+        };
+
+        Vector2f pointOnEdge = new Vector2f(1, 0);
+        boolean result = pointInPolygon(pointOnEdge, polygon);
+        assertTrue(result);
+    }
+    @Test
+    public void pointOnCornerPolygon() {
+        Vector2f[] polygon = new Vector2f[] {
+                new Vector2f(0, 0),
+                new Vector2f(2, 0),
+                new Vector2f(2, 2),
+                new Vector2f(0, 2)
+        };
+
+        Vector2f pointOnCorner = new Vector2f(2, 2);
+        boolean result = pointInPolygon(pointOnCorner, polygon);
+        assertTrue(result);
     }
 }
