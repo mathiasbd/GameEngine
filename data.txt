@@ -264,6 +264,105 @@
         },
         "rotation": 0.0
       }
+    },
+    {
+      "name": "Unnamed",
+      "components": [
+        {
+          "type": "scripts.Spawner",
+          "properties": {
+            "spawnPoints": [
+              "SpawnPoint1",
+              "SpawnPoint2",
+              "SpawnPoint3"
+            ],
+            "hasSpawned": false
+          }
+        },
+        {
+          "type": "physics.collisions.Rigidbody2D",
+          "properties": {
+            "bodyType": "DYNAMIC",
+            "position": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": -51.87564
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.05,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "size": {
+              "x": 5.0,
+              "y": 5.0
+            },
+            "halfSize": {
+              "x": 2.5,
+              "y": 2.5
+            },
+            "rigidbody": {
+              "bodyType": "DYNAMIC",
+              "position": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": -51.87564
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.05,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": false,
+      "transform": {
+        "position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      }
     }
   ],
   "spriteSheets": {

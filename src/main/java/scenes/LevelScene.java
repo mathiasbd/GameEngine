@@ -21,14 +21,8 @@ import scripts.Spawner;
 import java.util.List;
 
 public class LevelScene extends Scene {
-    private Spawner spawner;
-
     private static List<GameObject> gameObjectsToLoad = null;
     private ImGuiLayer imGuiLayer;
-
-    private boolean changingScene = false;
-    private float timeToChangeScene = 3.0f;
-
     private PhysicsSystem physicsSystem;
 
 
@@ -44,19 +38,14 @@ public class LevelScene extends Scene {
         this.imGuiLayer = new ImGuiLayer();
         this.physicsSystem = GameEngineManager.getPhysicsSystem();
         this.gameObjects = gameObjects;
-        this.spawner = new Spawner(this);
         for (GameObject go : this.gameObjects) {
             go.start();
             Transform transform = go.getTransform();
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
-            PlayerController playerController = go.getComponent(PlayerController.class);
             if (rb != null) {
                 rb.setPosition(transform.getPosition());
                 physicsSystem.addRigidbody(rb);
                 transform.setRotation(rb.getRotation());
-                if (playerController != null) {
-                    playerController.setRigidbody(rb);
-                }
             }
         }
     }
@@ -75,7 +64,6 @@ public class LevelScene extends Scene {
                     rb.setCollider(collider);
                     transform.setRotation(rb.getRotation());
                     if (collider instanceof OBBCollider obb) {
-                        // Sync rotation directly
                         obb.getRigidbody().setRotation(rb.getRotation());
                     }
                 } else {
@@ -86,9 +74,6 @@ public class LevelScene extends Scene {
         }
         if (physicsSystem != null) {
             physicsSystem.update(dt);
-        }
-        if (spawner != null) {
-            spawner.update(dt);
         }
 
         imGuiLayer.process(this);

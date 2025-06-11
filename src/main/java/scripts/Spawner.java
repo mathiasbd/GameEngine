@@ -1,5 +1,6 @@
 package scripts;
 
+import components.Component;
 import org.example.GameEngineManager;
 import org.example.GameObject;
 import org.example.Transform;
@@ -10,24 +11,35 @@ import physics.collisions.Rigidbody2D;
 import scenes.Scene;
 import physics.collisions.CollisionManifold;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
-public class Spawner {
-    private final Scene scene;
+public class Spawner extends Component {
+    private Scene scene;
     private GameObject fallingObject;
-    List<String> spawnPoints = List.of("SpawnPoint1", "SpawnPoint2", "SpawnPoint3");
-    private final Random random = new Random();
+    public List<String> spawnPoints = List.of("SpawnPoint1", "SpawnPoint2", "SpawnPoint3");
+    private transient final Random random = new Random();
     private boolean hasSpawned = false;
-    public Spawner(Scene scene) {
-        this.scene = scene;
+
+    @Override
+    public void start() {
+        System.out.println("Spawner started");
+        this.scene = GameEngineManager.getCurrentScene();
+        if (scene == null) {
+            System.err.println("Scene is null in Spawner");
+            return;
+        }
         spawnNewObject();
     }
 
-
     private void spawnNewObject() {
         if (hasSpawned) return;
+
+        if (scene == null) {
+            return;
+        }
 
         String spawnName = spawnPoints.get(random.nextInt(spawnPoints.size()));
         GameObject spawnPoint = scene.getGameObjectByName(spawnName);
@@ -59,6 +71,7 @@ public class Spawner {
         hasSpawned = true;
     }
 
+    @Override
     public void update(float dt) {
         if (fallingObject != null) {
             Rigidbody2D rb = fallingObject.getComponent(Rigidbody2D.class);

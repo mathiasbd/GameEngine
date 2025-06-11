@@ -46,11 +46,10 @@ public abstract class Scene {
 
     public void start() {
         for (GameObject go : gameObjects) {
-            go.start();
+            //go.start();
             this.renderer.add(go);
         }
         isRunning = true;
-
     }
 
     public void addGameObjectToScene(GameObject go) {

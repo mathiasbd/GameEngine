@@ -21,15 +21,8 @@ import util.DebugDraw;
 import java.util.List;
 
 public class LevelEditorScene extends Scene {
-
-    private GameObject obj1;
-    private SpriteSheet sprites;
     private GameObject draggedObject = null;
     private ImGuiLayer imGuiLayer;
-
-    private PhysicsSystem physicsSystem;
-
-    private boolean physicsEnabled = false;
 
     public LevelEditorScene() {
         System.out.println("Inside the level editing scene");
@@ -39,7 +32,6 @@ public class LevelEditorScene extends Scene {
         loadResources();
         this.camera = new Camera(new Vector2f());
         this.imGuiLayer = new ImGuiLayer();
-        this.physicsSystem = GameEngineManager.getPhysicsSystem();
         this.gameObjects = gameObjects;
 
     }
@@ -51,18 +43,6 @@ public class LevelEditorScene extends Scene {
     }
     @Override
     public void update(float dt) {
-        if (!physicsEnabled) {
-//            for (GameObject go : this.gameObjects) {
-//                Transform transform = go.getTransform();
-//                Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
-//                if (rb != null) {
-//                    rb.setPosition(transform.getPosition());
-//                    physicsSystem.addRigidbody(rb);
-//                }
-//            }
-            physicsEnabled = true;
-        }
-
         for (GameObject go : this.gameObjects) {
             go.update(dt);
             Transform transform = go.getTransform();
@@ -77,9 +57,6 @@ public class LevelEditorScene extends Scene {
                     System.err.println("Collider without Rigidbody2D: " + go.getName());
                 }
                 drawCollider(collider);
-            }
-            if (physicsSystem != null) {
-                physicsSystem.update(dt);
             }
         }
 

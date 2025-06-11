@@ -25,6 +25,7 @@ public class PlayerController extends Component {
 
     @Override
     public void start() {
+        System.out.println("PlayerController started");
         rb = gameObject.getComponent(Rigidbody2D.class);
         if (rb == null) {
             throw new IllegalStateException("PlayerController requires a Rigidbody2D");
