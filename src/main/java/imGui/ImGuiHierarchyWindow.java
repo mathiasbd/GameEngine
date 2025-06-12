@@ -134,7 +134,7 @@ public class ImGuiHierarchyWindow {
         }
     }
 
-    private void showObject() {
+    private void scriptFunction(){
         if(showScriptFiles) {
             addScript();
             if(selectedFile != null && selectedFile.getName().endsWith(".java")) {
@@ -146,6 +146,66 @@ public class ImGuiHierarchyWindow {
                 selectedFile = null;
             }
         }
+    }
+
+    private void objectSettings(GameObject go, int i) {
+        if(ImGui.beginPopupContextItem("ObjectSettings" + i, ImGuiPopupFlags.MouseButtonRight)) {
+            if(ImGui.beginMenu("Add component")) {
+                if(ImGui.menuItem("SpriteRenderer")) {
+                    if(go.getComponent(SpriteRenderer.class) == null) {
+                        Sprite sprite = new Sprite();
+                        queedSpriteRenderer = new SpriteRenderer();
+                        queedSpriteRenderer.setColor(new Vector4f(0,0,0,1));
+                        queedSpriteRenderer.setSprite(sprite);
+                    }
+                }
+                if(ImGui.menuItem("RigidBody2D")) {
+                    Rigidbody2D rigB2D = new Rigidbody2D();
+                    GameEngineManager.getPhysicsSystem().addRigidbody(rigB2D);
+                    go.addComponent(rigB2D);
+                }
+                if(go.getComponent(Rigidbody2D.class)!=null) {
+                    if(ImGui.beginMenu("Collider")) {
+                        if(ImGui.menuItem("Square")) {
+                            //System.out.println("Trying to add square shape");
+                            OBBCollider OBBCollider = new OBBCollider(new Vector2f(5,5));
+                            OBBCollider.setRigidbody(go.getComponent(Rigidbody2D.class));
+                            go.addComponent(OBBCollider);
+                        }
+                        if(ImGui.menuItem("Circle")) {
+                            //System.out.println("Trying to add circle shape");
+                            Circle circle = new Circle(5);
+                            circle.setRigidbody(go.getComponent(Rigidbody2D.class));
+                            go.addComponent(circle);
+
+                        }
+                        ImGui.endMenu();
+                    }
+                }
+                if(ImGui.menuItem("Add script")) {
+                    initDirectory("src");
+                    goScript = go;
+                    showScriptFiles = true;
+                }
+                ImGui.endMenu();
+            }
+            if(ImGui.menuItem("Edit fields")) {
+                objectToEditFields = i;
+                showEditFieldsWindow = true;
+            }
+            if(ImGui.menuItem("Edit name")) {
+                newObjectName.set(go.getName());
+                objectToEditName = i;
+            }
+            if(ImGui.menuItem("Delete Object")) {
+                objectToRemove = i;
+            }
+            ImGui.endPopup();
+        }
+    }
+
+    private void showObject() {
+        this.scriptFunction();
         this.gameObjects = currentScene.getGameObjects();
         boolean treeNode;
         int flags;
@@ -176,59 +236,7 @@ public class ImGuiHierarchyWindow {
             if(ImGui.isItemClicked()) {
                 selectedObject = i;
             }
-            if(ImGui.beginPopupContextItem("ObjectSettings" + i, ImGuiPopupFlags.MouseButtonRight)) {
-                if(ImGui.beginMenu("Add component")) {
-                    if(ImGui.menuItem("SpriteRenderer")) {
-                        if(go.getComponent(SpriteRenderer.class) == null) {
-                            Sprite sprite = new Sprite();
-                            queedSpriteRenderer = new SpriteRenderer();
-                            queedSpriteRenderer.setColor(new Vector4f(0,0,0,1));
-                            queedSpriteRenderer.setSprite(sprite);
-                        }
-                    }
-                    if(ImGui.menuItem("RigidBody2D")) {
-                        Rigidbody2D rigB2D = new Rigidbody2D();
-                        GameEngineManager.getPhysicsSystem().addRigidbody(rigB2D);
-                        go.addComponent(rigB2D);
-                    }
-                    if(go.getComponent(Rigidbody2D.class)!=null) {
-                        if(ImGui.beginMenu("Collider")) {
-                            if(ImGui.menuItem("Square")) {
-                                //System.out.println("Trying to add square shape");
-                                OBBCollider OBBCollider = new OBBCollider(new Vector2f(5,5));
-                                OBBCollider.setRigidbody(go.getComponent(Rigidbody2D.class));
-                                go.addComponent(OBBCollider);
-                            }
-                            if(ImGui.menuItem("Circle")) {
-                                //System.out.println("Trying to add circle shape");
-                                Circle circle = new Circle(5);
-                                circle.setRigidbody(go.getComponent(Rigidbody2D.class));
-                                go.addComponent(circle);
-
-                            }
-                            ImGui.endMenu();
-                        }
-                    }
-                    if(ImGui.menuItem("Add script")) {
-                        initDirectory("src");
-                        goScript = go;
-                        showScriptFiles = true;
-                    }
-                    ImGui.endMenu();
-                }
-                if(ImGui.menuItem("Edit fields")) {
-                    objectToEditFields = i;
-                    showEditFieldsWindow = true;
-                }
-                if(ImGui.menuItem("Edit name")) {
-                    newObjectName.set(go.getName());
-                    objectToEditName = i;
-                }
-                if(ImGui.menuItem("Delete Object")) {
-                    objectToRemove = i;
-                }
-                ImGui.endPopup();
-            }
+            this.objectSettings(go, i);
             ImGui.sameLine();
             if(objectToEditName == i) {
                 if(ImGui.inputText("##edit_" + i, newObjectName, ImGuiInputTextFlags.EnterReturnsTrue)) {
@@ -242,12 +250,37 @@ public class ImGuiHierarchyWindow {
                 showComponent(go, i);
                 ImGui.treePop();
             }
-            
+
             ImGui.separator();
             ImGui.popID();
         }
     }
 
+    private void spriteRendererFunction(Component c){
+        if(c.getClass() == SpriteRenderer.class) {
+            if(ImGui.beginDragDropTarget()) {
+                byte[] payload = ImGui.acceptDragDropPayload("spriteSheet");
+                if(payload != null) {
+                    String spriteSheetName = new String(payload);
+                    SpriteSheet sheet = AssetPool.getSpriteSheet(spriteSheetName);
+                    System.out.println(sheet.getTexture().getTexID() + " " + sheet.getSprite(0).getTexture().getTexID());
+                    if (sheet != null && sheet.getSprite(0) != null && sheet.getSprite(0).getTexture() != null) {
+                        ((SpriteRenderer) c).setSprite(sheet.getSprite(0));
+                        System.out.println("Sprite set from: " + spriteSheetName);
+                    } else {
+                        if(sheet == null) {
+                            System.out.println("Sheet is null");
+                        } else if(sheet.getSprite(0) == null) {
+                            System.out.println("sprite is null");
+                        } else {
+                            System.out.println("texture is null");
+                        }
+                        System.err.println("Failed to get sprite from: " + spriteSheetName);
+                    }
+                }
+            }
+        }
+    }
     private void showComponent(GameObject go, int i) {
         boolean treeNode;
         int flags;
@@ -267,29 +300,7 @@ public class ImGuiHierarchyWindow {
             if(selectedComponent == i*gameObjects.size()+j && i == selectedObject) {
                 ImGui.popStyleColor();
             }
-            if(c.getClass() == SpriteRenderer.class) {
-                if(ImGui.beginDragDropTarget()) {
-                    byte[] payload = ImGui.acceptDragDropPayload("spriteSheet");
-                    if(payload != null) {
-                        String spriteSheetName = new String(payload);
-                        SpriteSheet sheet = AssetPool.getSpriteSheet(spriteSheetName);
-                        System.out.println(sheet.getTexture().getTexID() + " " + sheet.getSprite(0).getTexture().getTexID());
-                        if (sheet != null && sheet.getSprite(0) != null && sheet.getSprite(0).getTexture() != null) {
-                            ((SpriteRenderer) c).setSprite(sheet.getSprite(0));
-                            System.out.println("Sprite set from: " + spriteSheetName);
-                        } else {
-                            if(sheet == null) {
-                                System.out.println("Sheet is null");
-                            } else if(sheet.getSprite(0) == null) {
-                                System.out.println("sprite is null");
-                            } else {
-                                System.out.println("texture is null");
-                            }
-                            System.err.println("Failed to get sprite from: " + spriteSheetName);
-                        }
-                    }
-                }
-            }
+            this.spriteRendererFunction(c);
             if(ImGui.isItemClicked()) {
                 selectedComponent = i*gameObjects.size()+j;
             }
