@@ -3,8 +3,10 @@ package components;
 import imgui.ImGui;
 import imgui.flag.ImGuiColorEditFlags;
 import imgui.flag.ImGuiDragDropFlags;
+import imgui.internal.flag.ImGuiTextFlags;
 import imgui.type.ImBoolean;
 import org.example.GameObject;
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import java.lang.reflect.Field;
@@ -25,11 +27,13 @@ public abstract class Component {
             Field[] fields = this.getClass().getDeclaredFields();
             for(Field field : fields) {
                 boolean isPrivate = Modifier.isPrivate(field.getModifiers());
+                boolean isTransient = Modifier.isTransient(field.getModifiers());
                 if(isPrivate) {
                     field.setAccessible(true);
                 }
                 Class type = field.getType();
                 Object value = field.get(this);
+                if(value == null || isTransient) continue;
                 String name = field.getName();
                 ImGui.pushID(name);
                 if(type == Vector4f.class) {
@@ -50,6 +54,20 @@ public abstract class Component {
                 ImGui.columns(2, "No Borders", false);
                 ImGui.setColumnWidth(0, textWidth);
                 ImGui.setColumnWidth(1, inputWidth);
+                if(type == Vector2f.class) {
+                    Vector2f val = (Vector2f) value;
+                    float[] vec2 = {val.x, val.y};
+
+                    ImGui.text(name);
+                    ImGui.nextColumn();
+                    ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
+                    if (ImGui.dragFloat2("##" + name, vec2)) {
+                        val.x = vec2[0];
+                        val.y = vec2[1];
+                    }
+
+                    ImGui.nextColumn();
+                }
                 if(type == int.class) {
                     int val = (int)value;
                     int[] imInt = {val};
@@ -87,6 +105,7 @@ public abstract class Component {
                     }
                     ImGui.nextColumn();
                 }
+                ImGui.columns(1);
                 if(isPrivate) {
                     field.setAccessible(false);
                 }

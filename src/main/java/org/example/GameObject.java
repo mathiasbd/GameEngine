@@ -25,7 +25,7 @@ public class GameObject {
         this.components = new ArrayList<Component>();
         this.transform = new Transform();
         this.zIndex = 0;
-        this.inScene = true;
+        this.inScene = false;
         this.tag = "None";
     }
 
@@ -199,7 +199,10 @@ public class GameObject {
 
         ImGui.columns(1);
         for(Component c : components) {
+            ImGui.separator();
+            ImGui.text(c.getClass().getName().substring(c.getClass().getName().lastIndexOf('.')+1));
             c.imGui();
+
         }
     }
 }

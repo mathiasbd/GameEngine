@@ -35,10 +35,6 @@
         {
           "type": "physics.primitives.OBBCollider",
           "properties": {
-            "size": {
-              "x": 5.0,
-              "y": 5.0
-            },
             "halfSize": {
               "x": 700.0,
               "y": 20.0
@@ -127,13 +123,9 @@
         {
           "type": "physics.primitives.OBBCollider",
           "properties": {
-            "size": {
-              "x": 5.0,
-              "y": 5.0
-            },
             "halfSize": {
-              "x": 50.0,
-              "y": 50.0
+              "x": 55.0,
+              "y": 55.0
             },
             "rigidbody": {
               "bodyType": "KINEMATIC",
@@ -341,8 +333,8 @@
               "SpawnPoint2",
               "SpawnPoint3"
             ],
-            "timeSinceLastSpawn": 0.13421774,
-            "nextSpawnInterval": 0.6762103,
+            "timeSinceLastSpawn": 0.52848244,
+            "nextSpawnInterval": 0.559245,
             "minSpawnInterval": 0.3,
             "maxSpawnInterval": 0.8,
             "maxPoints": 1
@@ -361,24 +353,6 @@
           }
         }
       ],
-      "zIndex": 0,
-      "inScene": true,
-      "transform": {
-        "position": {
-          "x": 0.0,
-          "y": 0.0
-        },
-        "scale": {
-          "x": 0.0,
-          "y": 0.0
-        },
-        "rotation": 0.0
-      },
-      "tag": "None"
-    },
-    {
-      "name": "Unnamed",
-      "components": [],
       "zIndex": 0,
       "inScene": true,
       "transform": {

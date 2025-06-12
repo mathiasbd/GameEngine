@@ -5,7 +5,7 @@ import physics.collisions.Rigidbody2D;
 import util.DTUMath;
 
 public class OBBCollider extends Collider {
-    private Vector2f size = new Vector2f();
+    private transient Vector2f size = new Vector2f();
     private Vector2f halfSize = new Vector2f();
     private Rigidbody2D rigidbody = null;
 
@@ -60,5 +60,10 @@ public class OBBCollider extends Collider {
     }
     public void setRigidbody(Rigidbody2D rigidbody) {
         this.rigidbody = rigidbody;
+    }
+
+    public void setHalfSize(Vector2f halfSize) {
+        this.halfSize = halfSize;
+        this.size = halfSize.mul(2);
     }
 }

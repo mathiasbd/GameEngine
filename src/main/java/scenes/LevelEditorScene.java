@@ -44,20 +44,22 @@ public class LevelEditorScene extends Scene {
     @Override
     public void update(float dt) {
         for (GameObject go : this.gameObjects) {
-            go.update(dt);
-            Transform transform = go.getTransform();
-            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
-            Collider collider = go.getComponent(Collider.class);
-            if (collider != null) {
-                if (rb != null) {
-                    rb.setPosition(transform.getPosition());
-                    rb.setTag(go.getTag());
-                    collider.setRigidbody(rb);
-                    transform.setRotation(rb.getRotation());
-                } else {
-                    System.err.println("Collider without Rigidbody2D: " + go.getName());
+            if(go.isInScene()) {
+                go.update(dt);
+                Transform transform = go.getTransform();
+                Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+                Collider collider = go.getComponent(Collider.class);
+                if (collider != null) {
+                    if (rb != null) {
+                        rb.setPosition(transform.getPosition());
+                        rb.setTag(go.getTag());
+                        collider.setRigidbody(rb);
+                        transform.setRotation(rb.getRotation());
+                    } else {
+                        System.err.println("Collider without Rigidbody2D: " + go.getName());
+                    }
+                    drawCollider(collider);
                 }
-                drawCollider(collider);
             }
         }
 
