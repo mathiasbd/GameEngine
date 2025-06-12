@@ -121,6 +121,9 @@ public class ImGuiHierarchyWindow {
             System.out.println("Trying to add component");
             queedSpriteRenderer.setSprite(new Sprite());
             currentScene.getGameObjects().get(selectedObject).addComponent(queedSpriteRenderer);
+            if(currentScene.getGameObjects().get(selectedObject).isInScene()) {
+                currentScene.getRenderer().add(currentScene.getGameObjects().get(selectedObject));
+            }
             queedSpriteRenderer = null;
         }
     }
@@ -266,6 +269,7 @@ public class ImGuiHierarchyWindow {
                     System.out.println(sheet.getTexture().getTexID() + " " + sheet.getSprite(0).getTexture().getTexID());
                     if (sheet != null && sheet.getSprite(0) != null && sheet.getSprite(0).getTexture() != null) {
                         ((SpriteRenderer) c).setSprite(sheet.getSprite(0));
+                        ((SpriteRenderer) c).setDirty();
                         System.out.println("Sprite set from: " + spriteSheetName);
                     } else {
                         if(sheet == null) {

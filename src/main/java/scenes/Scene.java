@@ -165,4 +165,8 @@ public abstract class Scene {
             go.setInScene(false);
         }
     }
+
+    public Renderer getRenderer() {
+        return renderer;
+    }
 }

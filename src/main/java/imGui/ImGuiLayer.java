@@ -28,7 +28,7 @@ public class ImGuiLayer {
     private ImGuiAssetWindow imGuiAssetWindow = new ImGuiAssetWindow();
 
     public ImGuiLayer() {
-        imGuiAssetWindow.initDirectory("assets");
+        imGuiAssetWindow.init();
     }
     public void process(Scene currentScene) {
         this.currentScene = currentScene;

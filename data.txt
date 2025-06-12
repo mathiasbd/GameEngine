@@ -89,131 +89,6 @@
       "tag": "Floor"
     },
     {
-      "name": "Player",
-      "components": [
-        {
-          "type": "physics.collisions.Rigidbody2D",
-          "properties": {
-            "bodyType": "KINEMATIC",
-            "tag": "Player",
-            "position": {
-              "x": 460.0,
-              "y": 334.30002
-            },
-            "rotation": 0.0,
-            "mass": 1.0,
-            "restitution": 1.0,
-            "forceAcc": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "linearVelocity": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "angularVelocity": 0.0,
-            "linearDamping": 0.05,
-            "angularDamping": 0.05,
-            "fixedRotation": false,
-            "torque": 0.0,
-            "inertia": 1.0,
-            "friction": 0.5
-          }
-        },
-        {
-          "type": "physics.primitives.OBBCollider",
-          "properties": {
-            "halfSize": {
-              "x": 55.0,
-              "y": 55.0
-            },
-            "rigidbody": {
-              "bodyType": "KINEMATIC",
-              "tag": "Player",
-              "position": {
-                "x": 460.0,
-                "y": 334.30002
-              },
-              "rotation": 0.0,
-              "mass": 1.0,
-              "restitution": 1.0,
-              "forceAcc": {
-                "x": 0.0,
-                "y": 0.0
-              },
-              "linearVelocity": {
-                "x": 0.0,
-                "y": 0.0
-              },
-              "angularVelocity": 0.0,
-              "linearDamping": 0.05,
-              "angularDamping": 0.05,
-              "fixedRotation": false,
-              "torque": 0.0,
-              "inertia": 1.0,
-              "friction": 0.5
-            },
-            "offset": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "isSolid": true
-          }
-        },
-        {
-          "type": "scripts.PlayerController",
-          "properties": {
-            "walkSpeed": 25.0,
-            "origin": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "halfsizeY": 0.0,
-            "rayLength": 150.0,
-            "rb": {
-              "bodyType": "KINEMATIC",
-              "position": {
-                "x": 460.0,
-                "y": 334.30002
-              },
-              "rotation": 0.0,
-              "mass": 1.0,
-              "restitution": 1.0,
-              "forceAcc": {
-                "x": 0.0,
-                "y": 0.0
-              },
-              "linearVelocity": {
-                "x": 0.0,
-                "y": 0.0
-              },
-              "angularVelocity": 0.0,
-              "linearDamping": 0.05,
-              "angularDamping": 0.05,
-              "fixedRotation": false,
-              "torque": 0.0,
-              "inertia": 1.0,
-              "friction": 0.5
-            }
-          }
-        }
-      ],
-      "zIndex": 0,
-      "inScene": true,
-      "transform": {
-        "position": {
-          "x": 460.0,
-          "y": 334.30002
-        },
-        "scale": {
-          "x": 100.0,
-          "y": 100.0
-        },
-        "rotation": 0.0
-      },
-      "tag": "Player"
-    },
-    {
       "name": "SpawnPoint1",
       "components": [],
       "zIndex": 0,
@@ -333,8 +208,8 @@
               "SpawnPoint2",
               "SpawnPoint3"
             ],
-            "timeSinceLastSpawn": 0.52848244,
-            "nextSpawnInterval": 0.559245,
+            "timeSinceLastSpawn": 0.31037903,
+            "nextSpawnInterval": 0.7624936,
             "minSpawnInterval": 0.3,
             "maxSpawnInterval": 0.8,
             "maxPoints": 1
@@ -367,6 +242,131 @@
         "rotation": 0.0
       },
       "tag": "None"
+    },
+    {
+      "name": "Unnamed",
+      "components": [
+        {
+          "type": "physics.collisions.Rigidbody2D",
+          "properties": {
+            "bodyType": "DYNAMIC",
+            "tag": "None",
+            "position": {
+              "x": 581.25,
+              "y": 354.25003
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": -195.74503
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.05,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "halfSize": {
+              "x": 2.5,
+              "y": 2.5
+            },
+            "rigidbody": {
+              "bodyType": "DYNAMIC",
+              "tag": "None",
+              "position": {
+                "x": 581.25,
+                "y": 354.25003
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": -195.74503
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.05,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "isSolid": true
+          }
+        },
+        {
+          "type": "components.SpriteRenderer",
+          "properties": {
+            "color": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0,
+              "w": 1.0
+            },
+            "sprite": {
+              "texture": {
+                "filepath": "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png",
+                "texID": 2,
+                "width": 512,
+                "height": 128
+              },
+              "texCoords": [
+                {
+                  "x": 0.18164062,
+                  "y": 0.28125
+                },
+                {
+                  "x": 0.18164062,
+                  "y": 0.0390625
+                },
+                {
+                  "x": 0.044921875,
+                  "y": 0.0390625
+                },
+                {
+                  "x": 0.044921875,
+                  "y": 0.28125
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": true,
+      "transform": {
+        "position": {
+          "x": 581.25,
+          "y": 354.25003
+        },
+        "scale": {
+          "x": 100.0,
+          "y": 100.0
+        },
+        "rotation": 0.0
+      },
+      "tag": "None"
     }
   ],
   "spriteSheets": {
@@ -377,12 +377,12 @@
         "width": 512,
         "height": 128
       },
-      "spriteWidth": 80,
-      "spriteHeight": 34,
+      "spriteWidth": 70,
+      "spriteHeight": 31,
       "numSprites": 4,
-      "xSpacing": 46,
-      "ySpacing": 94,
-      "startX": 27
+      "xSpacing": 60,
+      "ySpacing": 92,
+      "startX": 23
     }
   }
 }
