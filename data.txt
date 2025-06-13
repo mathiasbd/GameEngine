@@ -2,6 +2,20 @@
   "gameObjects": [
     {
       "name": "Floor",
+      "transform": {
+        "position": {
+          "x": 641.25,
+          "y": 16.149994
+        },
+        "scale": {
+          "x": 100.0,
+          "y": 100.0
+        },
+        "rotation": 0.0
+      },
+      "zIndex": 0,
+      "inScene": true,
+      "tag": "Floor",
       "components": [
         {
           "type": "physics.collisions.Rigidbody2D",
@@ -70,27 +84,10 @@
             "isSolid": true
           }
         }
-      ],
-      "zIndex": 0,
-      "inScene": true,
-      "transform": {
-        "position": {
-          "x": 641.25,
-          "y": 16.149994
-        },
-        "scale": {
-          "x": 100.0,
-          "y": 100.0
-        },
-        "rotation": 0.0
-      },
-      "tag": "Floor"
+      ]
     },
     {
       "name": "SpawnPoint1",
-      "components": [],
-      "zIndex": 0,
-      "inScene": false,
       "transform": {
         "position": {
           "x": 100.0,
@@ -102,13 +99,13 @@
         },
         "rotation": 0.0
       },
-      "tag": "None"
+      "zIndex": 0,
+      "inScene": false,
+      "tag": "None",
+      "components": []
     },
     {
       "name": "SpawnPoint2",
-      "components": [],
-      "zIndex": 0,
-      "inScene": false,
       "transform": {
         "position": {
           "x": 600.0,
@@ -120,13 +117,13 @@
         },
         "rotation": 0.0
       },
-      "tag": "None"
+      "zIndex": 0,
+      "inScene": false,
+      "tag": "None",
+      "components": []
     },
     {
       "name": "SpawnPoint3",
-      "components": [],
-      "zIndex": 0,
-      "inScene": false,
       "transform": {
         "position": {
           "x": 1200.0,
@@ -138,13 +135,13 @@
         },
         "rotation": 0.0
       },
-      "tag": "None"
+      "zIndex": 0,
+      "inScene": false,
+      "tag": "None",
+      "components": []
     },
     {
       "name": "SpawnPoint4",
-      "components": [],
-      "zIndex": 0,
-      "inScene": false,
       "transform": {
         "position": {
           "x": 100.0,
@@ -156,13 +153,13 @@
         },
         "rotation": 0.0
       },
-      "tag": "None"
+      "zIndex": 0,
+      "inScene": false,
+      "tag": "None",
+      "components": []
     },
     {
       "name": "SpawnPoint5",
-      "components": [],
-      "zIndex": 0,
-      "inScene": false,
       "transform": {
         "position": {
           "x": 600.0,
@@ -174,13 +171,13 @@
         },
         "rotation": 0.0
       },
-      "tag": "None"
+      "zIndex": 0,
+      "inScene": false,
+      "tag": "None",
+      "components": []
     },
     {
       "name": "SpawnPoint6",
-      "components": [],
-      "zIndex": 0,
-      "inScene": false,
       "transform": {
         "position": {
           "x": 1200.0,
@@ -192,10 +189,27 @@
         },
         "rotation": 0.0
       },
-      "tag": "None"
+      "zIndex": 0,
+      "inScene": false,
+      "tag": "None",
+      "components": []
     },
     {
       "name": "Spawner",
+      "transform": {
+        "position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      },
+      "zIndex": 0,
+      "inScene": true,
+      "tag": "None",
       "components": [
         {
           "type": "scripts.SnowballSpawner",
@@ -206,8 +220,8 @@
               "SpawnPoint2",
               "SpawnPoint3"
             ],
-            "timeSinceLastSpawn": 0.26843545,
-            "nextSpawnInterval": 0.55216223,
+            "timeSinceLastSpawn": 0.53687096,
+            "nextSpawnInterval": 0.7780017,
             "minSpawnInterval": 0.3,
             "maxSpawnInterval": 0.8,
             "maxPoints": 1
@@ -225,24 +239,24 @@
             "maxPoints": 3
           }
         }
-      ],
-      "zIndex": 0,
-      "inScene": true,
-      "transform": {
-        "position": {
-          "x": 0.0,
-          "y": 0.0
-        },
-        "scale": {
-          "x": 0.0,
-          "y": 0.0
-        },
-        "rotation": 0.0
-      },
-      "tag": "None"
+      ]
     },
     {
       "name": "Player",
+      "transform": {
+        "position": {
+          "x": 581.25,
+          "y": 354.25003
+        },
+        "scale": {
+          "x": 105.0,
+          "y": 100.0
+        },
+        "rotation": 0.0
+      },
+      "zIndex": 0,
+      "inScene": true,
+      "tag": "Player",
       "components": [
         {
           "type": "physics.collisions.Rigidbody2D",
@@ -261,7 +275,7 @@
             },
             "linearVelocity": {
               "x": 0.0,
-              "y": -101.745
+              "y": 0.0
             },
             "angularVelocity": 0.0,
             "linearDamping": 0.05,
@@ -294,7 +308,7 @@
               },
               "linearVelocity": {
                 "x": 0.0,
-                "y": -101.745
+                "y": 0.0
               },
               "angularVelocity": 0.0,
               "linearDamping": 0.05,
@@ -355,24 +369,24 @@
             "rayLength": 500.0
           }
         }
-      ],
-      "zIndex": 0,
-      "inScene": true,
+      ]
+    },
+    {
+      "name": "Wall",
       "transform": {
         "position": {
-          "x": 581.25,
-          "y": 354.25003
+          "x": 387.5,
+          "y": 201.50003
         },
         "scale": {
-          "x": 105.0,
+          "x": 100.0,
           "y": 100.0
         },
         "rotation": 0.0
       },
-      "tag": "Player"
-    },
-    {
-      "name": "Wall",
+      "zIndex": 0,
+      "inScene": true,
+      "tag": "Floor",
       "components": [
         {
           "type": "physics.collisions.Rigidbody2D",
@@ -391,7 +405,7 @@
             },
             "linearVelocity": {
               "x": 0.0,
-              "y": -195.92671
+              "y": 0.0
             },
             "angularVelocity": 0.0,
             "linearDamping": 0.05,
@@ -424,7 +438,7 @@
               },
               "linearVelocity": {
                 "x": 0.0,
-                "y": -195.92671
+                "y": 0.0
               },
               "angularVelocity": 0.0,
               "linearDamping": 0.05,
@@ -441,21 +455,7 @@
             "isSolid": true
           }
         }
-      ],
-      "zIndex": 0,
-      "inScene": true,
-      "transform": {
-        "position": {
-          "x": 387.5,
-          "y": 201.50003
-        },
-        "scale": {
-          "x": 100.0,
-          "y": 100.0
-        },
-        "rotation": 0.0
-      },
-      "tag": "Floor"
+      ]
     }
   ],
   "spriteSheets": {
