@@ -250,7 +250,9 @@ public class PhysicsSystem {
         return rb;
     }
 
-    // Spawning
+    public List<CollisionManifold> getCollisions() {
+        return collisions;
+    }
 
     public List<CollisionManifold> getGhostCollisions() {
         return ghostCollisions;

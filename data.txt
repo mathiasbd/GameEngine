@@ -8,8 +8,8 @@
           "properties": {
             "bodyType": "STATIC",
             "position": {
-              "x": 650.0,
-              "y": 20.0
+              "x": 641.25,
+              "y": 16.149994
             },
             "rotation": 0.0,
             "mass": 1.0,
@@ -35,14 +35,14 @@
           "type": "physics.primitives.OBBCollider",
           "properties": {
             "halfSize": {
-              "x": 700.0,
+              "x": 642.0,
               "y": 20.0
             },
             "rigidbody": {
               "bodyType": "STATIC",
               "position": {
-                "x": 650.0,
-                "y": 20.0
+                "x": 641.25,
+                "y": 16.149994
               },
               "rotation": 0.0,
               "mass": 1.0,
@@ -72,15 +72,15 @@
         }
       ],
       "zIndex": 0,
-      "inScene": false,
+      "inScene": true,
       "transform": {
         "position": {
-          "x": 650.0,
-          "y": 20.0
+          "x": 641.25,
+          "y": 16.149994
         },
         "scale": {
-          "x": 0.0,
-          "y": 0.0
+          "x": 100.0,
+          "y": 100.0
         },
         "rotation": 0.0
       },
@@ -198,7 +198,7 @@
       "name": "Spawner",
       "components": [
         {
-          "type": "scripts.Spawner",
+          "type": "scripts.SnowballSpawner",
           "properties": {
             "fallingObjects": [],
             "spawnPoints": [
@@ -206,8 +206,8 @@
               "SpawnPoint2",
               "SpawnPoint3"
             ],
-            "timeSinceLastSpawn": 0.26843542,
-            "nextSpawnInterval": 0.6202761,
+            "timeSinceLastSpawn": 0.26843545,
+            "nextSpawnInterval": 0.55216223,
             "minSpawnInterval": 0.3,
             "maxSpawnInterval": 0.8,
             "maxPoints": 1
@@ -352,11 +352,6 @@
           "type": "scripts.PlayerController",
           "properties": {
             "walkSpeed": 25.1,
-            "origin": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "halfsizeY": 0.0,
             "rayLength": 500.0
           }
         }
@@ -375,6 +370,92 @@
         "rotation": 0.0
       },
       "tag": "Player"
+    },
+    {
+      "name": "Wall",
+      "components": [
+        {
+          "type": "physics.collisions.Rigidbody2D",
+          "properties": {
+            "bodyType": "STATIC",
+            "position": {
+              "x": 387.5,
+              "y": 201.50003
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": -195.92671
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.05,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "halfSize": {
+              "x": 20.5,
+              "y": 165.5
+            },
+            "rigidbody": {
+              "bodyType": "STATIC",
+              "position": {
+                "x": 387.5,
+                "y": 201.50003
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": -195.92671
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.05,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "isSolid": true
+          }
+        }
+      ],
+      "zIndex": 0,
+      "inScene": true,
+      "transform": {
+        "position": {
+          "x": 387.5,
+          "y": 201.50003
+        },
+        "scale": {
+          "x": 100.0,
+          "y": 100.0
+        },
+        "rotation": 0.0
+      },
+      "tag": "Floor"
     }
   ],
   "spriteSheets": {
