@@ -47,9 +47,11 @@ public class Spawner extends Component {
                 for (CollisionManifold m : collisions) {
                     Rigidbody2D rbA = m.getA();
                     Rigidbody2D rbB = m.getB();
+                    GameObject goA = rbA.getGameObject();
+                    GameObject goB = rbB.getGameObject();
                     if (rbA == rb || rbB == rb) {
-                        if (rbA.getTag().equals("Player") || rbA.getTag().equals("Floor")
-                                || rbB.getTag().equals("Player") || rbB.getTag().equals("Floor")) {
+                        if (goA.getTag().equals("Player") || goA.getTag().equals("Floor")
+                                || goB.getTag().equals("Player") || goB.getTag().equals("Floor")) {
                             scene.removeGameObject(go);
                             iter.remove();
                             break;

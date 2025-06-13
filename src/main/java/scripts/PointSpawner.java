@@ -43,8 +43,10 @@ public class PointSpawner extends Component {
                 for (CollisionManifold m : collisions) {
                     Rigidbody2D rbA = m.getA();
                     Rigidbody2D rbB = m.getB();
+                    GameObject goA = m.getA().getGameObject();
+                    GameObject goB = m.getB().getGameObject();
                     if (rbA == rb || rbB == rb) {
-                        if (rbA.getTag().equals("Player") || rbB.getTag().equals("Player")) {
+                        if (goA.getTag().equals("Player") || goB.getTag().equals("Player")) {
                             scene.removeGameObject(go);
                             iter.remove();
                             break;

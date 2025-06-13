@@ -7,7 +7,6 @@
           "type": "physics.collisions.Rigidbody2D",
           "properties": {
             "bodyType": "STATIC",
-            "tag": "Floor",
             "position": {
               "x": 650.0,
               "y": 20.0
@@ -41,7 +40,6 @@
             },
             "rigidbody": {
               "bodyType": "STATIC",
-              "tag": "Floor",
               "position": {
                 "x": 650.0,
                 "y": 20.0
@@ -208,8 +206,8 @@
               "SpawnPoint2",
               "SpawnPoint3"
             ],
-            "timeSinceLastSpawn": 0.31037903,
-            "nextSpawnInterval": 0.7624936,
+            "timeSinceLastSpawn": 0.26843542,
+            "nextSpawnInterval": 0.6202761,
             "minSpawnInterval": 0.3,
             "maxSpawnInterval": 0.8,
             "maxPoints": 1
@@ -244,13 +242,12 @@
       "tag": "None"
     },
     {
-      "name": "Unnamed",
+      "name": "Player",
       "components": [
         {
           "type": "physics.collisions.Rigidbody2D",
           "properties": {
             "bodyType": "DYNAMIC",
-            "tag": "None",
             "position": {
               "x": 581.25,
               "y": 354.25003
@@ -264,7 +261,7 @@
             },
             "linearVelocity": {
               "x": 0.0,
-              "y": -195.74503
+              "y": -101.745
             },
             "angularVelocity": 0.0,
             "linearDamping": 0.05,
@@ -279,12 +276,11 @@
           "type": "physics.primitives.OBBCollider",
           "properties": {
             "halfSize": {
-              "x": 2.5,
-              "y": 2.5
+              "x": 48.5,
+              "y": 50.5
             },
             "rigidbody": {
               "bodyType": "DYNAMIC",
-              "tag": "None",
               "position": {
                 "x": 581.25,
                 "y": 354.25003
@@ -298,7 +294,7 @@
               },
               "linearVelocity": {
                 "x": 0.0,
-                "y": -195.74503
+                "y": -101.745
               },
               "angularVelocity": 0.0,
               "linearDamping": 0.05,
@@ -319,9 +315,9 @@
           "type": "components.SpriteRenderer",
           "properties": {
             "color": {
-              "x": 0.0,
-              "y": 0.0,
-              "z": 0.0,
+              "x": 1.0,
+              "y": 1.0,
+              "z": 1.0,
               "w": 1.0
             },
             "sprite": {
@@ -351,6 +347,18 @@
               ]
             }
           }
+        },
+        {
+          "type": "scripts.PlayerController",
+          "properties": {
+            "walkSpeed": 25.1,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "halfsizeY": 0.0,
+            "rayLength": 500.0
+          }
         }
       ],
       "zIndex": 0,
@@ -361,12 +369,12 @@
           "y": 354.25003
         },
         "scale": {
-          "x": 100.0,
+          "x": 105.0,
           "y": 100.0
         },
         "rotation": 0.0
       },
-      "tag": "None"
+      "tag": "Player"
     }
   ],
   "spriteSheets": {

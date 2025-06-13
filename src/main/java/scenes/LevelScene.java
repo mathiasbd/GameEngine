@@ -42,7 +42,6 @@ public class LevelScene extends Scene {
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
             if (rb != null) {
                 rb.setPosition(transform.getPosition());
-                rb.setTag(go.getTag());
                 physicsSystem.addRigidbody(rb);
                 transform.setRotation(rb.getRotation());
             }
