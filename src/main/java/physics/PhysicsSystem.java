@@ -46,6 +46,7 @@ public class PhysicsSystem {
         bodies1.clear();
         bodies2.clear();
         collisions.clear();
+        ghostCollisions.clear();
 
         int size = rb.size();
         for (int i = 0; i < size; i++) {

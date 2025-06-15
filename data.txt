@@ -221,7 +221,7 @@
               "SpawnPoint3"
             ],
             "timeSinceLastSpawn": 0.10905188,
-            "nextSpawnInterval": 0.6836089,
+            "nextSpawnInterval": 0.7322856,
             "minSpawnInterval": 0.3,
             "maxSpawnInterval": 0.8,
             "maxPoints": 1

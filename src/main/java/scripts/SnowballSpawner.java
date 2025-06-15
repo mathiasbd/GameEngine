@@ -38,6 +38,12 @@ public class SnowballSpawner extends Component {
         Iterator<GameObject> iter = fallingObjects.iterator();
         while (iter.hasNext()) {
             GameObject go = iter.next();
+
+            if (!scene.getGameObjects().contains(go)) {
+                iter.remove();
+                continue;
+            }
+
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
             if (rb != null && Physics2D.isColliding(rb, "Floor")) {
                 scene.removeGameObject(go);
@@ -45,12 +51,14 @@ public class SnowballSpawner extends Component {
             }
         }
 
+        // spawning logic unchanged
         timeSinceLastSpawn += dt;
         if (timeSinceLastSpawn >= nextSpawnInterval && fallingObjects.size() < maxPoints) {
             spawnNewObject();
             resetSpawnTimer();
         }
     }
+
 
     private void resetSpawnTimer() {
         timeSinceLastSpawn = 0f;
