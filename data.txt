@@ -220,8 +220,8 @@
               "SpawnPoint2",
               "SpawnPoint3"
             ],
-            "timeSinceLastSpawn": 0.53687096,
-            "nextSpawnInterval": 0.7780017,
+            "timeSinceLastSpawn": 0.10905188,
+            "nextSpawnInterval": 0.6836089,
             "minSpawnInterval": 0.3,
             "maxSpawnInterval": 0.8,
             "maxPoints": 1
@@ -367,6 +367,13 @@
           "properties": {
             "walkSpeed": 25.1,
             "rayLength": 500.0
+          }
+        },
+        {
+          "type": "scripts.PlayerHealth",
+          "properties": {
+            "maxHealth": 3,
+            "currentHealth": 3
           }
         }
       ]

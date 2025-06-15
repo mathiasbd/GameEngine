@@ -159,8 +159,9 @@ public abstract class Scene {
     public void removeGameObject(GameObject go) {
         if (go != null && gameObjects.contains(go)) {
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
-
-
+if (rb != null) {
+                GameEngineManager.getPhysicsSystem().removeRigidbody(rb);
+            }
             gameObjects.remove(go);
             go.setInScene(false);
         }

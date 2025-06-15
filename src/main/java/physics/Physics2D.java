@@ -13,6 +13,7 @@ import physics.raycast.RaycastManager;
 import physics.raycast.RaycastResult;
 import util.DebugDraw;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Physics2D {
@@ -151,5 +152,29 @@ public class Physics2D {
             }
         }
         return false;
+    }
+
+    public static List<GameObject> getCollidingObjects(Rigidbody2D target, boolean checkSolid, String... withTags) {
+        List<GameObject> collidingObjects = new ArrayList<>();
+
+        List<CollisionManifold> collisions = checkSolid
+                ? GameEngineManager.getPhysicsSystem().getCollisions()
+                : GameEngineManager.getPhysicsSystem().getGhostCollisions();
+
+        for (CollisionManifold m : collisions) {
+            Rigidbody2D rbA = m.getA();
+            Rigidbody2D rbB = m.getB();
+
+            if (rbA != target && rbB != target) continue;
+
+            GameObject other = (rbA == target) ? rbB.getGameObject() : rbA.getGameObject();
+            for (String tag : withTags) {
+                if (tag.equals(other.getTag())) {
+                    collidingObjects.add(other);
+                    break;
+                }
+            }
+        }
+        return collidingObjects;
     }
 }

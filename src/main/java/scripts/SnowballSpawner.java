@@ -39,14 +39,13 @@ public class SnowballSpawner extends Component {
         while (iter.hasNext()) {
             GameObject go = iter.next();
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
-            if (rb != null && Physics2D.isColliding(rb, "Player", "Floor")) {
+            if (rb != null && Physics2D.isColliding(rb, "Floor")) {
                 scene.removeGameObject(go);
                 iter.remove();
             }
         }
 
         timeSinceLastSpawn += dt;
-
         if (timeSinceLastSpawn >= nextSpawnInterval && fallingObjects.size() < maxPoints) {
             spawnNewObject();
             resetSpawnTimer();
@@ -79,8 +78,8 @@ public class SnowballSpawner extends Component {
     private GameObject createPrefab(Vector2f spawnPos) {
         Vector2f size = new Vector2f(25.0f, 25.0f);
         Transform transform = new Transform(spawnPos, size);
-        GameObject snowball = new GameObject("Falling Box", transform, 0, true);
-        snowball.setTag("SnowBall");
+        GameObject snowball = new GameObject("Snowball", transform, 0, true);
+        snowball.setTag("Snowball");
 
         Rigidbody2D rb = new Rigidbody2D();
         rb.setBodyType(Rigidbody2D.BodyType.DYNAMIC);
