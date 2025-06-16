@@ -5,19 +5,20 @@ import org.example.GameEngineManager;
 import org.example.GameObject;
 import org.example.Transform;
 import org.joml.Vector2f;
-import physics.Physics2D;
 import physics.collisions.Rigidbody2D;
 import physics.primitives.OBBCollider;
 import scenes.Scene;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class PointSpawner extends Component {
     private Scene scene;
-    private final List<GameObject> pointObjects = new ArrayList<>();
+    private GameObject currentPoint = null;
+    private String lastSpawnName = null;
     public List<String> spawnPoints = List.of("SpawnPoint4", "SpawnPoint5", "SpawnPoint6");
     private final transient Random random = new Random();
-    private final int maxPoints = 3;
 
     @Override
     public void start() {
@@ -30,17 +31,9 @@ public class PointSpawner extends Component {
 
     @Override
     public void update(float dt) {
-        Iterator<GameObject> iter = pointObjects.iterator();
-        while (iter.hasNext()) {
-            GameObject go = iter.next();
-            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
-            if (rb != null && Physics2D.isColliding(rb, "Player")) {
-                scene.removeGameObject(go);
-                iter.remove();
-            }
-        }
+        if (scene == null) return;
 
-        if (pointObjects.size() < maxPoints) {
+        if (currentPoint == null || !scene.getGameObjects().contains(currentPoint)) {
             spawnNewObject();
         }
     }
@@ -48,25 +41,29 @@ public class PointSpawner extends Component {
     private void spawnNewObject() {
         if (scene == null) return;
 
-        String spawnName = spawnPoints.get(random.nextInt(spawnPoints.size()));
-        GameObject spawnPoint = scene.getGameObjectByName(spawnName);
-        Vector2f spawnPos = (spawnPoint != null)
-                ? spawnPoint.getTransform().getPosition()
-                : new Vector2f(0, 0);
-
-        if (spawnPoint == null) {
-            System.err.println("Spawn point not found: " + spawnName);
+        List<String> choices = new ArrayList<>(spawnPoints);
+        if (lastSpawnName != null) {
+            choices.remove(lastSpawnName);
         }
 
-        GameObject point = createPrefab(spawnPos);
-        scene.addGameObject(point);
-        pointObjects.add(point);
+        String spawnName = choices.get(random.nextInt(choices.size()));
+        lastSpawnName = spawnName;
+
+        GameObject spawnPoint = scene.getGameObjectByName(spawnName);
+        if (spawnPoint == null) {
+            throw new IllegalStateException("Spawn point not found: " + spawnName);
+        }
+
+        Vector2f spawnPos = spawnPoint.getTransform().getPosition();
+
+        currentPoint = createPrefab(spawnPos);
+        scene.addGameObject(currentPoint);
     }
 
     private GameObject createPrefab(Vector2f spawnPos) {
         Vector2f size = new Vector2f(25.0f, 25.0f);
         Transform transform = new Transform(spawnPos, size);
-        GameObject pointObject = new GameObject("Point Object", transform, 0, true);
+        GameObject pointObject = new GameObject("Point", transform, 0, true);
         pointObject.setTag("Point");
 
         Rigidbody2D rb = new Rigidbody2D();
@@ -80,6 +77,7 @@ public class PointSpawner extends Component {
         rb.setCollider(collider);
         pointObject.addComponent(collider);
 
+        // Ensure transform matches physics body
         transform.setPosition(rb.getPosition());
 
         return pointObject;

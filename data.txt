@@ -220,8 +220,8 @@
               "SpawnPoint2",
               "SpawnPoint3"
             ],
-            "timeSinceLastSpawn": 0.10905188,
-            "nextSpawnInterval": 0.7322856,
+            "timeSinceLastSpawn": 0.26843548,
+            "nextSpawnInterval": 0.5905029,
             "minSpawnInterval": 0.3,
             "maxSpawnInterval": 0.8,
             "maxPoints": 1
@@ -230,13 +230,11 @@
         {
           "type": "scripts.PointSpawner",
           "properties": {
-            "pointObjects": [],
             "spawnPoints": [
               "SpawnPoint4",
               "SpawnPoint5",
               "SpawnPoint6"
-            ],
-            "maxPoints": 3
+            ]
           }
         }
       ]
@@ -366,7 +364,9 @@
           "type": "scripts.PlayerController",
           "properties": {
             "walkSpeed": 25.1,
-            "rayLength": 500.0
+            "sprintSpeed": 35.0,
+            "actualSpeed": 25.0,
+            "rayLength": 150.0
           }
         },
         {
@@ -374,6 +374,12 @@
           "properties": {
             "maxHealth": 3,
             "currentHealth": 3
+          }
+        },
+        {
+          "type": "scripts.ScoreManager",
+          "properties": {
+            "score": 0
           }
         }
       ]

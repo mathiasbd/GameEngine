@@ -10,6 +10,9 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class PlayerController extends Component {
     public float walkSpeed = 25.0f;
+    public float sprintSpeed = 35.0f;
+
+    public float actualSpeed = walkSpeed;
     public float rayLength = 150f;
     private Rigidbody2D rb;
 
@@ -48,8 +51,13 @@ public class PlayerController extends Component {
                 vel.y = 80.0f;
             }
         }
+        if (KeyboardHandler.isKeyPressed(GLFW_KEY_LEFT_SHIFT) || KeyboardHandler.isKeyPressed(GLFW_KEY_RIGHT_SHIFT)) {
+            actualSpeed = sprintSpeed;
+        } else {
+            actualSpeed = walkSpeed;
+        }
 
-        vel.x = h * walkSpeed;
+        vel.x = h * actualSpeed;
         rb.setVelocity(vel);
     }
 }
