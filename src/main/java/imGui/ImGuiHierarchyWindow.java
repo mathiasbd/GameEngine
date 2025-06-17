@@ -38,67 +38,78 @@ public class ImGuiHierarchyWindow {
 
     private GameObject goScript = null;
 
+    //Distributes the work to other functions
     public void showContent(Scene currentScene) {
         this.currentScene = currentScene;
+        //Check if data is loaded and then call functions
         if(currentScene.isDataLoaded()) {
-            objectMenu();
-            showObject();
+            objectMenu(); //Menu when right clicking empty space
+            showObject(); //Shows objects in the hierarchy
+            //Only runs if you want to edit an object
             if(objectToEditFields!=-1 ) {
                 showFields(objectToEditFields);
             }
+            //Only runs if you want to add a script
             if(goScript != null) {
                 addScript(goScript);
             }
         }
     }
 
+    //This is the menu which is shown when right-clicking an empty space
     private void objectMenu() {
+        //Create a menu where right-clicked
         if(ImGui.beginPopupContextWindow("HierarchySettings",ImGuiPopupFlags.MouseButtonRight)) {
-            if(ImGui.menuItem("Add Object")) {
-                currentScene.addGameObjectToScene(new GameObject("Unnamed"));
-            }
+            //Menu item with lambda function
+            ImGuiCommonFun.menuItem("Add Object", () -> currentScene.addGameObjectToScene(new GameObject("Unnamed")));
             ImGui.endPopup();
         }
     }
-
+    //Shows each object and allows for interaction with each
     private void showObject() {
+        //Define variables before loop
         this.gameObjects = currentScene.getGameObjects();
         boolean treeNode;
         boolean selectedCondition;
         int flags;
+        //Loop through each game object
         for(int i=0; i<gameObjects.size(); i++) {
             GameObject go = gameObjects.get(i);
+            //Define condition for flag
             selectedCondition = selectedObject == i && objectToEditName != i;
 
+            //Push ID
             ImGui.pushID(i);
-
+            //Get flag and add style
             flags = addSelectedStyle(selectedCondition);
-
+            //Add additional specific flag
             if(go.getComponents().isEmpty()) {
                 flags |= ImGuiTreeNodeFlags.Leaf;
             }
-
+            //Call the treenode
             treeNode = ImGui.treeNodeEx("##treeObject_" + i, flags);
-
+            //Allow for drag and drop to scene
             if(ImGui.beginDragDropSource()) {
                 currentScene.getDragDropper().setDragging(true);
                 currentScene.getDragDropper().setDraggedObject(go);
                 ImGui.text("Dragging " + go.getName());
                 ImGui.endDragDropSource();
             }
-
+            //If style was added pop it
             if(selectedCondition) {
                 ImGui.popStyleColor();
             }
+            //If game object is clicked define which one
             if(ImGui.isItemClicked()) {
                 selectedObject = i;
                 selectedComponent = -1;
             }
-
+            //Calls interactions possible with game object
             this.objectSettings(go, i);
             ImGui.sameLine();
+            //Shows name
             showObjectName(go, i);
-
+            //Shows component if tree opened
             if(treeNode) {
                 showComponent(go, i);
                 ImGui.treePop();
