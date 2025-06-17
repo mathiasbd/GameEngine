@@ -2,38 +2,54 @@ package input;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/*
+ * KeyboardHandler tracks keyboard key states using GLFW callbacks.
+ * Author(s):
+ */
 public class KeyboardHandler {
-    //ensures only one instance of KeyboardHandler exists
     private static KeyboardHandler instance;
-    //we chose the array size  350 because GLFW supports around 350 different key codes. The array keeps track of key states
-    private boolean  keyPressed[]= new boolean [350];
+    private boolean[] keyPressed = new boolean[350];
 
-    private KeyboardHandler(){
-
+    // Private constructor enforces singleton pattern
+    private KeyboardHandler() {
     }
 
-    public static KeyboardHandler get(){
-        if (KeyboardHandler.instance == null){
-            KeyboardHandler.instance = new KeyboardHandler();
+
+    /*
+     * Returns the singleton instance of KeyboardHandler.
+     */
+    public static KeyboardHandler get() {
+        if (instance == null) {
+            instance = new KeyboardHandler();
         }
-        return KeyboardHandler.instance;
+        return instance;
     }
 
-    public static void keyCallback(long window, int key, int scancode, int action, int mods){
-        // If a key is pressed, mark it as true
-        if (action == GLFW_PRESS){
-            get().keyPressed[key]=true;
+    /*
+     * GLFW callback: updates keyPressed array on press/release events.
+     * @param window - window handle
+     * @param key - GLFW key code
+     * @param scancode - platform-specific scancode
+     * @param action - GLFW_PRESS or GLFW_RELEASE
+     * @param mods - modifier keys bitfield
+     */
+    public static void keyCallback(long window, int key, int scancode, int action, int mods) {
+        if (action == GLFW_PRESS) {
+            get().keyPressed[key] = true;  // mark pressed
+        } else if (action == GLFW_RELEASE) {
+            get().keyPressed[key] = false; // mark released
         }
-        // If a key is released, mark it as false
-        else if (action == GLFW_RELEASE){
-            get().keyPressed[key]=false;
+    }
+
+    /*
+     * Checks if the specified key is currently pressed.
+     * @param keyCode - GLFW key code to check
+     * @return true if pressed, false otherwise
+     */
+    public static boolean isKeyPressed(int keyCode) {
+        if (keyCode < 0 || keyCode >= get().keyPressed.length) {
+            return false;
         }
+        return get().keyPressed[keyCode];
     }
-    //Checks if a specific key is currently pressed.
-    public static boolean isKeyPressed(int keyCode ){
-       return get().keyPressed[keyCode];
-    }
-
-
 }
-
