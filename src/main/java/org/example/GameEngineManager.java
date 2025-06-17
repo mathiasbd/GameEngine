@@ -69,6 +69,7 @@ public class GameEngineManager {
         if(currentScene.getClass()==LevelEditorScene.class) {
             currentScene.saveExit();
         }
+        window.closeWindow();
     }
 
     public static void changeScene(String sceneName, List<GameObject> gameObjects) {
