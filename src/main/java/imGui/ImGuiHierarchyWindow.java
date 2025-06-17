@@ -7,7 +7,6 @@ import imgui.ImVec4;
 import imgui.flag.*;
 import imgui.type.ImBoolean;
 import imgui.type.ImString;
-import org.example.GameEngineManager;
 import org.example.GameObject;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -23,231 +22,94 @@ import java.util.List;
 
 public class ImGuiHierarchyWindow {
 
-    private GameObject queedGameObject = null;
-    private int objectToRemove = -1;
     private int objectToEditName = -1;
-    private SpriteRenderer queedSpriteRenderer = null;
     private ImString newObjectName = new ImString(64);
     private int selectedObject = -1;
     private int selectedComponent = -1;
     private int objectToEditFields = -1;
-    private boolean showEditFieldsWindow = false;
 
-    private boolean showScriptFiles = false;
 
     private List<GameObject> gameObjects;
     private Scene currentScene;
 
-    private ImGuiCommonFun imGuiCommonFun = new ImGuiCommonFun();
+    private ImGuiFileManager imGuiFileManager = new ImGuiFileManager("Scripts", ImGuiTreeNodeFlags.DefaultOpen,
+            this::createComponentFromFile, "");
 
 
-    private List<File> folders = new ArrayList<>();
-    private List<File> regularFiles = new ArrayList<>();
-    private File currentDir = null;
-    private File selectedFile = null;
-    private String selectedAsset = null;
     private GameObject goScript = null;
 
+    //Distributes the work to other functions
     public void showContent(Scene currentScene) {
         this.currentScene = currentScene;
+        //Check if data is loaded and then call functions
         if(currentScene.isDataLoaded()) {
-            objectMenu();
-            showObject();
-            if(objectToEditFields != -1) {
-                showFields();
+            objectMenu(); //Menu when right clicking empty space
+            showObject(); //Shows objects in the hierarchy
+            //Only runs if you want to edit an object
+            if(objectToEditFields!=-1 ) {
+                showFields(objectToEditFields);
             }
-        }
-        queedProcess();
-    }
-
-    public Component createComponentFromFile(File file) {
-        try {
-            // Extract fully qualified class name from file path
-            String absolutePath = file.getAbsolutePath().replace("\\", "/");
-            String srcRoot = new File("src/main/java").getAbsolutePath().replace("\\", "/");
-
-            if (!absolutePath.startsWith(srcRoot)) {
-                System.err.println("Selected file is not inside the src directory.");
-                return null;
-            }
-
-            String relativePath = absolutePath.substring(srcRoot.length() + 1); // +1 to skip slash
-            String className = relativePath.replace("/", ".").replace(".java", "");
-
-            // Load class
-            Class<?> clazz = Class.forName(className);
-            if (Component.class.isAssignableFrom(clazz)) {
-                return (Component) clazz.getDeclaredConstructor().newInstance();
-            } else {
-                System.err.println("Class does not extend Component: " + className);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private void initDirectory(String filepath) {
-        currentDir = new File(filepath); // Or wherever you want to start
-        File[] files = currentDir.listFiles();
-        folders.clear();
-        regularFiles.clear();
-        if(files != null) {
-            for (File file : files) {
-                if(file.isDirectory()) {
-                    folders.add(file);
-                } else {
-                    regularFiles.add(file);
-                }
+            //Only runs if you want to add a script
+            if(goScript != null) {
+                addScript(goScript);
             }
         }
     }
 
-    private void queedProcess() {
-        if(queedGameObject != null) {
-            currentScene.addGameObjectToScene(queedGameObject);
-            queedGameObject = null;
-        } else if(objectToRemove != -1) {
-            if(objectToRemove == objectToEditFields) {
-                objectToEditFields = -1;
-            }
-            if(objectToRemove < objectToEditFields) {
-                objectToEditFields-=1;
-            }
-            currentScene.removeGameObjectFromScene(objectToRemove);
-            objectToRemove = -1;
-        }
-        if(queedSpriteRenderer != null && selectedObject != -1) {
-            System.out.println("Trying to add component");
-            queedSpriteRenderer.setSprite(new Sprite());
-            currentScene.getGameObjects().get(selectedObject).addComponent(queedSpriteRenderer);
-            if(currentScene.getGameObjects().get(selectedObject).isInScene()) {
-                currentScene.getRenderer().add(currentScene.getGameObjects().get(selectedObject));
-            }
-            queedSpriteRenderer = null;
-        }
-    }
-
+    //This is the menu which is shown when right-clicking an empty space
     private void objectMenu() {
+        //Create a menu where right-clicked
         if(ImGui.beginPopupContextWindow("HierarchySettings",ImGuiPopupFlags.MouseButtonRight)) {
-            if(ImGui.menuItem("Add Object")) {
-                queedGameObject = new GameObject("Unnamed");
-            }
+            //Menu item with lambda function
+            ImGuiCommonFun.menuItem("Add Object", () -> currentScene.addGameObjectToScene(new GameObject("Unnamed")));
             ImGui.endPopup();
         }
     }
-
-    private void scriptFunction(){
-        if(showScriptFiles) {
-            addScript();
-            if(selectedFile != null && selectedFile.getName().endsWith(".java")) {
-                Component co = createComponentFromFile(selectedFile);
-                if(co != null) {
-                    goScript.addComponent(co);
-                }
-                showScriptFiles = false;
-                selectedFile = null;
-            }
-        }
-    }
-
-    private void objectSettings(GameObject go, int i) {
-        if(ImGui.beginPopupContextItem("ObjectSettings" + i, ImGuiPopupFlags.MouseButtonRight)) {
-            if(ImGui.beginMenu("Add component")) {
-                if(ImGui.menuItem("SpriteRenderer")) {
-                    if(go.getComponent(SpriteRenderer.class) == null) {
-                        Sprite sprite = new Sprite();
-                        queedSpriteRenderer = new SpriteRenderer();
-                        queedSpriteRenderer.setColor(new Vector4f(0,0,0,1));
-                        queedSpriteRenderer.setSprite(sprite);
-                    }
-                }
-                if(ImGui.menuItem("RigidBody2D")) {
-                    Rigidbody2D rigB2D = new Rigidbody2D();
-                    go.addComponent(rigB2D);
-                }
-                if(go.getComponent(Rigidbody2D.class)!=null) {
-                    if(ImGui.beginMenu("Collider")) {
-                        if(ImGui.menuItem("Square")) {
-                            //System.out.println("Trying to add square shape");
-                            OBBCollider OBBCollider = new OBBCollider(new Vector2f(5,5));
-                            OBBCollider.setRigidbody(go.getComponent(Rigidbody2D.class));
-                            go.addComponent(OBBCollider);
-                        }
-                        if(ImGui.menuItem("Circle")) {
-                            //System.out.println("Trying to add circle shape");
-                            Circle circle = new Circle(5);
-                            circle.setRigidbody(go.getComponent(Rigidbody2D.class));
-                            go.addComponent(circle);
-
-                        }
-                        ImGui.endMenu();
-                    }
-                }
-                if(ImGui.menuItem("Add script")) {
-                    initDirectory("src");
-                    goScript = go;
-                    showScriptFiles = true;
-                }
-                ImGui.endMenu();
-            }
-            if(ImGui.menuItem("Edit fields")) {
-                objectToEditFields = i;
-                showEditFieldsWindow = true;
-            }
-            if(ImGui.menuItem("Edit name")) {
-                newObjectName.set(go.getName());
-                objectToEditName = i;
-            }
-            if(ImGui.menuItem("Delete Object")) {
-                objectToRemove = i;
-            }
-            ImGui.endPopup();
-        }
-    }
-
+    //Shows each object and allows for interaction with each
     private void showObject() {
-        this.scriptFunction();
+        //Define variables before loop
         this.gameObjects = currentScene.getGameObjects();
         boolean treeNode;
+        boolean selectedCondition;
         int flags;
+        //Loop through each game object
         for(int i=0; i<gameObjects.size(); i++) {
             GameObject go = gameObjects.get(i);
+            //Define condition for flag
+            selectedCondition = selectedObject == i && objectToEditName != i;
+
+            //Push ID
             ImGui.pushID(i);
-            flags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.OpenOnDoubleClick |
-                        ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.Framed | ImGuiTreeNodeFlags.AllowItemOverlap;
+            //Get flag and add style
+            flags = addSelectedStyle(selectedCondition);
+            //Add additional specific flag
             if(go.getComponents().isEmpty()) {
                 flags |= ImGuiTreeNodeFlags.Leaf;
             }
-            if(selectedObject == i && objectToEditName != i) {
-                flags |= ImGuiTreeNodeFlags.Selected;
-                ImVec4 selectedColor = new ImVec4(0.361f, 0.478f, 0.831f, 1.0f);
-                int color = ImGui.getColorU32(selectedColor);
-                ImGui.pushStyleColor(ImGuiCol.Header, color);  // Apply color for this item
-            }
+            //Call the treenode
             treeNode = ImGui.treeNodeEx("##treeObject_" + i, flags);
+            //Allow for drag and drop to scene
             if(ImGui.beginDragDropSource()) {
                 currentScene.getDragDropper().setDragging(true);
                 currentScene.getDragDropper().setDraggedObject(go);
                 ImGui.text("Dragging " + go.getName());
                 ImGui.endDragDropSource();
             }
-            if(selectedObject == i && objectToEditName != i) {
+            //If style was added pop it
+            if(selectedCondition) {
                 ImGui.popStyleColor();
             }
+            //If game object is clicked define which one
             if(ImGui.isItemClicked()) {
                 selectedObject = i;
+                selectedComponent = -1;
             }
+            //Calls interactions possible with game object
             this.objectSettings(go, i);
             ImGui.sameLine();
-            if(objectToEditName == i) {
-                if(ImGui.inputText("##edit_" + i, newObjectName, ImGuiInputTextFlags.EnterReturnsTrue)) {
-                    currentScene.getGameObjects().get(i).setName(newObjectName.get());
-                    objectToEditName = -1;
-                }
-            } else {
-                ImGui.text(go.getName());
-            }
+            //Shows name
+            showObjectName(go, i);
+            //Shows component if tree opened
             if(treeNode) {
                 showComponent(go, i);
                 ImGui.treePop();
@@ -258,61 +120,50 @@ public class ImGuiHierarchyWindow {
         }
     }
 
-    private void spriteRendererFunction(Component c){
-        if(c.getClass() == SpriteRenderer.class) {
-            if(ImGui.beginDragDropTarget()) {
-                byte[] payload = ImGui.acceptDragDropPayload("spriteSheet");
-                if(payload != null) {
-                    String spriteSheetName = new String(payload);
-                    SpriteSheet sheet = AssetPool.getSpriteSheet(spriteSheetName);
-                    System.out.println(sheet.getTexture().getTexID() + " " + sheet.getSprite(0).getTexture().getTexID());
-                    if (sheet != null && sheet.getSprite(0) != null && sheet.getSprite(0).getTexture() != null) {
-                        ((SpriteRenderer) c).setSprite(sheet.getSprite(0));
-                        ((SpriteRenderer) c).setDirty();
-                        System.out.println("Sprite set from: " + spriteSheetName);
-                    } else {
-                        if(sheet == null) {
-                            System.out.println("Sheet is null");
-                        } else if(sheet.getSprite(0) == null) {
-                            System.out.println("sprite is null");
-                        } else {
-                            System.out.println("texture is null");
-                        }
-                        System.err.println("Failed to get sprite from: " + spriteSheetName);
-                    }
-                }
+    private void showObjectName(GameObject go, int i) {
+        if(objectToEditName == i) {
+            if(ImGui.inputText("##edit_" + i, newObjectName, ImGuiInputTextFlags.EnterReturnsTrue)) {
+                currentScene.getGameObjects().get(i).setName(newObjectName.get());
+                objectToEditName = -1;
             }
+        } else {
+            ImGui.text(go.getName());
         }
     }
+
     private void showComponent(GameObject go, int i) {
         boolean treeNode;
+        boolean selectedCondition;
         int flags;
+        int startIndex;
         for(int j=0; j<go.getComponents().size(); j++) {
+
             Component c = go.getComponents().get(j);
-            int startIndex = c.getClass().getName().lastIndexOf('.');
+            startIndex = c.getClass().getName().lastIndexOf('.');
+            selectedCondition = selectedComponent == j && i == selectedObject;
+
             ImGui.pushID(j);
-            flags = ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.Framed |
-                    ImGuiTreeNodeFlags.AllowItemOverlap | ImGuiTreeNodeFlags.Leaf;
-            if(selectedComponent == i*gameObjects.size()+j && i == selectedObject) {
-                flags |= ImGuiTreeNodeFlags.Selected;
-                ImVec4 selectedColor = new ImVec4(0.361f, 0.478f, 0.831f, 1.0f);
-                int color = ImGui.getColorU32(selectedColor);
-                ImGui.pushStyleColor(ImGuiCol.Header, color);  // Apply color for this item
-            }
+
+            flags = addSelectedStyle(selectedCondition);
+            flags |= ImGuiTreeNodeFlags.Leaf;
+
             treeNode = ImGui.treeNodeEx(c.getClass().getName().substring(startIndex + 1), flags);
-            if(selectedComponent == i*gameObjects.size()+j && i == selectedObject) {
+
+            if(selectedCondition) {
                 ImGui.popStyleColor();
             }
-            this.spriteRendererFunction(c);
+
+            spriteRendererFunction(c);
+
             if(ImGui.isItemClicked()) {
-                selectedComponent = i*gameObjects.size()+j;
+                selectedComponent = j;
             }
+
             if(ImGui.beginPopupContextItem("ComponentSettings", ImGuiPopupFlags.MouseButtonRight)) {
-                if(ImGui.menuItem("Delete component")) {
-                    System.out.println("Not implemented yet");
-                }
+                ImGuiCommonFun.menuItem("Delete Component", () -> System.out.println("Not implemented yet"));
                 ImGui.endPopup();
             }
+
             if(treeNode) {
                 ImGui.treePop();
             }
@@ -321,56 +172,159 @@ public class ImGuiHierarchyWindow {
         }
     }
 
-    private void showFields() {
-        if(objectToEditFields != -1 && showEditFieldsWindow) {
-            ImGui.setNextWindowSize(new ImVec2(200, 500), ImGuiCond.Once);
-            ImGui.setNextWindowPos(new ImVec2(ImGui.getMainViewport().getPosX() + ImGui.getMainViewport().getSizeX() - 200,
-                    ImGui.getMainViewport().getPosY()), ImGuiCond.Once);
-            ImBoolean open = new ImBoolean(showEditFieldsWindow);
-            if(ImGui.begin(currentScene.getGameObjects().get(objectToEditFields).getName(), open)) {
-                currentScene.getGameObjects().get(objectToEditFields).imGui();
-            } else {
-                objectToEditFields = -1;
+    private int addSelectedStyle(boolean condition) {
+        int flags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.OpenOnDoubleClick |
+                ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.Framed | ImGuiTreeNodeFlags.AllowItemOverlap;
+        if(condition) {
+            flags |= ImGuiTreeNodeFlags.Selected;
+            ImVec4 selectedColor = new ImVec4(0.361f, 0.478f, 0.831f, 1.0f);
+            int color = ImGui.getColorU32(selectedColor);
+            ImGui.pushStyleColor(ImGuiCol.Header, color);  // Apply color for this item
+        }
+        return flags;
+    }
+
+    private void objectSettings(GameObject go, int i) {
+        if(ImGui.beginPopupContextItem("ObjectSettings" + i, ImGuiPopupFlags.MouseButtonRight)) {
+            if(ImGui.beginMenu("Add component")) {
+                ImGuiCommonFun.menuItem("SpriteRenderer", () -> addSpriteRenderer(go, i));
+                ImGuiCommonFun.menuItem("RigidBody2D", () -> go.addComponent(new Rigidbody2D()));
+
+                if(go.getComponent(Rigidbody2D.class)!=null) {
+                    if(ImGui.beginMenu("Collider")) {
+                        ImGuiCommonFun.menuItem("Square", () -> addOBBCollider(go));
+                        ImGuiCommonFun.menuItem("Circle", () -> addCircle(go));
+                        ImGui.endMenu();
+                    }
+                }
+
+                ImGuiCommonFun.menuItem("Add script", () -> addScript(go));
+                ImGui.endMenu();
             }
-            ImGui.end();
-            showEditFieldsWindow = open.get();
+            ImGuiCommonFun.menuItem("Edit fields", () -> showFields(i));
+            ImGuiCommonFun.menuItem("Edit name", () -> {
+                newObjectName.set(go.getName());
+                objectToEditName = i;
+            });
+            ImGuiCommonFun.menuItem("Delete Object", () -> deleteGameObject(i));
+            ImGui.endPopup();
         }
     }
 
 
-    private void addScript() {
+
+    private void spriteRendererFunction(Component c){
+        if(c.getClass() == SpriteRenderer.class) {
+            if(ImGui.beginDragDropTarget()) {
+                byte[] payload = ImGui.acceptDragDropPayload("spriteSheet");
+                if(payload != null) {
+                    String spriteSheetName = new String(payload);
+                    SpriteSheet sheet = AssetPool.getSpriteSheet(spriteSheetName);
+                    if (sheet.getSprite(0) != null && sheet.getSprite(0).getTexture() != null) {
+                        ((SpriteRenderer) c).setSprite(sheet.getSprite(0));
+                        ((SpriteRenderer) c).setDirty();
+                        System.out.println("Sprite set from: " + spriteSheetName);
+                    } else {
+                        System.err.println("Failed to get sprite from: " + spriteSheetName);
+                    }
+                }
+            }
+        }
+    }
+
+    private void showFields(int i) {
+        objectToEditFields = i;
+        ImGui.setNextWindowSize(new ImVec2(200, 500), ImGuiCond.Once);
+        ImGui.setNextWindowPos(new ImVec2(ImGui.getMainViewport().getPosX() + ImGui.getMainViewport().getSizeX() - 200,
+                ImGui.getMainViewport().getPosY()), ImGuiCond.Once);
+        ImBoolean open = new ImBoolean(true);
+        if(ImGui.begin(currentScene.getGameObjects().get(objectToEditFields).getName(), open)) {
+            currentScene.getGameObjects().get(objectToEditFields).imGui();
+        }
+        ImGui.end();
+        if(!open.get()) {
+            objectToEditFields = -1;
+        }
+    }
+
+
+    private void addSpriteRenderer(GameObject go, int i) {
+        if(go.getComponent(SpriteRenderer.class) == null) {
+            Sprite sprite = new Sprite();
+            SpriteRenderer sr = new SpriteRenderer();
+            sr.setColor(new Vector4f(0,0,0,1));
+            sr.setSprite(sprite);
+            currentScene.getGameObjects().get(i).addComponent(sr);
+            if(currentScene.getGameObjects().get(i).isInScene()) {
+                currentScene.getRenderer().add(currentScene.getGameObjects().get(selectedObject));
+            }
+        }
+    }
+
+    private void addOBBCollider(GameObject go) {
+        OBBCollider OBBCollider = new OBBCollider(new Vector2f(5,5));
+        OBBCollider.setRigidbody(go.getComponent(Rigidbody2D.class));
+        go.addComponent(OBBCollider);
+    }
+
+    private void addCircle(GameObject go) {
+        Circle circle = new Circle(5);
+        circle.setRigidbody(go.getComponent(Rigidbody2D.class));
+        go.addComponent(circle);
+    }
+
+    private void deleteGameObject(int i) {
+        if(i == objectToEditFields) {
+            objectToEditFields = -1;
+        }
+        if(i < objectToEditFields) {
+            objectToEditFields-=1;
+        }
+        currentScene.removeGameObjectFromScene(i);
+    }
+
+
+    private void addScript(GameObject go) {
+        if(goScript == null) imGuiFileManager.initDirectory("src");
+        goScript = go;
         float fileDirectoryWidth = 200;
         float fileDirectoryHeight = 200;
         ImGui.setNextWindowPos(new ImVec2(ImGui.getWindowPosX()+ImGui.getMainViewport().getSizeX()*0.5f,
                 ImGui.getWindowPosY()+ImGui.getWindowHeight()*0.5f), ImGuiCond.Once);
         ImGui.setNextWindowSize(new ImVec2(fileDirectoryWidth, fileDirectoryHeight), ImGuiCond.Once);
         ImGui.begin("FileDirectory");
-        int flags = ImGuiTreeNodeFlags.DefaultOpen;
-        if(ImGui.treeNodeEx("Scripts", flags)) {
-            if (ImGui.button("..")) {
-                currentDir = currentDir.getParentFile();
-                if (currentDir != null) {
-                    initDirectory(currentDir.getPath());
-                }
-            }
-            for (int i = 0; i < folders.size(); i++) {
-                ImGui.pushID(i);
-                if (ImGui.selectable("[Dir] " + folders.get(i).getName())) {
-                    currentDir = folders.get(i);
-                    initDirectory(folders.get(i).getPath());
-                }
-                ImGui.popID();
+        imGuiFileManager.showContent();
+        ImGui.end();
+    }
+
+    public void createComponentFromFile(File file) {
+        if(file == null || !file.getName().endsWith(".java")) {
+            System.out.println("That file is not valid");
+            return;
+        }
+        try {
+            // Extract fully qualified class name from file path
+            String absolutePath = file.getAbsolutePath().replace("\\", "/");
+            String srcRoot = new File("src/main/java").getAbsolutePath().replace("\\", "/");
+
+            if (!absolutePath.startsWith(srcRoot)) {
+                System.err.println("Selected file is not inside the src directory.");
+                return;
             }
 
-            for (int j = 0; j < regularFiles.size(); j++) {
-                ImGui.pushID(j);
-                if (ImGui.selectable(regularFiles.get(j).getName())) {
-                    selectedFile = regularFiles.get(j);
-                }
-                ImGui.popID();
+            String relativePath = absolutePath.substring(srcRoot.length() + 1); // +1 to skip slash
+            String className = relativePath.replace("/", ".").replace(".java", "");
+
+            // Load class
+            Class<?> clazz = Class.forName(className);
+            if (Component.class.isAssignableFrom(clazz)) {
+                goScript.addComponent((Component) clazz.getDeclaredConstructor().newInstance());
+                goScript = null;
+            } else {
+                System.err.println("Class does not extend Component: " + className);
             }
-            ImGui.treePop();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        ImGui.end();
     }
 }

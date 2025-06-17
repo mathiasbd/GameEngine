@@ -56,7 +56,6 @@ public class AssetPool {
         if(!AssetPool.spriteSheets.containsKey(file.getAbsolutePath())) {
             throw new RuntimeException("SpriteSheet not found: " + resourceName);
         }
-        SpriteSheet test = AssetPool.spriteSheets.getOrDefault(file.getAbsolutePath(), null);
         return AssetPool.spriteSheets.getOrDefault(file.getAbsolutePath(), null);
     }
 
