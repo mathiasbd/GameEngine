@@ -8,8 +8,13 @@ import physics.primitives.Circle;
 import physics.primitives.Collider;
 import physics.primitives.OBBCollider;
 
+/*
+ * Rigidbody2D adds physics properties and behavior to GameObjects.
+ * It supports dynamic, static, and kinematic bodies with forces,
+ * velocity integration, collision synchronization, and inertia computation.
+ * Author(s):
+ */
 public class Rigidbody2D extends Component {
-
 
     public enum BodyType {
         STATIC,
@@ -22,7 +27,7 @@ public class Rigidbody2D extends Component {
     private Collider collider;
     private Vector2f position = new Vector2f();
     private float rotation = 0.0f;
-    private float mass = 1f;
+    private float mass = 1.0f;
 
     private float restitution = 1.0f;
     private Vector2f forceAcc = new Vector2f();
@@ -38,174 +43,262 @@ public class Rigidbody2D extends Component {
     private float friction = 0.5f;
 
     @Override
-    public void update(float dt) {}
+    public void update(float dt) {
+        // no-op: physics driven by physicsUpdate
+    }
 
+    /*
+     * Integrates forces and velocities, updates position and rotation, and syncs transform.
+     * @param dt - elapsed time in seconds
+     */
     public void physicsUpdate(float dt) {
-        linearDamping = 0.05f; // temporary value, can be set externally
-        angularDamping = 0.05f; // temporary value, can be set externally
+        // reset damping (can be customized externally)
+        linearDamping = 0.05f;
+        angularDamping = 0.05f;
 
-        if (this.mass == 0.0f || bodyType == BodyType.STATIC) return;
+        // skip static or infinite-mass bodies
+        if (mass == 0.0f || bodyType == BodyType.STATIC) return;
 
-        Vector2f acceleration = new Vector2f(forceAcc).mul(getInverseMass());
-        linearVelocity.add(acceleration.mul(dt));
-        linearVelocity.mul(1.0f - linearDamping * dt);
+        // integrate linear forces
+        Vector2f accel = new Vector2f(forceAcc).mul(getInverseMass());
+        linearVelocity.add(new Vector2f(accel).mul(dt));
+        linearVelocity.mul(1.0f - linearDamping * dt);  // apply damping
 
-        this.position.add(new Vector2f(linearVelocity).mul(dt));
+        // integrate position
+        position.add(new Vector2f(linearVelocity).mul(dt));
 
-        // Angular motion
+        // integrate angular motion if allowed
         if (!fixedRotation) {
-            float angularAcceleration = torque * getInverseInertia();
-            if(angularAcceleration != 0.0f) {
-//                System.out.println(angularAcceleration);
-            }
-            angularVelocity += angularAcceleration * dt;
+            float angAcc = torque * getInverseInertia();
+            angularVelocity += angAcc * dt;
             angularVelocity *= (1.0f - angularDamping * dt);
             rotation += angularVelocity * dt;
         }
-        
+
         synchCollisionTransforms();
         clearAccumulators();
     }
 
+    /*
+     * Synchronizes the GameObject's Transform position with this rigidbody.
+     */
     public void synchCollisionTransforms() {
         if (rawTransform != null) {
-            rawTransform.position.set(this.position);
+            rawTransform.position.set(this.position); // update transform
         }
     }
 
+    /*
+     * Clears accumulated forces and torque.
+     */
     public void clearAccumulators() {
-        this.forceAcc.zero();
-        this.torque = 0.0f;
-
+        forceAcc.zero();
+        torque = 0.0f;
     }
 
+    /*
+     * @return the accumulated torque for this body
+     */
     public float getTorque() {
         return torque;
     }
 
+    /*
+     * @return true if body has infinite mass (static)
+     */
     public boolean hasInfiniteMass() {
-        return this.mass == 0.0f || bodyType == BodyType.STATIC;
+        return mass == 0.0f || bodyType == BodyType.STATIC;
     }
 
+    /*
+     * @return current position of the rigidbody
+     */
     public Vector2f getPosition() {
         return position;
     }
 
+    /*
+     * Sets the position directly (teleport).
+     * @param position - new position vector
+     */
     public void setPosition(Vector2f position) {
-        this.position = position;
+        this.position.set(position);
     }
 
+    /*
+     * Sets the linear velocity.
+     * @param velocity - new velocity vector
+     */
     public void setVelocity(Vector2f velocity) {
         this.linearVelocity.set(velocity);
     }
 
+    /*
+     * @return current linear velocity
+     */
     public Vector2f getLinearVelocity() {
-        return this.linearVelocity;
+        return linearVelocity;
     }
 
+    /*
+     * @return current rotation angle in radians
+     */
     public float getRotation() {
         return rotation;
     }
 
+    /*
+     * Sets the rotation angle.
+     * @param rotation - rotation in radians
+     */
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
 
+    /*
+     * @return mass of the body
+     */
     public float getMass() {
         return mass;
     }
 
+    /*
+     * @return friction coefficient
+     */
     public float getFriction() {
         return friction;
     }
 
-    public void setTorque(float torque) {
-        this.torque = torque;
-    }
-
+    /*
+     * @return inverse mass (0 if infinite)
+     */
     public float getInverseMass() {
-        if (mass == 0.0f) {
-            return 0.0f;
-        }
-        return 1.0f / mass;
+        return (mass == 0.0f) ? 0.0f : 1.0f / mass;
     }
 
+    /*
+     * @return copy of current force accumulator
+     */
     public Vector2f getForceAccumulator() {
         return new Vector2f(forceAcc);
     }
 
+    /*
+     * Sets the mass and updates inertia if collider present.
+     * @param mass - new mass value
+     */
     public void setMass(float mass) {
         this.mass = mass;
-        if (this.mass != 0.0f) {
-            //this.inverseMass = 1.0f / this.mass;
-        }
     }
 
+    /*
+     * Adds a force to the accumulator.
+     * @param force - force vector to apply
+     */
     public void addForce(Vector2f force) {
-        this.forceAcc.add(force);
+        forceAcc.add(force);
     }
 
+    /*
+     * Associates this rigidbody with a Transform for syncing.
+     * @param rawTransform - Transform to update
+     */
     public void setRawTransform(Transform rawTransform) {
         this.rawTransform = rawTransform;
         this.position.set(rawTransform.position);
     }
 
+    /*
+     * Adds torque to accumulate rotational force.
+     * @param torque - torque value to add
+     */
     public void addTorque(float torque) {
         this.torque += torque;
     }
 
+    /*
+     * @return inverse inertia (0 if fixed rotation or infinite)
+     */
     public float getInverseInertia() {
-        if (inertia == 0.0f) {
-            return 0.0f;
-        }
-        return 1.0f / inertia;
+        return (inertia == 0.0f) ? 0.0f : 1.0f / inertia;
     }
 
+    /*
+     * @return current angular velocity
+     */
     public float getAngularVelocity() {
         return angularVelocity;
     }
 
+    /*
+     * Sets the angular velocity.
+     * @param angularVelocity - new angular velocity
+     */
     public void setAngularVelocity(float angularVelocity) {
         this.angularVelocity = angularVelocity;
     }
 
+    /*
+     * Sets the collider and computes inertia based on shape.
+     * @param collider - Collider instance (OBB or Circle)
+     */
     public void setCollider(Collider collider) {
         this.collider = collider;
-        if(collider instanceof OBBCollider && bodyType != BodyType.STATIC) {
-            inertia = (mass*(((OBBCollider) collider).getHalfSize().x*2*((OBBCollider) collider).getHalfSize().y*2))/6;
-        }
-        else if (collider instanceof Circle circle && bodyType != BodyType.STATIC) {
-            float radius = circle.getRadius();
-            inertia = 0.05f * mass * radius * radius;
+        if (bodyType != BodyType.STATIC && collider instanceof OBBCollider obb) {
+            inertia = (mass * (obb.getHalfSize().x*2 * obb.getHalfSize().y*2)) / 6; // rectangle inertia
+        } else if (bodyType != BodyType.STATIC && collider instanceof Circle circ) {
+            inertia = 0.05f * mass * circ.getRadius() * circ.getRadius(); // approximate disk
         }
     }
 
+    /*
+     * @return current collider shape
+     */
     public Collider getCollider() {
-        return this.collider;
+        return collider;
     }
 
-    public void setRestitution(float restitution) {
-        this.restitution = restitution;
-    }
-
+    /*
+     * @return restitution coefficient (bounciness)
+     */
     public float getRestitution() {
         return restitution;
     }
 
+    /*
+     * Sets restitution (bounciness).
+     * @param restitution - restitution coefficient
+     */
+    public void setRestitution(float restitution) {
+        this.restitution = restitution;
+    }
+
+    /*
+     * @return the BodyType of this rigidbody
+     */
     public BodyType getBodyType() {
         return bodyType;
     }
 
+    /*
+     * Sets the BodyType (STATIC, DYNAMIC, KINEMATIC).
+     * @param bodyType - new body type
+     */
     public void setBodyType(BodyType bodyType) {
         this.bodyType = bodyType;
     }
 
+    /*
+     * @return moment of inertia
+     */
     public float getInertia() {
         return inertia;
     }
 
+    /*
+     * @return associated GameObject
+     */
     public GameObject getGameObject() {
         return gameObject;
     }
-
 }

@@ -3,54 +3,63 @@ package physics.forces;
 import org.joml.Vector2f;
 import physics.collisions.Rigidbody2D;
 
+/*
+ * Friction applies static and kinetic friction forces to Rigidbody2D objects.
+ * Author(s):
+ */
 public class Friction implements ForceGenerator {
     private float staticCoefficient;
-    private float kineticCoefficient; // Coefficient of kinetic friction (μ)
-    private float normalForce; // Normal force (N)= mass * gravity
+    private float kineticCoefficient;
+    private float normalForce;
     private static final float VELOCITY_THRESHOLD_SQ = 0.001f;
 
-
-    // Constructor for friction with a coefficient and gravity-based normal force
+    /*
+     * Constructs a Friction generator using coefficients and gravity.
+     * @param staticCoefficient - coefficient of static friction
+     * @param kineticCoefficient - coefficient of kinetic friction
+     * @param gravityMagnitude - magnitude of gravity to compute normal force
+     * @param rb - the Rigidbody2D to use for mass lookup
+     */
     public Friction(float staticCoefficient, float kineticCoefficient, float gravityMagnitude, Rigidbody2D rb) {
         this.staticCoefficient = staticCoefficient;
         this.kineticCoefficient = kineticCoefficient;
-        // Assume normal force is mass * gravity (flat surface)
-        this.normalForce = rb.getMass() * gravityMagnitude; // N = m * g
+        this.normalForce = rb.getMass() * gravityMagnitude;
     }
 
+    /*
+     * Updates the friction force on the rigidbody.
+     * @param rb - the Rigidbody2D to apply friction to
+     * @param dt - duration of the timestep (unused)
+     */
     @Override
     public void updateForce(Rigidbody2D rb, float dt) {
         if (rb.hasInfiniteMass()) return;
         Vector2f velocity = rb.getLinearVelocity();
         Vector2f netForce = rb.getForceAccumulator();
 
-
-        if (velocity.lengthSquared() <=VELOCITY_THRESHOLD_SQ){
-            // Object is  stationary - apply static friction to cancel out net force
-            float maxStaticFriction = staticCoefficient * normalForce;
-
-            if (netForce.length() < maxStaticFriction) {
-                // Cancel the net force
-                Vector2f cancelForce = new Vector2f(netForce).negate();
-                rb.addForce(cancelForce);
+        if (velocity.lengthSquared() <= VELOCITY_THRESHOLD_SQ) {
+            float maxStatic = staticCoefficient * normalForce;
+            if (netForce.length() < maxStatic) {
+                rb.addForce(new Vector2f(netForce).negate()); // cancel net force
             } else {
-                // Static friction can't hold it — kinetic friction takes over
-                applyKineticFriction(rb, velocity, normalForce);
+                applyKineticFriction(rb, velocity);
             }
-        }else {
-                applyKineticFriction(rb, velocity, normalForce);
-        };
-    } ;
-    private void applyKineticFriction(Rigidbody2D rb, Vector2f velocity, float normalForce) {
-        // Avoid issues with near-zero velocity
-        if (velocity.lengthSquared() < VELOCITY_THRESHOLD_SQ) return;
+        } else {
+            applyKineticFriction(rb, velocity);
+        }
+    }
 
-        // Calculate friction force: F = -μ * N * v
-        // v = velocity / |velocity| (normalized velocity)
-        Vector2f frictionForce = new Vector2f(velocity).normalize().negate().mul(kineticCoefficient * normalForce);
-        // Apply the friction force to the rigidbody
+    /*
+     * Applies kinetic friction based on current velocity.
+     * @param rb - the Rigidbody2D to apply friction to
+     * @param velocity - current linear velocity of the body
+     */
+    private void applyKineticFriction(Rigidbody2D rb, Vector2f velocity) {
+        if (velocity.lengthSquared() < VELOCITY_THRESHOLD_SQ) return;
+        Vector2f frictionForce = new Vector2f(velocity)
+                .normalize()
+                .negate()
+                .mul(kineticCoefficient * normalForce);
         rb.addForce(frictionForce);
     }
 }
-
-
