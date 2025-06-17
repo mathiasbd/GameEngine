@@ -7,18 +7,30 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.*;
-import java.nio.file.Paths;
 
+/*
+ * Texture loads and manages OpenGL textures from image files.
+ * Author(s):
+ */
 public class Texture {
     private String filepath;
     private int texID;
     private int width;
     private int height;
 
+    /*
+     * Constructs an empty Texture.
+     */
     public Texture() {
 
     }
 
+    /*
+     * Initializes the texture by loading image data from a file,
+     * generating an OpenGL texture ID, binding it, setting parameters,
+     * and uploading the pixel data to the GPU.
+     * @param filepath - path to the image file to load
+     */
     public void init(String filepath) {
         // Resolve relative path to absolute path
 
@@ -61,30 +73,52 @@ public class Texture {
         stbi_image_free(image);
     }
 
+    /*
+     * Sets the file path associated with this texture without loading it.
+     * @param filepath - the file path to assign to this texture
+     */
     public void setFilepath(String filepath) {
         this.filepath = filepath;
     }
 
+    /*
+     * Binds this texture in the current OpenGL context.
+     */
     public void bind() {
         glBindTexture(GL_TEXTURE_2D, texID);
     }
 
+    /*
+     * Unbinds any texture from the current OpenGL context.
+     */
     public void unbind() {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
+    /*
+     * @return width - the width of the texture in pixels
+     */
     public int getWidth() {
         return width;
     }
 
+    /*
+     * @return height - the height of the texture in pixels
+     */
     public int getHeight() {
         return height;
     }
 
+    /*
+     * @return texID - the OpenGL-generated texture ID
+     */
     public int getTexID() {
         return texID;
     }
 
+    /*
+     * @return filepath - the file path this texture was loaded from
+     */
     public String getFilepath() {
         return filepath;
     }

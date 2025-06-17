@@ -15,6 +15,11 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
+/*
+ * DebugDraw provides static methods to draw debug primitives (lines, boxes, circles) using OpenGL.
+ * It accumulates Line2D objects each frame and handles their buffering and rendering.
+ * Author(s):
+ */
 public class DebugDraw {
     private static final int MAX_LINES = 1000;
     private static List<Line2D> line2DS = new ArrayList<>();
@@ -25,6 +30,9 @@ public class DebugDraw {
     private static int vaoID, vboID;
     private static boolean started = false;
 
+    /*
+     * Initializes OpenGL buffers and vertex arrays for debug drawing.
+     */
     public static void start() {
         // generate the vao
         vaoID = glGenVertexArrays();
@@ -43,9 +51,11 @@ public class DebugDraw {
         glEnableVertexAttribArray(1);
 
         glLineWidth(10.0f);
-
     }
 
+    /*
+     * Prepares for a new frame, updating and removing expired lines.
+     */
     public static void beginFrame() {
         if (!started) {
             start();
@@ -60,6 +70,9 @@ public class DebugDraw {
         }
     }
 
+    /*
+     * Draws all accumulated debug lines using the shader, projection, and view matrices.
+     */
     public static void drawLines() {
         if (line2DS.size() <= 0) return;
         //System.out.println("Drawing " + lines.size() + " lines");
@@ -95,7 +108,7 @@ public class DebugDraw {
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
 
-        glDrawArrays(GL_LINES, 0, line2DS.size()*2);
+        glDrawArrays(GL_LINES, 0, line2DS.size() * 2);
 
         // disable Location
         glDisableVertexAttribArray(0);
@@ -106,16 +119,32 @@ public class DebugDraw {
         shader.detach();
     }
 
-    //// Adds a line to the debug draw list
-
+    /*
+     * Adds a line between two points with default color (green) and lifetime (1).
+     * @param from - the start position of the line
+     * @param to - the end position of the line
+     */
     public static void addLine2D(Vector2f from, Vector2f to) {
         addLine2D(from, to, new Vector3f(0, 1, 0), 1);
     }
 
+    /*
+     * Adds a line between two points with the specified color and default lifetime (1).
+     * @param from - the start position of the line
+     * @param to - the end position of the line
+     * @param color - the RGB color of the line
+     */
     public static void addLine2D(Vector2f from, Vector2f to, Vector3f color) {
         addLine2D(from, to, color, 1);
     }
 
+    /*
+     * Adds a line between two points with the specified color and lifetime.
+     * @param from - the start position of the line
+     * @param to - the end position of the line
+     * @param color - the RGB color of the line
+     * @param lifetime - how many frames the line should persist
+     */
     public static void addLine2D(Vector2f from, Vector2f to, Vector3f color, int lifetime) {
         if (line2DS.size() >= MAX_LINES) {
             System.out.println("Max lines reached, not adding line");
@@ -124,16 +153,35 @@ public class DebugDraw {
         DebugDraw.line2DS.add(new Line2D(from, to, color, lifetime));
     }
 
-    /// addBox methods
-
+    /*
+     * Adds a rectangle box centered at a point with default color and lifetime.
+     * @param center - the center position of the box
+     * @param dimensions - width and height of the box
+     * @param rotation - rotation angle in radians
+     */
     public static void addBox(Vector2f center, Vector2f dimensions, float rotation) {
         addBox(center, dimensions, rotation, new Vector3f(0, 1, 0), 1);
     }
 
+    /*
+     * Adds a rectangle box centered at a point with the specified color and default lifetime.
+     * @param center - the center position of the box
+     * @param dimensions - width and height of the box
+     * @param rotation - rotation angle in radians
+     * @param color - the RGB color of the box lines
+     */
     public static void addBox(Vector2f center, Vector2f dimensions, float rotation, Vector3f color) {
         addBox(center, dimensions, rotation, color, 1);
     }
 
+    /*
+     * Adds a rectangle box centered at a point with the specified color and lifetime.
+     * @param center - the center position of the box
+     * @param dimensions - width and height of the box
+     * @param rotation - rotation angle in radians
+     * @param color - the RGB color of the box lines
+     * @param lifetime - how many frames the box should persist
+     */
     public static void addBox(Vector2f center, Vector2f dimensions, float rotation, Vector3f color, int lifetime) {
         Vector2f min = new Vector2f(center).sub(new Vector2f(dimensions).div(2));
         Vector2f max = new Vector2f(center).add(new Vector2f(dimensions).div(2));
@@ -155,16 +203,32 @@ public class DebugDraw {
         addLine2D(points[3], points[0], color, lifetime);
     }
 
-    /// addCircle methods
-
+    /*
+     * Adds a circle centered at a point with default color and lifetime.
+     * @param center - the center position of the circle
+     * @param radius - radius of the circle
+     */
     public static void addCircle(Vector2f center, float radius) {
         addCircle(center, radius, new Vector3f(0, 1, 0), 1);
     }
 
+    /*
+     * Adds a circle centered at a point with the specified color and default lifetime.
+     * @param center - the center position of the circle
+     * @param radius - radius of the circle
+     * @param color - the RGB color of the circle lines
+     */
     public static void addCircle(Vector2f center, float radius, Vector3f color) {
         addCircle(center, radius, color, 1);
     }
 
+    /*
+     * Adds a circle centered at a point with the specified color and lifetime.
+     * @param center - the center position of the circle
+     * @param radius - radius of the circle
+     * @param color - the RGB color of the circle lines
+     * @param lifetime - how many frames the circle should persist
+     */
     public static void addCircle(Vector2f center, float radius, Vector3f color, int lifetime) {
         Vector2f[] points = new Vector2f[20];
         int increment = 360 / points.length;
@@ -182,5 +246,4 @@ public class DebugDraw {
         }
         addLine2D(points[points.length - 1], points[0], color, lifetime);
     }
-
 }

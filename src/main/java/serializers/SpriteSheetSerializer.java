@@ -12,8 +12,20 @@ import java.io.File;
 import java.lang.reflect.Type;
 import java.nio.file.Paths;
 
+/*
+ * SpriteSheetSerializer handles serialization and deserialization of SpriteSheet objects to/from JSON.
+ * It utilizes Gson’s JsonSerializer and JsonDeserializer interfaces.
+ * Author(s):
+ */
 public class SpriteSheetSerializer implements JsonSerializer<SpriteSheet>, JsonDeserializer<SpriteSheet> {
 
+    /*
+     * Serializes a SpriteSheet into its JSON representation.
+     * @param src - the SpriteSheet to serialize
+     * @param typeOfSrc - the type of the source object
+     * @param context - the JsonSerializationContext for nested serialization
+     * @return a JsonElement representing the serialized SpriteSheet
+     */
     @Override
     public JsonElement serialize(SpriteSheet src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject json = new JsonObject();
@@ -27,6 +39,15 @@ public class SpriteSheetSerializer implements JsonSerializer<SpriteSheet>, JsonD
         // Note: `sprites` intentionally excluded
         return json;
     }
+
+    /*
+     * Deserializes a JsonElement into a SpriteSheet instance.
+     * @param jsonElement - the JSON data to deserialize
+     * @param type - the target type of the deserialization
+     * @param context - the JsonDeserializationContext for nested deserialization
+     * @return the deserialized SpriteSheet
+     * @throws JsonParseException - if the JSON is malformed or required fields are missing
+     */
     @Override
     public SpriteSheet deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
@@ -34,7 +55,6 @@ public class SpriteSheetSerializer implements JsonSerializer<SpriteSheet>, JsonD
 
         String basePath = System.getProperty("user.dir"); // Project root directory
         String resolvedPath = Paths.get(basePath, texture.getFilepath()).toString();
-
 
         System.out.println("Loading texture from: " + resolvedPath);
         texture.setFilepath(resolvedPath);

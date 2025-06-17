@@ -20,15 +20,28 @@ import util.DebugDraw;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * LevelScene manages the game scene including physics, updates, and rendering
+ * of GameObjects.
+ * Author(s):
+ */
 public class LevelScene extends Scene {
     private static List<GameObject> gameObjectsToLoad = null;
     private ImGuiLayer imGuiLayer;
     private PhysicsSystem physicsSystem;
 
+    /*
+     * Constructs the LevelScene and outputs initialization log.
+     */
     public LevelScene() {
         System.out.println("Inside the game scene");
     }
 
+    /*
+     * Initializes the scene by resetting physics, setting up camera and ImGui layer,
+     * and starting GameObjects.
+     * @param gameObjects - list of GameObjects to initialize
+     */
     @Override
     public void init(List<GameObject> gameObjects) {
         this.physicsSystem = GameEngineManager.getPhysicsSystem();
@@ -48,6 +61,10 @@ public class LevelScene extends Scene {
         }
     }
 
+    /*
+     * Updates GameObjects, handles physics updates, ImGui processing, and rendering.
+     * @param dt - time elapsed since last frame (in seconds)
+     */
     @Override
     public void update(float dt) {
         List<GameObject> snapshot = new ArrayList<>(this.gameObjects);
@@ -80,6 +97,10 @@ public class LevelScene extends Scene {
         this.renderer.render();
     }
 
+    /*
+     * Adds a GameObject to the scene, starts it, and registers its Rigidbody if present.
+     * @param go - GameObject to add to the scene
+     */
     public void addGameObject(GameObject go) {
         if (go != null) {
             gameObjects.add(go);
@@ -94,6 +115,10 @@ public class LevelScene extends Scene {
         }
     }
 
+    /*
+     * Removes a GameObject from the scene and deregisters its Rigidbody if present.
+     * @param go - GameObject to remove from the scene
+     */
     public void removeGameObject(GameObject go) {
         if (go != null) {
             System.out.println("Removing: " + go.getName());
@@ -106,6 +131,10 @@ public class LevelScene extends Scene {
         }
     }
 
+    /*
+     * Draws the debug outline for different Collider types.
+     * @param collider - Collider instance to visualize
+     */
     private void drawCollider(Collider collider) {
         switch (collider) {
             case Circle circle -> {
@@ -115,20 +144,22 @@ public class LevelScene extends Scene {
                 float rotation = rb.getRotation();
 
                 DebugDraw.addCircle(center, radius, new Vector3f(1, 0, 0), 1);
+
                 Vector2f endpoint = new Vector2f(0, radius);
                 DTUMath.rotate(endpoint, rotation, new Vector2f());
                 endpoint.add(center);
+
                 DebugDraw.addLine2D(center, endpoint, new Vector3f(1, 0, 0), 1);
             }
-            case OBBCollider OBBCollider -> {
-                Vector2f center = OBBCollider.getRigidbody().getPosition();
-                Vector2f dimensions = OBBCollider.getHalfSize().mul(2, new Vector2f());
-                float rotation = OBBCollider.getRigidbody().getRotation();
+            case OBBCollider obb -> {
+                Vector2f center = obb.getRigidbody().getPosition();
+                Vector2f dimensions = obb.getHalfSize().mul(2, new Vector2f());
+                float rotation = obb.getRigidbody().getRotation();
                 DebugDraw.addBox(center, dimensions, rotation, new Vector3f(1, 0, 0), 1);
             }
-            case AABBCollider AABBCollider -> {
-                Vector2f center = AABBCollider.getRigidbody().getPosition();
-                Vector2f dimensions = AABBCollider.getHalfSize().mul(2, new Vector2f());
+            case AABBCollider aabb -> {
+                Vector2f center = aabb.getRigidbody().getPosition();
+                Vector2f dimensions = aabb.getHalfSize().mul(2, new Vector2f());
                 DebugDraw.addBox(center, dimensions, 0, new Vector3f(1, 0, 0), 1);
             }
             default -> System.err.println("Unknown collider type");

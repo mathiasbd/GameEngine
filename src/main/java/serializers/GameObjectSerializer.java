@@ -7,8 +7,20 @@ import org.example.Transform;
 
 import java.lang.reflect.Type;
 
+/*
+ * GameObjectSerializer handles serialization and deserialization of GameObject instances to/from JSON.
+ * Utilizes Gson’s JsonSerializer and JsonDeserializer interfaces to convert GameObject properties and components.
+ * Author(s):
+ */
 public class GameObjectSerializer implements JsonSerializer<GameObject>, JsonDeserializer<GameObject> {
 
+    /*
+     * Serializes a GameObject to its JSON representation.
+     * @param go - the GameObject to serialize
+     * @param typeOfSrc - the type of the source object
+     * @param context - the JsonSerializationContext for nested serialization
+     * @return a JsonElement representing the serialized GameObject
+     */
     @Override
     public JsonElement serialize(GameObject go, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject obj = new JsonObject();
@@ -26,6 +38,14 @@ public class GameObjectSerializer implements JsonSerializer<GameObject>, JsonDes
         return obj;
     }
 
+    /*
+     * Deserializes a JsonElement into a GameObject instance.
+     * @param jsonElement - the JSON data to deserialize
+     * @param typeOfT - the target type of the deserialization
+     * @param context - the JsonDeserializationContext for nested deserialization
+     * @return the deserialized GameObject
+     * @throws JsonParseException - if the JSON is malformed or required fields are missing
+     */
     @Override
     public GameObject deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
