@@ -145,7 +145,7 @@
       "transform": {
         "position": {
           "x": 100.0,
-          "y": 100.0
+          "y": 375.0
         },
         "scale": {
           "x": 0.0,
@@ -163,7 +163,7 @@
       "transform": {
         "position": {
           "x": 600.0,
-          "y": 100.0
+          "y": 150.0
         },
         "scale": {
           "x": 0.0,
@@ -180,8 +180,8 @@
       "name": "SpawnPoint6",
       "transform": {
         "position": {
-          "x": 1200.0,
-          "y": 100.0
+          "x": 1100.0,
+          "y": 450.0
         },
         "scale": {
           "x": 0.0,
@@ -220,8 +220,8 @@
               "SpawnPoint2",
               "SpawnPoint3"
             ],
-            "timeSinceLastSpawn": 0.26843548,
-            "nextSpawnInterval": 0.5905029,
+            "timeSinceLastSpawn": 0.033554077,
+            "nextSpawnInterval": 0.64187664,
             "minSpawnInterval": 0.3,
             "maxSpawnInterval": 0.8,
             "maxPoints": 1
@@ -385,15 +385,15 @@
       ]
     },
     {
-      "name": "Wall",
+      "name": "Platform1",
       "transform": {
         "position": {
-          "x": 387.5,
-          "y": 201.50003
+          "x": 190.0,
+          "y": 300.0
         },
         "scale": {
-          "x": 100.0,
-          "y": 100.0
+          "x": 0.0,
+          "y": 0.0
         },
         "rotation": 0.0
       },
@@ -406,8 +406,8 @@
           "properties": {
             "bodyType": "STATIC",
             "position": {
-              "x": 387.5,
-              "y": 201.50003
+              "x": 190.0,
+              "y": 300.0
             },
             "rotation": 0.0,
             "mass": 1.0,
@@ -422,7 +422,7 @@
             },
             "angularVelocity": 0.0,
             "linearDamping": 0.05,
-            "angularDamping": 0.05,
+            "angularDamping": 0.15,
             "fixedRotation": false,
             "torque": 0.0,
             "inertia": 1.0,
@@ -433,14 +433,14 @@
           "type": "physics.primitives.OBBCollider",
           "properties": {
             "halfSize": {
-              "x": 20.5,
-              "y": 165.5
+              "x": 125.0,
+              "y": 20.0
             },
             "rigidbody": {
               "bodyType": "STATIC",
               "position": {
-                "x": 387.5,
-                "y": 201.50003
+                "x": 190.0,
+                "y": 300.0
               },
               "rotation": 0.0,
               "mass": 1.0,
@@ -455,7 +455,179 @@
               },
               "angularVelocity": 0.0,
               "linearDamping": 0.05,
-              "angularDamping": 0.05,
+              "angularDamping": 0.15,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "isSolid": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Playform2",
+      "transform": {
+        "position": {
+          "x": 1065.0,
+          "y": 385.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      },
+      "zIndex": 0,
+      "inScene": true,
+      "tag": "Floor",
+      "components": [
+        {
+          "type": "physics.collisions.Rigidbody2D",
+          "properties": {
+            "bodyType": "STATIC",
+            "position": {
+              "x": 1065.0,
+              "y": 385.0
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.15,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "halfSize": {
+              "x": 102.5,
+              "y": 20.0
+            },
+            "rigidbody": {
+              "bodyType": "STATIC",
+              "position": {
+                "x": 1065.0,
+                "y": 385.0
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.15,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "isSolid": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Playform3",
+      "transform": {
+        "position": {
+          "x": 600.0,
+          "y": 100.0
+        },
+        "scale": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0
+      },
+      "zIndex": 0,
+      "inScene": true,
+      "tag": "Floor",
+      "components": [
+        {
+          "type": "physics.collisions.Rigidbody2D",
+          "properties": {
+            "bodyType": "STATIC",
+            "position": {
+              "x": 600.0,
+              "y": 100.0
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.15,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "halfSize": {
+              "x": 150.0,
+              "y": 20.0
+            },
+            "rigidbody": {
+              "bodyType": "STATIC",
+              "position": {
+                "x": 600.0,
+                "y": 100.0
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.15,
               "fixedRotation": false,
               "torque": 0.0,
               "inertia": 1.0,
@@ -475,7 +647,7 @@
     "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png": {
       "texture": {
         "filepath": "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png",
-        "texID": 2,
+        "texID": 17,
         "width": 512,
         "height": 128
       },

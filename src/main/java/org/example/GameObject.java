@@ -26,7 +26,7 @@ public class GameObject {
         this.components = new ArrayList<Component>();
         this.transform = new Transform();
         this.zIndex = 0;
-        this.inScene = false;
+        this.inScene = true;
         this.tag = "None";
     }
 
