@@ -1,5 +1,6 @@
 package org.example;
 import components.Component;
+import imGui.ImGuiCommonFun;
 import imgui.ImGui;
 import imgui.flag.ImGuiInputTextFlags;
 import imgui.type.ImFloat;
@@ -132,6 +133,10 @@ public class GameObject {
         this.tag = tag;
     }
 
+    public void setzIndex(int zIndex) {
+        this.zIndex = zIndex;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(obj == null) {return false;}
@@ -150,54 +155,13 @@ public class GameObject {
     }
 
     public void imGui() {
-        int[] imInt = {this.zIndex};
-        float textWidth = ImGui.getWindowWidth() * 0.4f;
-        float inputWidth = ImGui.getWindowWidth() * 0.6f;
-        ImGui.columns(2, "No Borders", false);
-        ImGui.setColumnWidth(0, textWidth);
-        ImGui.setColumnWidth(1, inputWidth);
-        ImGui.text("Z-index");
-        ImGui.nextColumn();
-        ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-        if(ImGui.sliderInt("##zIndex", imInt, -5, 5)) {
-            this.zIndex = imInt[0];
-        }
-        ImGui.nextColumn();
+        this.zIndex = ImGuiCommonFun.intSlider("Z-Index", zIndex, -5, 5);
+
         if(this.transform != null) {
-            ImGui.text("Position x");
-            ImGui.nextColumn();
-            ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-            ImFloat imFloatPosX = new ImFloat(transform.position.x);
-            if(ImGui.inputFloat("##posX", imFloatPosX, 5)) {
-                transform.position.x = imFloatPosX.get();
-            }
-            ImGui.nextColumn();
-            ImGui.text("position y");
-            ImGui.nextColumn();
-            ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-            ImFloat imFloatPosY = new ImFloat(transform.position.y);
-            if(ImGui.inputFloat("##posY", imFloatPosY, 5)) {
-                transform.position.y = imFloatPosY.get();
-            }
-            ImGui.nextColumn();
-            ImGui.text("Scale x");
-            ImGui.nextColumn();
-            ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-            ImFloat imFloatScaleX = new ImFloat(transform.scale.x);
-            if(ImGui.inputFloat("##ScaleX", imFloatScaleX, 5)) {
-                transform.scale.x = imFloatScaleX.get();
-            }
-            ImGui.nextColumn();
-            ImGui.text("Scale y");
-            ImGui.nextColumn();
-            ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-            ImFloat imFloatScaleY = new ImFloat(transform.scale.y);
-            if(ImGui.inputFloat("##scaleY", imFloatScaleY, 5)) {
-                transform.scale.y = imFloatScaleY.get();
-            }
+            transform.position = ImGuiCommonFun.vec2fAdder("Position x", "Position y", transform.position.x, transform.position.y, 5);
+            transform.scale = ImGuiCommonFun.vec2fAdder("Scale x", "Scale y", transform.scale.x, transform.scale.y, 5);
         }
 
-        ImGui.columns(1);
         for(Component c : components) {
             ImGui.separator();
             ImGui.text(c.getClass().getName().substring(c.getClass().getName().lastIndexOf('.')+1));

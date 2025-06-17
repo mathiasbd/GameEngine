@@ -1,5 +1,6 @@
 package components;
 
+import imGui.ImGuiCommonFun;
 import imgui.ImGui;
 import imgui.flag.ImGuiColorEditFlags;
 import imgui.flag.ImGuiDragDropFlags;
@@ -37,74 +38,35 @@ public abstract class Component {
                 ImGui.pushID(name);
                 if(type == Vector4f.class) {
                     Vector4f val = (Vector4f) value;
-                    float[] color = {val.x,val.y,val.z, val.w};
-                    int flags = ImGuiColorEditFlags.NoSidePreview | ImGuiColorEditFlags.NoLabel |
-                            ImGuiColorEditFlags.AlphaBar | ImGuiColorEditFlags.NoInputs;
-                    ImGui.pushItemWidth(ImGui.getWindowWidth()-10);
-                    if(ImGui.colorPicker4("##ColorPickerWidget", color, flags)) {
-                        Vector4f newVal = new Vector4f(color[0], color[1], color[2], color[3]);
-                        if(this instanceof SpriteRenderer) {
-                            ((SpriteRenderer) this).setColor(newVal);
-                        }
+                    val = ImGuiCommonFun.colorPicker(val);
+                    if(this instanceof SpriteRenderer) {
+                        ((SpriteRenderer) this).setColor(val);
                     }
                 }
-                float textWidth = ImGui.getWindowWidth() * 0.4f;
-                float inputWidth = ImGui.getWindowWidth() * 0.6f;
-                ImGui.columns(2, "No Borders", false);
-                ImGui.setColumnWidth(0, textWidth);
-                ImGui.setColumnWidth(1, inputWidth);
+
                 if(type == Vector2f.class) {
                     Vector2f val = (Vector2f) value;
-                    float[] vec2 = {val.x, val.y};
-
-                    ImGui.text(name);
-                    ImGui.nextColumn();
-                    ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-                    if (ImGui.dragFloat2("##" + name, vec2)) {
-                        val.x = vec2[0];
-                        val.y = vec2[1];
-                    }
-
-                    ImGui.nextColumn();
+                    val = ImGuiCommonFun.vec2fAdder(name + "-x", name + "-y", val.x, val.y, 5);
+                    field.set(this, val);
                 }
+
                 if(type == int.class) {
                     int val = (int)value;
-                    int[] imInt = {val};
-                    ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-                    ImGui.text(name);
-                    ImGui.nextColumn();
-                    ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-                    if(ImGui.dragInt("##Int",imInt)) {
-                        field.set(this, imInt[0]);
-                    }
-                    ImGui.nextColumn();
+                    val = ImGuiCommonFun.intDragger(name, val);
+                    field.set(this, val);
                 }
                 if(type == float.class) {
                     float val = (float)value;
-                    float[] imFloat = {val};
-                    ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-                    ImGui.text(name);
-                    ImGui.nextColumn();
-                    ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-                    if(ImGui.dragFloat("##Float",imFloat, 0.1f)) {
-                        field.set(this, imFloat[0]);
-                    }
-                    ImGui.nextColumn();
+                    val = ImGuiCommonFun.floatDragger(name, val, 0.1f);
+                    field.set(this, val);
                 }
 
                 if (type == boolean.class) {
-                    boolean currentValue = (boolean) field.get(this);
-                    ImBoolean imBool = new ImBoolean(currentValue);
-                    ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-                    ImGui.text(name);
-                    ImGui.nextColumn();
-                    ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
-                    if (ImGui.checkbox("##bool", imBool)) {
-                        field.set(this, imBool.get());
-                    }
-                    ImGui.nextColumn();
+                    boolean val = (boolean) value;
+                    val = ImGuiCommonFun.checkBox(name, val);
+                    field.set(this, val);
                 }
-                ImGui.columns(1);
+
                 if(isPrivate) {
                     field.setAccessible(false);
                 }
