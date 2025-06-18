@@ -23,7 +23,7 @@ import java.util.List;
 public class ImGuiHierarchyWindow {
 
     /*
-     * ImGuiHierarchy window controls the top part of the left window made with ImGui.
+     * ImGuiHierarchyWindow controls the top part of the left window made with ImGui.
      * It provides methods and utility that lets the user interact with gameobjects and components
      * Author(s): Mathias
      */
