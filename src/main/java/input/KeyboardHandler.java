@@ -4,7 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 /*
  * KeyboardHandler tracks keyboard key states using GLFW callbacks.
- * Author(s):
+ * Author(s): Ilias & Ahmed
  */
 public class KeyboardHandler {
     private static KeyboardHandler instance;

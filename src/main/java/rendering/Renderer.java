@@ -10,7 +10,7 @@ import java.util.List;
 /*
  * Renderer manages GameObjects with SpriteRenderers by adding them to RenderBatches
  * for efficient rendering.
- * Author(s):
+ * Author(s): Ilias
  */
 public class Renderer {
     private final int MAX_BATCH_SIZE = 1000;

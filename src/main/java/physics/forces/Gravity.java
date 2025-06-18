@@ -5,7 +5,7 @@ import physics.collisions.Rigidbody2D;
 
 /*
  * Gravity applies a constant gravitational force to Rigidbody2D objects.
- * Author(s):
+ * Author(s): Ahmed
  */
 public class Gravity implements ForceGenerator {
 

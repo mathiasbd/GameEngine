@@ -25,7 +25,7 @@ import static org.lwjgl.opengl.GL11.glDisable;
 /*
  * GameEngineManager handles the main game loop, scene management, and window events.
  * It initializes physics, runs the render/update loop, and switches scenes.
- * Author(s):
+ * Author(s): Ilias
  */
 public class GameEngineManager {
     private WindowManager window;

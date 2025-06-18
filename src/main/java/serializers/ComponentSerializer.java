@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 /*
  * ComponentSerializer handles JSON serialization and deserialization of Component instances
  * by embedding type metadata and delegating to Gson context for property processing.
- * Author(s):
+ * Author(s): Mathias
  */
 public class ComponentSerializer implements JsonSerializer<Component>, JsonDeserializer<Component> {
 

@@ -6,7 +6,7 @@ import physics.collisions.Rigidbody2D;
 /*
  * AABBCollider represents an axis-aligned bounding box attached to a Rigidbody2D.
  * It provides min/max extents, vertex list, and half-size calculations.
- * Author(s):
+ * Author(s): Ahmed
  */
 public class AABBCollider extends Collider {
     private Vector2f halfSize;

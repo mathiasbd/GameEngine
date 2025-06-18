@@ -5,7 +5,7 @@ import physics.collisions.Rigidbody2D;
 /*
  * ForceRegistration pairs a ForceGenerator with a Rigidbody2D
  * to track which forces apply to which bodies each update cycle.
- * Author(s):
+ * Author(s): Ahmed
  */
 public class ForceRegistration {
     public ForceGenerator fg;

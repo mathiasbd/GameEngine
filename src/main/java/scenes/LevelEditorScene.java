@@ -22,7 +22,7 @@ import java.util.List;
 /*
  * LevelEditorScene provides an interactive scene for placing and editing
  * GameObjects with drag-and-drop and physics collider visualization.
- * Author(s):
+ * Author(s): Gabriel, Ilias, Mathias, Ahmed
  */
 public class LevelEditorScene extends Scene {
     private GameObject draggedObject = null;

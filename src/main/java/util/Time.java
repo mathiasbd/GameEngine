@@ -3,7 +3,7 @@ package util;
 /*
  * Time provides utilities to track application runtime.
  * It records the start time and computes elapsed time.
- * Author(s):
+ * Author(s): Ilias
  */
 public class Time {
     public static float timeStarted = System.nanoTime(); // Time of application start

@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 /*
  * GameObjectSerializer handles serialization and deserialization of GameObject instances to/from JSON.
  * Utilizes Gson’s JsonSerializer and JsonDeserializer interfaces to convert GameObject properties and components.
- * Author(s):
+ * Author(s): Mathias & Gabriel
  */
 public class GameObjectSerializer implements JsonSerializer<GameObject>, JsonDeserializer<GameObject> {
 

@@ -8,7 +8,7 @@ import java.util.List;
 /*
  * ForceManager maintains registrations of ForceGenerators applied to Rigidbody2D instances.
  * It updates, adds, and removes force generators for the physics simulation.
- * Author(s):
+ * Author(s): Ahmed
  */
 public class ForceManager {
     private List<ForceRegistration> reg;

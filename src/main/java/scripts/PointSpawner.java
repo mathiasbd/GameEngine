@@ -19,6 +19,7 @@ public class PointSpawner extends Component {
     private String lastSpawnName = null;
     public List<String> spawnPoints = List.of("SpawnPoint4", "SpawnPoint5", "SpawnPoint6");
     private final transient Random random = new Random();
+    private int point = 3;
 
     @Override
     public void start() {

@@ -14,7 +14,7 @@ import java.util.List;
 /*
  * CollisionManager provides methods to detect and compute collision details
  * between various collider types (Circle, OBB, AABB) using SAT and geometric tests.
- * Author(s):
+ * Author(s): Ahmed, Ilias, Mathias, Gabriel
  */
 public class CollisionManager {
 

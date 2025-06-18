@@ -8,7 +8,7 @@ import java.util.List;
 /*
  * ForceRegistry tracks associations between ForceGenerators and Rigidbody2D instances.
  * It allows registering, removing, and updating all forces each physics step.
- * Author(s):
+ * Author(s): Ahmed
  */
 public class ForceRegistry {
     private List<ForceRegistration> registry;

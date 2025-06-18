@@ -7,7 +7,7 @@ import util.DTUMath;
 /*
  * OBBCollider represents an oriented bounding box attached to a Rigidbody2D.
  * It provides world-space min/max extents, size, half-size, and rotated vertices.
- * Author(s):
+ * Author(s): Ahmed
  */
 public class OBBCollider extends Collider {
     private transient Vector2f size = new Vector2f();

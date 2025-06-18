@@ -10,7 +10,7 @@ import static org.lwjgl.stb.STBImage.*;
 
 /*
  * Texture loads and manages OpenGL textures from image files.
- * Author(s):
+ * Author(s): Mathias
  */
 public class Texture {
     private String filepath;

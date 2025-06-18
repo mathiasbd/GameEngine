@@ -5,7 +5,7 @@ import org.joml.Vector2f;
 /*
  * Transform represents position, scale, and rotation of an entity in 2D space.
  * Provides cloning and accessor methods for safe manipulation.
- * Author(s):
+ * Author(s): Ilias
  */
 public class Transform {
     public Vector2f position;

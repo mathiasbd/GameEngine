@@ -18,7 +18,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 /*
  * DebugDraw provides static methods to draw debug primitives (lines, boxes, circles) using OpenGL.
  * It accumulates Line2D objects each frame and handles their buffering and rendering.
- * Author(s):
+ * Author(s): Gabriel, Ilias, Ahmed, Mathias
  */
 public class DebugDraw {
     private static final int MAX_LINES = 1000;

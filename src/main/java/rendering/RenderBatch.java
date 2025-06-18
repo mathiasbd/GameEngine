@@ -23,7 +23,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 /*
  * RenderBatch manages a batch of SpriteRenderers for efficient rendering.
  * It groups sprites sharing the same shader and textures into a single draw call.
- * Author(s):
+ * Author(s): Mathias, Ahmed
  */
 public class RenderBatch implements Comparable<RenderBatch> {
     ////////////////////////////////

@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 /*
  * SpriteSheetSerializer handles serialization and deserialization of SpriteSheet objects to/from JSON.
  * It utilizes Gson’s JsonSerializer and JsonDeserializer interfaces.
- * Author(s):
+ * Author(s): Mathias
  */
 public class SpriteSheetSerializer implements JsonSerializer<SpriteSheet>, JsonDeserializer<SpriteSheet> {
 

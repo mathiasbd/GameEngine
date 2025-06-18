@@ -4,7 +4,7 @@ import org.joml.Vector2f;
 
 /*
  * Raycast represents a ray with an origin and normalized direction for intersection tests.
- * Author(s):
+ * Author(s): Gabriel
  */
 public class Raycast {
     private Vector2f start;

@@ -10,7 +10,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
  * MouseHandler manages mouse input states, including position, scroll, and button presses.
  * It provides callbacks for GLFW events and utility methods to retrieve
  * mouse deltas and transformed coordinates.
- * Author(s):
+ * Author(s): Ilias & Ahmed
  */
 public class MouseHandler {
     private static MouseHandler instance;

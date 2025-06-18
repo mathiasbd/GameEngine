@@ -29,7 +29,7 @@ import java.util.Map;
 /*
  * Scene is the base class for all game scenes, providing lifecycle methods
  * and utilities for GameObject management, rendering, and persistence.
- * Author(s):
+ * Author(s): Ilias
  */
 public abstract class Scene {
     protected Camera camera;

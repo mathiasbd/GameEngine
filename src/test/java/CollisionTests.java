@@ -11,6 +11,10 @@ import physics.collisions.CollisionManager;
 import static org.junit.jupiter.api.Assertions.*;
 import static physics.raycast.RaycastManager.pointInPolygon;
 
+/*
+ * CollisionTests contains unit tests for various collision detection scenarios
+ * Author(s): Gabriel & Ahmed
+ */
 public class CollisionTests {
 
     //point vs polygon

@@ -16,7 +16,7 @@ import java.util.List;
 /*
  * PhysicsSystem manages physics simulation: force application, collision detection,
  * impulse resolution, and positional correction for 2D rigid bodies.
- * Author(s):
+ * Author(s): Gabriel, Ahmed, Mathias, Ilias
  */
 public class PhysicsSystem {
     private ForceRegistry fr;

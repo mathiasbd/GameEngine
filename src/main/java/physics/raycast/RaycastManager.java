@@ -7,7 +7,7 @@ import util.DTUMath;
 /*
  * RaycastManager provides utility methods for point, line, and ray intersection tests
  * against various primitive shapes (Circle, AABB, OBB).
- * Author(s):
+ * Author(s): Gabriel
  */
 public class RaycastManager {
 

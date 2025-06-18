@@ -5,7 +5,7 @@ import org.joml.Vector2f;
 /*
  * DTUMath provides utility math operations such as vector rotation, cross products,
  * and comparisons with an epsilon tolerance.
- * Author(s):
+ * Author(s): Ilias, Gabriel, Mathias, Ahmed
  */
 public class DTUMath {
 

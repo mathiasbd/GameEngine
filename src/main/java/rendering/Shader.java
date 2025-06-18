@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL20.*;
 /*
  * Shader loads, compiles, and manages an OpenGL shader program composed of a
  * vertex and fragment shader.
- * Author(s):
+ * Author(s): Mathias
  */
 public class Shader {
     private int vertexId, fragmentId;

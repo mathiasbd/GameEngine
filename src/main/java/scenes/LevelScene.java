@@ -23,7 +23,7 @@ import java.util.List;
 /*
  * LevelScene manages the game scene including physics, updates, and rendering
  * of GameObjects.
- * Author(s):
+ * Author(s): Gabriel, Ilias, Mathias, Ahmed
  */
 public class LevelScene extends Scene {
     private static List<GameObject> gameObjectsToLoad = null;

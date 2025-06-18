@@ -7,7 +7,7 @@ import physics.collisions.Rigidbody2D;
 /*
  * Collider is the base class for collision shapes attached to rigid bodies.
  * It maintains an offset and solidity, and links to a Rigidbody2D for physics.
- * Author(s):
+ * Author(s): Gabriel
  */
 public abstract class Collider extends Component {
     protected Vector2f offset = new Vector2f();

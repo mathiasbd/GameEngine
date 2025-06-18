@@ -5,7 +5,7 @@ import physics.collisions.Rigidbody2D;
 
 /*
  * Circle collider represents a circular shape attached to a Rigidbody2D.
- * Author(s):
+ * Author(s): Ahmed
  */
 public class Circle extends Collider {
     private float radius;

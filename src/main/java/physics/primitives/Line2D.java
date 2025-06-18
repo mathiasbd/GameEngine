@@ -6,7 +6,7 @@ import org.joml.Vector3f;
 /*
  * Line2D represents a line segment with color and lifetime,
  * and provides utilities for intersection testing and lifetime decay.
- * Author(s):
+ * Author(s): Gabriel
  */
 public class Line2D {
     private Vector2f from;

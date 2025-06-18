@@ -7,7 +7,7 @@ import java.util.Map;
 /*
  * SaveFile stores serialized game objects and associated sprite sheets.
  * It processes sprite sheet file paths to be relative to the GameEngine root.
- * Author(s):
+ * Author(s): Mathias
  */
 public class SaveFile {
     public GameObject[] gameObjects;

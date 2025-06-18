@@ -16,10 +16,9 @@ public class SnowballSpawner extends Component {
     private Scene scene;
     private final List<GameObject> fallingObjects = new ArrayList<>();
     public List<String> spawnPoints = List.of("SpawnPoint1", "SpawnPoint2", "SpawnPoint3");
-
     private final transient Random random = new Random();
-    private float timeSinceLastSpawn = 0f;
-    private float nextSpawnInterval;
+    private transient float timeSinceLastSpawn = 0f;
+    private transient float nextSpawnInterval;
     private float minSpawnInterval = 0.2f;
     private float maxSpawnInterval = 0.8f;
     private int maxPoints = 3;

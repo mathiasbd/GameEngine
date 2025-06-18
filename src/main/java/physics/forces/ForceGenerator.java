@@ -5,7 +5,7 @@ import physics.collisions.Rigidbody2D;
 /*
  * ForceGenerator defines an interface for applying continuous forces
  * to Rigidbody2D objects over time.
- * Author(s):
+ * Author(s): Ahmed
  */
 public interface ForceGenerator {
     /*

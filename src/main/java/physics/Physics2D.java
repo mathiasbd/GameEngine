@@ -19,7 +19,7 @@ import java.util.List;
 /*
  * Physics2D provides static utility methods for common physics queries,
  * including grounding, wall checks, collision tests, and raycasts.
- * Author(s):
+ * Author(s): Gabriel
  */
 public class Physics2D {
 

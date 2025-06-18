@@ -8,7 +8,7 @@ import java.util.List;
  * CollisionManifold stores collision information between two Rigidbody2D objects,
  * including contact normal, penetration depth, and contact points.
  * It also holds references to the involved bodies for resolution.
- * Author(s):
+ * Author(s): Gabriel
  */
 public class CollisionManifold {
     private Vector2f normal;

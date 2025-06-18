@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 /*
  * Camera encapsulates projection and view matrices for rendering.
  * It supports orthographic projection and updates view matrix based on position.
- * Author(s):
+ * Author(s): Ilias
  */
 public class Camera {
     private Matrix4f projectionMatrix, viewMatrix, invProjectionMatrix, invViewMatrix;

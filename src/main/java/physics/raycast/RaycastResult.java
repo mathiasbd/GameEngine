@@ -5,7 +5,7 @@ import org.joml.Vector2f;
 /*
  * RaycastResult stores the result of a raycast, including hit point,
  * surface normal, distance, and a flag indicating whether an intersection occurred.
- * Author(s):
+ * Author(s): Gabriel
  */
 public class RaycastResult {
     private Vector2f point;

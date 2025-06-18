@@ -12,7 +12,7 @@ import physics.primitives.OBBCollider;
  * Rigidbody2D adds physics properties and behavior to GameObjects.
  * It supports dynamic, static, and kinematic bodies with forces,
  * velocity integration, collision synchronization, and inertia computation.
- * Author(s):
+ * Author(s): Ilias, Gabriel, Mathias, Ahmed
  */
 public class Rigidbody2D extends Component {
 
