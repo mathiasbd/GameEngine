@@ -119,51 +119,61 @@ public class ImGuiHierarchyWindow {
             ImGui.popID();
         }
     }
-
+    //Shows the name of the object and allows for editing same place
     private void showObjectName(GameObject go, int i) {
         if(objectToEditName == i) {
+            //If you are editiing the name it will be replaced by inputText
             if(ImGui.inputText("##edit_" + i, newObjectName, ImGuiInputTextFlags.EnterReturnsTrue)) {
                 currentScene.getGameObjects().get(i).setName(newObjectName.get());
                 objectToEditName = -1;
             }
         } else {
+            //Show regular name
             ImGui.text(go.getName());
         }
     }
-
+    //Shows components and allows for interaction with components
     private void showComponent(GameObject go, int i) {
+        //Define variables before loop
         boolean treeNode;
         boolean selectedCondition;
         int flags;
         int startIndex;
+        //Loop through every component
         for(int j=0; j<go.getComponents().size(); j++) {
-
+            //Define component, condition and index
             Component c = go.getComponents().get(j);
             startIndex = c.getClass().getName().lastIndexOf('.');
             selectedCondition = selectedComponent == j && i == selectedObject;
 
             ImGui.pushID(j);
 
+            //Get the flags and style
             flags = addSelectedStyle(selectedCondition);
             flags |= ImGuiTreeNodeFlags.Leaf;
 
+            //Init the treenode
             treeNode = ImGui.treeNodeEx(c.getClass().getName().substring(startIndex + 1), flags);
 
+            //If the condition was true and style added then pop it from stack
             if(selectedCondition) {
                 ImGui.popStyleColor();
             }
 
+            //Call the spriteRendererFunction that implements drag and drop
             spriteRendererFunction(c);
 
+            //If item is clicked choose it as the selected component
             if(ImGui.isItemClicked()) {
                 selectedComponent = j;
             }
 
+            //Component right click options  which have not been implemented
             if(ImGui.beginPopupContextItem("ComponentSettings", ImGuiPopupFlags.MouseButtonRight)) {
                 ImGuiCommonFun.menuItem("Delete Component", () -> System.out.println("Not implemented yet"));
                 ImGui.endPopup();
             }
-
+            //Pop the treenode
             if(treeNode) {
                 ImGui.treePop();
             }
@@ -171,10 +181,12 @@ public class ImGuiHierarchyWindow {
             ImGui.popID();
         }
     }
-
+    //This function adds flags and style to component and gameobject
     private int addSelectedStyle(boolean condition) {
+        //Define flag
         int flags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.OpenOnDoubleClick |
                 ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.Framed | ImGuiTreeNodeFlags.AllowItemOverlap;
+        //If condition is true add extra flag and style
         if(condition) {
             flags |= ImGuiTreeNodeFlags.Selected;
             ImVec4 selectedColor = new ImVec4(0.361f, 0.478f, 0.831f, 1.0f);
@@ -184,9 +196,13 @@ public class ImGuiHierarchyWindow {
         return flags;
     }
 
+    //Settings when right clicking an object
     private void objectSettings(GameObject go, int i) {
+        //If right clicked
         if(ImGui.beginPopupContextItem("ObjectSettings" + i, ImGuiPopupFlags.MouseButtonRight)) {
+            //Begin add component submenu
             if(ImGui.beginMenu("Add component")) {
+                //Add spriterenderer and rigidbody component
                 ImGuiCommonFun.menuItem("SpriteRenderer", () -> addSpriteRenderer(go, i));
                 ImGuiCommonFun.menuItem("RigidBody2D", () -> go.addComponent(new Rigidbody2D()));
 
