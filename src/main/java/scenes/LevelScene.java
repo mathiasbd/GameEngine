@@ -116,22 +116,6 @@ public class LevelScene extends Scene {
     }
 
     /*
-     * Removes a GameObject from the scene and deregisters its Rigidbody if present.
-     * @param go - GameObject to remove from the scene
-     */
-    public void removeGameObject(GameObject go) {
-        if (go != null) {
-            System.out.println("Removing: " + go.getName());
-
-            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
-            if (rb != null) {
-                physicsSystem.removeRigidbody(rb);
-            }
-            gameObjects.remove(go);
-        }
-    }
-
-    /*
      * Draws the debug outline for different Collider types.
      * @param collider - Collider instance to visualize
      */

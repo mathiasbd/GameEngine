@@ -222,14 +222,21 @@ public abstract class Scene {
      */
     public void removeGameObject(GameObject go) {
         if (go != null && gameObjects.contains(go)) {
+            SpriteRenderer sr = go.getComponent(SpriteRenderer.class);
+            if (sr != null && go.isInScene()) {
+                renderer.removeSprite(sr);
+            }
+
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
             if (rb != null) {
                 GameEngineManager.getPhysicsSystem().removeRigidbody(rb);
             }
+
             gameObjects.remove(go);
             go.setInScene(false);
         }
     }
+
 
     /*
      * @return renderer - the Renderer instance managing draw calls

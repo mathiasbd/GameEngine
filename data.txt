@@ -220,8 +220,6 @@
               "SpawnPoint2",
               "SpawnPoint3"
             ],
-            "timeSinceLastSpawn": 0.033554077,
-            "nextSpawnInterval": 0.64187664,
             "minSpawnInterval": 0.3,
             "maxSpawnInterval": 0.8,
             "maxPoints": 1
@@ -234,7 +232,8 @@
               "SpawnPoint4",
               "SpawnPoint5",
               "SpawnPoint6"
-            ]
+            ],
+            "point": 3
           }
         }
       ]
@@ -647,7 +646,7 @@
     "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png": {
       "texture": {
         "filepath": "\\assets\\spritesheets\\Blue_Slime\\Attack_1.png",
-        "texID": 17,
+        "texID": 2,
         "width": 512,
         "height": 128
       },
