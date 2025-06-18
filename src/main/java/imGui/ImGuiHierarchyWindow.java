@@ -22,6 +22,12 @@ import java.util.List;
 
 public class ImGuiHierarchyWindow {
 
+    /*
+     * ImGuiHierarchy window controls the top part of the left window made with ImGui.
+     * It provides methods and utility that lets the user interact with gameobjects and components
+     * Author(s): Mathias
+     */
+
     private int objectToEditName = -1;
     private ImString newObjectName = new ImString(64);
     private int selectedObject = -1;
@@ -38,7 +44,10 @@ public class ImGuiHierarchyWindow {
 
     private GameObject goScript = null;
 
-    //Distributes the work to other functions
+    /*
+     * Distributes the work to other functions
+     * @param Scene - the current scene we are in
+     */
     public void showContent(Scene currentScene) {
         this.currentScene = currentScene;
         //Check if data is loaded and then call functions
@@ -56,7 +65,9 @@ public class ImGuiHierarchyWindow {
         }
     }
 
-    //This is the menu which is shown when right-clicking an empty space
+    /*
+     * This is the menu which is shown when right-clicking an empty space
+     */
     private void objectMenu() {
         //Create a menu where right-clicked
         if(ImGui.beginPopupContextWindow("HierarchySettings",ImGuiPopupFlags.MouseButtonRight)) {
@@ -65,7 +76,10 @@ public class ImGuiHierarchyWindow {
             ImGui.endPopup();
         }
     }
-    //Shows each object and allows for interaction with each
+
+    /*
+     * Shows each object and allows for interaction with each
+     */
     private void showObject() {
         //Define variables before loop
         this.gameObjects = currentScene.getGameObjects();
@@ -119,7 +133,12 @@ public class ImGuiHierarchyWindow {
             ImGui.popID();
         }
     }
-    //Shows the name of the object and allows for editing same place
+
+    /*
+     * Shows the name of the object and allows for editing same place
+     * @param GameObject - the game object to show name
+     * @param int - the object index we are at in the loop
+     */
     private void showObjectName(GameObject go, int i) {
         if(objectToEditName == i) {
             //If you are editiing the name it will be replaced by inputText
@@ -132,7 +151,12 @@ public class ImGuiHierarchyWindow {
             ImGui.text(go.getName());
         }
     }
-    //Shows components and allows for interaction with components
+
+    /*
+     * Shows components and allows for interaction with components
+     * @param GameObject - the game object to show component
+     * @param int - the object index we are at in the loop
+     */
     private void showComponent(GameObject go, int i) {
         //Define variables before loop
         boolean treeNode;
@@ -181,7 +205,12 @@ public class ImGuiHierarchyWindow {
             ImGui.popID();
         }
     }
-    //This function adds flags and style to component and gameobject
+
+    /*
+     * This function adds flags and style to component and game object
+     * @param boolean - the condition that triggers the selected style
+     * @return int - the flag which is an integer
+     */
     private int addSelectedStyle(boolean condition) {
         //Define flag
         int flags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.OpenOnDoubleClick |
@@ -196,9 +225,13 @@ public class ImGuiHierarchyWindow {
         return flags;
     }
 
-    //Settings when right clicking an object
+    /*
+     * Settings when right-clicking an object
+     * @param GameObject - the game object to show options for
+     * @param int - the object index we are at in the loop
+     */
     private void objectSettings(GameObject go, int i) {
-        //If right clicked
+        //If right-clicked
         if(ImGui.beginPopupContextItem("ObjectSettings" + i, ImGuiPopupFlags.MouseButtonRight)) {
             //Begin add component submenu
             if(ImGui.beginMenu("Add component")) {
@@ -206,6 +239,7 @@ public class ImGuiHierarchyWindow {
                 ImGuiCommonFun.menuItem("SpriteRenderer", () -> addSpriteRenderer(go, i));
                 ImGuiCommonFun.menuItem("RigidBody2D", () -> go.addComponent(new Rigidbody2D()));
 
+                //If rigidbody exist on game object show new menu option
                 if(go.getComponent(Rigidbody2D.class)!=null) {
                     if(ImGui.beginMenu("Collider")) {
                         ImGuiCommonFun.menuItem("Square", () -> addOBBCollider(go));
@@ -213,29 +247,36 @@ public class ImGuiHierarchyWindow {
                         ImGui.endMenu();
                     }
                 }
-
+                //Add script menu item
                 ImGuiCommonFun.menuItem("Add script", () -> addScript(go));
                 ImGui.endMenu();
             }
+            //Edit fields and edit name menu item
             ImGuiCommonFun.menuItem("Edit fields", () -> showFields(i));
             ImGuiCommonFun.menuItem("Edit name", () -> {
                 newObjectName.set(go.getName());
                 objectToEditName = i;
             });
+            //Delete object menu option
             ImGuiCommonFun.menuItem("Delete Object", () -> deleteGameObject(i));
             ImGui.endPopup();
         }
     }
 
-
-
+    /*
+     * This function is for checking whether something is dropped on the SpriteRenderer component
+     * @param Component - the component we are at in the loop
+     */
     private void spriteRendererFunction(Component c){
+        //If the component class is spriterenderer begin drag and drop target
         if(c.getClass() == SpriteRenderer.class) {
             if(ImGui.beginDragDropTarget()) {
+                //Gets the payload check whether it is null and gets the spritesheet from asset pool
                 byte[] payload = ImGui.acceptDragDropPayload("spriteSheet");
                 if(payload != null) {
                     String spriteSheetName = new String(payload);
                     SpriteSheet sheet = AssetPool.getSpriteSheet(spriteSheetName);
+                    //Checks if sprite is null and has texture and then sets the sprite
                     if (sheet.getSprite(0) != null && sheet.getSprite(0).getTexture() != null) {
                         ((SpriteRenderer) c).setSprite(sheet.getSprite(0));
                         ((SpriteRenderer) c).setDirty();
@@ -248,90 +289,128 @@ public class ImGuiHierarchyWindow {
         }
     }
 
+    /*
+     * Edit fields window which is shown when you choose to edit a game objects fields
+     * @param int - The object we are at in the loop
+     */
     private void showFields(int i) {
+        //Define object to edit fields and init window
         objectToEditFields = i;
         ImGui.setNextWindowSize(new ImVec2(200, 500), ImGuiCond.Once);
         ImGui.setNextWindowPos(new ImVec2(ImGui.getMainViewport().getPosX() + ImGui.getMainViewport().getSizeX() - 200,
                 ImGui.getMainViewport().getPosY()), ImGuiCond.Once);
         ImBoolean open = new ImBoolean(true);
+        //Begin window and call the imgui function in the game object
         if(ImGui.begin(currentScene.getGameObjects().get(objectToEditFields).getName(), open)) {
             currentScene.getGameObjects().get(objectToEditFields).imGui();
         }
         ImGui.end();
+        //If window is closed set object to edit to standard value
         if(!open.get()) {
             objectToEditFields = -1;
         }
     }
 
-
+    /*
+     * Function that runs when you choose add sprite renderer option
+     * @param GameObject - The game object the option was chosen for
+     * @param int - the index we are at in the loop
+     */
     private void addSpriteRenderer(GameObject go, int i) {
+        //If there is no spriteRenderer class then make a new and add it
         if(go.getComponent(SpriteRenderer.class) == null) {
             Sprite sprite = new Sprite();
             SpriteRenderer sr = new SpriteRenderer();
             sr.setColor(new Vector4f(0,0,0,1));
             sr.setSprite(sprite);
             currentScene.getGameObjects().get(i).addComponent(sr);
+            //If the object is already in the scene manually add the sprite to the renderer
             if(currentScene.getGameObjects().get(i).isInScene()) {
                 currentScene.getRenderer().add(currentScene.getGameObjects().get(selectedObject));
             }
         }
     }
 
+    /*
+     * Runs when you try to add a square collider
+     * @param GameObject - The game object the option was chosen for
+     */
     private void addOBBCollider(GameObject go) {
         OBBCollider OBBCollider = new OBBCollider(new Vector2f(5,5));
         OBBCollider.setRigidbody(go.getComponent(Rigidbody2D.class));
         go.addComponent(OBBCollider);
     }
-
+    /*
+     * Runs when you try to add a circle collider
+     * @param GameObject - The game object the option was chosen for
+     */
     private void addCircle(GameObject go) {
         Circle circle = new Circle(5);
         circle.setRigidbody(go.getComponent(Rigidbody2D.class));
         go.addComponent(circle);
     }
 
+    /*
+     * Runs when you try to delete a game object
+     * @param GameObject - The game object the option was chosen for
+     */
     private void deleteGameObject(int i) {
+        //If the deleted object is editing fields then reset it
         if(i == objectToEditFields) {
             objectToEditFields = -1;
         }
+        //If you are editing something larger than the deleted object adjust the object to edit number
         if(i < objectToEditFields) {
             objectToEditFields-=1;
         }
         currentScene.removeGameObjectFromScene(i);
     }
 
-
+    /*
+     * Runs when you try to add a script
+     * @param GameObject - The game object the option was chosen for
+     */
     private void addScript(GameObject go) {
+        //If first time run then init directory and define goScript
         if(goScript == null) imGuiFileManager.initDirectory("src");
         goScript = go;
+        //Init window
         float fileDirectoryWidth = 200;
         float fileDirectoryHeight = 200;
         ImGui.setNextWindowPos(new ImVec2(ImGui.getWindowPosX()+ImGui.getMainViewport().getSizeX()*0.5f,
                 ImGui.getWindowPosY()+ImGui.getWindowHeight()*0.5f), ImGuiCond.Once);
         ImGui.setNextWindowSize(new ImVec2(fileDirectoryWidth, fileDirectoryHeight), ImGuiCond.Once);
+        //Begin file window and show directory
         ImGui.begin("FileDirectory");
         imGuiFileManager.showContent();
         ImGui.end();
     }
 
+    /*
+     * When file in directory is chosen this function is called
+     * @param File - the file that is chosen
+     */
     public void createComponentFromFile(File file) {
+        //Check if file is a .java file
         if(file == null || !file.getName().endsWith(".java")) {
             System.out.println("That file is not valid");
             return;
         }
+        //Try the following code
         try {
             // Extract fully qualified class name from file path
             String absolutePath = file.getAbsolutePath().replace("\\", "/");
             String srcRoot = new File("src/main/java").getAbsolutePath().replace("\\", "/");
-
+            //If the extracted path does not start with the src root then return
             if (!absolutePath.startsWith(srcRoot)) {
                 System.err.println("Selected file is not inside the src directory.");
                 return;
             }
-
+            //Find relative path and replace backslash with dot and remove .java
             String relativePath = absolutePath.substring(srcRoot.length() + 1); // +1 to skip slash
             String className = relativePath.replace("/", ".").replace(".java", "");
 
-            // Load class
+            // Load class from className and if it extends component add it as a component
             Class<?> clazz = Class.forName(className);
             if (Component.class.isAssignableFrom(clazz)) {
                 goScript.addComponent((Component) clazz.getDeclaredConstructor().newInstance());
