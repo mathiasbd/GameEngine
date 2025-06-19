@@ -11,6 +11,7 @@ import org.example.GameObject;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
+import util.DebugDraw;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +94,10 @@ public class ImGuiLayer {
             GameEngineManager.getPhysicsSystem().reset();
             GameEngineManager.changeScene("EditorScene", new ArrayList<>());
         });
+        ImGui.sameLine();
+        float dbgButtonWidth = buttonWidth + 15.0f;
+        String dbgLabel = "DebugDraw";
+        ImGuiCommonFun.button(dbgLabel, true, dbgButtonWidth, DebugDraw::toggle);
 
         ImGui.end();
         ImGui.popStyleVar(3);

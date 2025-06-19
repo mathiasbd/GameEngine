@@ -22,7 +22,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
  */
 public class DebugDraw {
 
-    private static boolean isEnabled = false;
+    private static boolean enabled = false;
     private static final int MAX_LINES = 1000;
     private static List<Line2D> line2DS = new ArrayList<>();
     // 6 floats per vertex, 2 vertices per line
@@ -148,7 +148,7 @@ public class DebugDraw {
      * @param lifetime - how many frames the line should persist
      */
     public static void addLine2D(Vector2f from, Vector2f to, Vector3f color, int lifetime) {
-//        if (!isEnabled) return;
+        if (!enabled) return;
         if (line2DS.size() >= MAX_LINES) {
             System.out.println("Max lines reached, not adding line");
             return;
@@ -248,5 +248,20 @@ public class DebugDraw {
             currentAngle += increment;
         }
         addLine2D(points[points.length - 1], points[0], color, lifetime);
+    }
+
+    /** Returns whether debug drawing is enabled. */
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
+    /** Enable or disable debug drawing. */
+    public static void setEnabled(boolean e) {
+        enabled = e;
+    }
+
+    /** Flip the current state. */
+    public static void toggle() {
+        enabled = !enabled;
     }
 }
