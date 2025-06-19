@@ -1,6 +1,7 @@
 package scripts;
 
 import components.Component;
+import components.SpriteRenderer;
 import org.example.GameEngineManager;
 import org.example.GameObject;
 import org.example.Transform;
@@ -58,7 +59,7 @@ public class PointSpawner extends Component {
         Vector2f spawnPos = spawnPoint.getTransform().getPosition();
 
         currentPoint = createPrefab(spawnPos);
-        scene.addGameObject(currentPoint);
+        scene.addGameObjectToScene(currentPoint);
     }
 
     private GameObject createPrefab(Vector2f spawnPos) {
@@ -66,6 +67,11 @@ public class PointSpawner extends Component {
         Transform transform = new Transform(spawnPos, size);
         GameObject pointObject = new GameObject("Point", transform, 0, true);
         pointObject.setTag("Point");
+
+        if(gameObject.getComponent(SpriteRenderer.class)!=null) {
+            SpriteRenderer spr = gameObject.getComponent(SpriteRenderer.class);
+            pointObject.addComponent(spr);
+        }
 
         Rigidbody2D rb = new Rigidbody2D();
         rb.setBodyType(Rigidbody2D.BodyType.STATIC);

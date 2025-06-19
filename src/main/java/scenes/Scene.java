@@ -78,6 +78,11 @@ public abstract class Scene {
         if (!isRunning) {
             gameObjects.add(go);
         }else {
+            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+            if (rb != null) {
+                GameEngineManager.getPhysicsSystem().addRigidbody(rb);
+            }
+            go.setInScene(true);
             gameObjects.add(go);
             go.start();
             this.renderer.add(go);

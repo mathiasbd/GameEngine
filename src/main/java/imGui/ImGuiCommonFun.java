@@ -5,6 +5,7 @@ import imgui.ImGui;
 import imgui.flag.ImGuiColorEditFlags;
 import imgui.type.ImBoolean;
 import imgui.type.ImFloat;
+import imgui.type.ImInt;
 import org.example.GameEngineManager;
 import org.example.GameObject;
 import org.joml.Vector2f;
@@ -138,6 +139,19 @@ public class ImGuiCommonFun {
         ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
         if(ImGui.sliderInt("##" + label, imInt, min, max)) {
             value = imInt[0];
+        }
+        ImGui.columns(1);
+        return value;
+    }
+
+    public static int intInput(String label, int value, int step) {
+        ImInt imInt = new ImInt(value);
+        initColumn();
+        ImGui.text(label);
+        ImGui.nextColumn();
+        ImGui.setNextItemWidth(ImGui.getContentRegionAvailX());
+        if(ImGui.inputInt("##" + label, imInt, step)) {
+            value = imInt.get();
         }
         ImGui.columns(1);
         return value;

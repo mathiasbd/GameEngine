@@ -325,8 +325,8 @@ public class ImGuiHierarchyWindow {
             sr.setSprite(sprite);
             currentScene.getGameObjects().get(i).addComponent(sr);
             //If the object is already in the scene manually add the sprite to the renderer
-            if(currentScene.getGameObjects().get(i).isInScene()) {
-                currentScene.getRenderer().add(currentScene.getGameObjects().get(selectedObject));
+            if (currentScene.getGameObjects().get(i).isInScene()) {
+                currentScene.getRenderer().add(go);
             }
         }
     }

@@ -1,6 +1,7 @@
 package scripts;
 
 import components.Component;
+import components.SpriteRenderer;
 import org.example.GameEngineManager;
 import org.example.GameObject;
 import org.example.Transform;
@@ -78,7 +79,7 @@ public class SnowballSpawner extends Component {
         }
 
         GameObject snowball = createPrefab(spawnPos);
-        scene.addGameObject(snowball);
+        scene.addGameObjectToScene(snowball);
         fallingObjects.add(snowball);
     }
 
@@ -87,6 +88,11 @@ public class SnowballSpawner extends Component {
         Transform transform = new Transform(spawnPos, size);
         GameObject snowball = new GameObject("Snowball", transform, 0, true);
         snowball.setTag("Snowball");
+
+        if(gameObject.getComponent(SpriteRenderer.class)!=null) {
+            SpriteRenderer spr = gameObject.getComponent(SpriteRenderer.class);
+            snowball.addComponent(spr);
+        }
 
         Rigidbody2D rb = new Rigidbody2D();
         rb.setBodyType(Rigidbody2D.BodyType.DYNAMIC);

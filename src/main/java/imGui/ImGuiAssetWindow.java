@@ -175,32 +175,31 @@ public class ImGuiAssetWindow {
         }
         //Gets the texture from asset pool and sets the window size and creates it
         Texture texture = AssetPool.getTexture(selectedAsset);
-        ImGui.setNextWindowSize(new ImVec2(texture.getWidth() + 16,
-                texture.getHeight() + 100));
+        float ratio = (float) texture.getWidth() /texture.getHeight();
+        float windowWidth = Math.max(texture.getWidth(), 300);
+        ImGui.setNextWindowSize(new ImVec2(windowWidth+38,
+                windowWidth/ratio+128));
         ImBoolean open = new ImBoolean(true);
         ImGui.begin("Adjust spriteSheet", open);
         //Starts a child that has the image
-        ImGui.beginChild("picture", texture.getWidth(), texture.getHeight(), true);
-        float imageWidth = ImGui.getContentRegionAvailX();
-        float imageHeight = ImGui.getContentRegionAvailY();
+        ImGui.beginChild("picture", windowWidth+20, windowWidth/ratio+16, true);
         ImVec2 pos = ImGui.getCursorScreenPos();
-        ImGui.image(texture.getTexID(), ImGui.getContentRegionAvailX(), ImGui.getContentRegionAvailY(), 0, 1, 1,0);
+        ImGui.image(texture.getTexID(), windowWidth, windowWidth/ratio, 0, 1, 1,0);
+        //Draws the lines based on the values of the sliders
+        drawLines(pos, texture, windowWidth, windowWidth/ratio);
         ImGui.endChild();
         //Makes a new child for the sliders on left and then one for the right
-        ImGui.beginChild("Sliders", texture.getWidth()*0.5f, 75, false);
-        spriteWidth = ImGuiCommonFun.intSlider("Sprite Width", spriteWidth, 1, 500);
-        spriteHeight = ImGuiCommonFun.intSlider("Sprite Height", spriteHeight, 1, 500);
-        xSpacing = ImGuiCommonFun.intSlider("x-spacing", xSpacing, 0,100);
+        ImGui.beginChild("Sliders", windowWidth*0.5f, 75, false);
+        spriteWidth = ImGuiCommonFun.intInput("Spr-X", spriteWidth, 1);
+        spriteHeight = ImGuiCommonFun.intInput("Spr-Y", spriteHeight, 1);
+        xSpacing = ImGuiCommonFun.intInput("x-spacing", xSpacing, 1);
         ImGui.endChild();
         ImGui.sameLine();
-        ImGui.beginChild("Sliders2", texture.getWidth()*0.5f, 75, false);
-        numSprites = ImGuiCommonFun.intSlider("Num sprites", numSprites, 1, 20);
-        ySpacing = ImGuiCommonFun.intSlider("y-Start", ySpacing, 0, 100);
-        xStart = ImGuiCommonFun.intSlider("x-Start", xStart, 0,100);
+        ImGui.beginChild("Sliders2", windowWidth*0.5f, 75, false);
+        numSprites = ImGuiCommonFun.intInput("Num spr", numSprites, 1);
+        ySpacing = ImGuiCommonFun.intInput("y-Start", ySpacing, 1);
+        xStart = ImGuiCommonFun.intInput("x-Start", xStart, 1);
         ImGui.endChild();
-
-        //Draws the lines based on the values of the sliders
-        drawLines(pos, texture, imageWidth, imageHeight);
 
         ImGui.end();
         //If the window is closed add the adjustet sprite to the asset pool

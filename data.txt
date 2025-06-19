@@ -235,6 +235,43 @@
             ],
             "point": 3
           }
+        },
+        {
+          "type": "components.SpriteRenderer",
+          "properties": {
+            "color": {
+              "x": 1.0,
+              "y": 1.0,
+              "z": 1.0,
+              "w": 1.0
+            },
+            "sprite": {
+              "texture": {
+                "filepath": "\\assets\\Spritesheets\\Platform\\Snowball.png",
+                "texID": 9,
+                "width": 25,
+                "height": 25
+              },
+              "texCoords": [
+                {
+                  "x": 1.0,
+                  "y": 1.0
+                },
+                {
+                  "x": 1.0,
+                  "y": 0.0
+                },
+                {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                {
+                  "x": 0.0,
+                  "y": 1.0
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -638,12 +675,12 @@
         "width": 25,
         "height": 25
       },
-      "spriteWidth": 20,
-      "spriteHeight": 20,
-      "numSprites": 4,
-      "xSpacing": 2,
-      "ySpacing": 2,
-      "startX": 5
+      "spriteWidth": 25,
+      "spriteHeight": 25,
+      "numSprites": 1,
+      "xSpacing": 0,
+      "ySpacing": 0,
+      "startX": 0
     },
     "\\assets\\Spritesheets\\Platform\\Platform1.png": {
       "texture": {
