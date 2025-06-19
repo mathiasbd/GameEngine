@@ -97,27 +97,4 @@ public class LevelScene extends Scene {
         this.renderer.render();
     }
 
-    /*
-     * Adds a GameObject to the scene, starts it, and registers its Rigidbody if present.
-     * @param go - GameObject to add to the scene
-     */
-    public void addGameObject(GameObject go) {
-        if (go != null) {
-            gameObjects.add(go);
-            go.setInScene(true);
-            go.start();
-
-            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
-            if (rb != null) {
-                rb.setPosition(go.getTransform().getPosition());
-                physicsSystem.addRigidbody(rb);
-            }
-        }
-    }
-
-    /*
-     * Draws the debug outline for different Collider types.
-     * @param collider - Collider instance to visualize
-     */
-
 }

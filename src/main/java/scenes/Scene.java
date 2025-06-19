@@ -85,15 +85,15 @@ public abstract class Scene {
     public void addGameObjectToScene(GameObject go) {
         if (!isRunning) {
             gameObjects.add(go);
-        }else {
+        } else {
             Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
             if (rb != null) {
                 GameEngineManager.getPhysicsSystem().addRigidbody(rb);
             }
             go.setInScene(true);
             gameObjects.add(go);
-            go.start();
             this.renderer.add(go);
+            go.start();
         }
         System.out.println("Added " + go.getName() + " to scene");
     }
@@ -197,23 +197,6 @@ public abstract class Scene {
         return dataLoaded;
     }
 
-    /*
-     * Adds a GameObject to the scene and registers its Rigidbody if present.
-     * @param go - GameObject to add
-     */
-    public void addGameObject(GameObject go) {
-        if (go != null && !gameObjects.contains(go)) {
-            gameObjects.add(go);
-
-            Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
-            if (rb != null) {
-                GameEngineManager.getPhysicsSystem().addRigidbody(rb);
-            }
-
-            go.setInScene(true);
-            go.start();
-        }
-    }
 
     /*
      * Retrieves a GameObject by its unique name.

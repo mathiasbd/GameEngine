@@ -17,6 +17,7 @@ import util.AssetPool;
 import util.DTUMath;
 import util.DebugDraw;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -53,13 +54,6 @@ public class LevelEditorScene extends Scene {
      */
     private void loadResources() {
         AssetPool.getShader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
-        AssetPool.addSpritesheet(
-                "assets/spritesheets/Blue_Slime/Attack_1.png",
-                new SpriteSheet(
-                        AssetPool.getTexture("assets/spritesheets/Blue_Slime/Attack_1.png"),
-                        80, 34, 4, 46, 94, 27
-                )
-        );
     }
 
     /*
@@ -69,7 +63,8 @@ public class LevelEditorScene extends Scene {
      */
     @Override
     public void update(float dt) {
-        for (GameObject go : this.gameObjects) {
+        List<GameObject> snapshot = new ArrayList<>(this.gameObjects);
+        for (GameObject go : snapshot) {
             if (go.isInScene()) {
                 go.update(dt);
                 Transform transform = go.getTransform();
@@ -118,10 +113,5 @@ public class LevelEditorScene extends Scene {
         imGuiLayer.process(this);
         this.renderer.render();
     }
-
-    /*
-     * Draws the debug outline for different Collider types.
-     * @param collider - Collider instance to visualize
-     */
 
 }

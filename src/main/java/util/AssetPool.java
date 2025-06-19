@@ -6,12 +6,14 @@ import rendering.Texture;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class AssetPool {
     private static Map<String, Shader> shaders = new HashMap<>();
     private static Map<String, Texture> textures = new HashMap<>();
-    private static Map<String, SpriteSheet> spriteSheets = new HashMap<>();
+    private static Map<String, SpriteSheet> spriteSheets = new LinkedHashMap<>();
 
     public static Shader getShader(String vertexResourceName, String fragmentResourceName) {
         File vertexFile = new File(vertexResourceName);

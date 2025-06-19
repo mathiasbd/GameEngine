@@ -91,6 +91,7 @@ public class SnowballSpawner extends Component {
 
         if(gameObject.getComponent(SpriteRenderer.class)!=null) {
             SpriteRenderer spr = gameObject.getComponent(SpriteRenderer.class);
+            System.out.println("Color: " + spr.getColor());
             snowball.addComponent(spr);
         }
 
