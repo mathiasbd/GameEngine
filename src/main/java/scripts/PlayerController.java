@@ -11,8 +11,9 @@ import static org.lwjgl.glfw.GLFW.*;
 public class PlayerController extends Component {
     public float walkSpeed = 25.0f;
     public float sprintSpeed = 35.0f;
-
     public float actualSpeed = walkSpeed;
+
+    public float jumpStrength = 50.0f;
     public float rayLength = 150f;
     private Rigidbody2D rb;
 
@@ -48,7 +49,7 @@ public class PlayerController extends Component {
         }
         if (KeyboardHandler.isKeyPressed(GLFW_KEY_SPACE)) {
             if (Physics2D.isGrounded(rb, rayLength) || Physics2D.isTouchingWall(rb, rayLength)) {
-                vel.y = 80.0f;
+                vel.y = jumpStrength;
             }
         }
         if (KeyboardHandler.isKeyPressed(GLFW_KEY_LEFT_SHIFT) || KeyboardHandler.isKeyPressed(GLFW_KEY_RIGHT_SHIFT)) {

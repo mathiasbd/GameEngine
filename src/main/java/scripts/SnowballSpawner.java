@@ -16,7 +16,11 @@ import java.util.*;
 public class SnowballSpawner extends Component {
     private Scene scene;
     private final List<GameObject> fallingObjects = new ArrayList<>();
-    public List<String> spawnPoints = List.of("SpawnPoint1", "SpawnPoint2", "SpawnPoint3");
+
+    // New spawn area parameters
+    public float spawnY = 700.0f;
+    public float minSpawnX = 100.0f;
+    public float maxSpawnX = 1200.0f;
     private final transient Random random = new Random();
     private transient float timeSinceLastSpawn = 0f;
     private transient float nextSpawnInterval;
@@ -51,14 +55,12 @@ public class SnowballSpawner extends Component {
             }
         }
 
-        // spawning logic unchanged
         timeSinceLastSpawn += dt;
         if (timeSinceLastSpawn >= nextSpawnInterval && fallingObjects.size() < maxPoints) {
             spawnNewObject();
             resetSpawnTimer();
         }
     }
-
 
     private void resetSpawnTimer() {
         timeSinceLastSpawn = 0f;
@@ -68,15 +70,9 @@ public class SnowballSpawner extends Component {
     private void spawnNewObject() {
         if (scene == null) return;
 
-        String spawnName = spawnPoints.get(random.nextInt(spawnPoints.size()));
-        GameObject spawnPoint = scene.getGameObjectByName(spawnName);
-        Vector2f spawnPos = (spawnPoint != null)
-                ? spawnPoint.getTransform().getPosition()
-                : new Vector2f(0, 0);
-
-        if (spawnPoint == null) {
-            System.err.println("Spawn point not found: " + spawnName);
-        }
+        // Pick a random X within range
+        float x = minSpawnX + random.nextFloat() * (maxSpawnX - minSpawnX);
+        Vector2f spawnPos = new Vector2f(x, spawnY);
 
         GameObject snowball = createPrefab(spawnPos);
         scene.addGameObjectToScene(snowball);
@@ -89,7 +85,7 @@ public class SnowballSpawner extends Component {
         GameObject snowball = new GameObject("Snowball", transform, 0, true);
         snowball.setTag("Snowball");
 
-        if(gameObject.getComponent(SpriteRenderer.class)!=null) {
+        if (gameObject.getComponent(SpriteRenderer.class) != null) {
             SpriteRenderer spr = new SpriteRenderer(gameObject.getComponent(SpriteRenderer.class));
             snowball.addComponent(spr);
         }

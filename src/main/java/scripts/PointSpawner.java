@@ -18,12 +18,12 @@ public class PointSpawner extends Component {
     private Scene scene;
     private GameObject currentPoint = null;
     private String lastSpawnName = null;
-    public List<String> spawnPoints = List.of("SpawnPoint4", "SpawnPoint5", "SpawnPoint6");
+    public List<String> spawnPoints;
     private final transient Random random = new Random();
-    private int point = 3;
 
     @Override
     public void start() {
+        spawnPoints = List.of("SpawnPoint1", "SpawnPoint2", "SpawnPoint3", "SpawnPoint4", "SpawnPoint5");
         System.out.println("PointSpawner started");
         this.scene = GameEngineManager.getCurrentScene();
         if (scene == null) {

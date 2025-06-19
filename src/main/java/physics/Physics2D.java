@@ -62,7 +62,7 @@ public class Physics2D {
             for (Rigidbody2D other : bodies) {
                 if (other == rb) continue;  // skip self
                 Collider otherCol = other.getCollider();
-                if (otherCol == null) continue;
+                if (otherCol == null || !otherCol.isSolid()) continue;
 
                 RaycastResult res;
                 if (otherCol instanceof OBBCollider obb) {
@@ -125,7 +125,7 @@ public class Physics2D {
                 for (Rigidbody2D other : bodies) {
                     if (other == rb) continue;
                     Collider otherCol = other.getCollider();
-                    if (otherCol == null) continue;
+                    if (otherCol == null || !otherCol.isSolid()) continue;
 
                     RaycastResult res;
                     if (otherCol instanceof OBBCollider obb) {
