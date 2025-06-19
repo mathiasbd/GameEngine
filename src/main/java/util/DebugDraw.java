@@ -148,7 +148,7 @@ public class DebugDraw {
      * @param lifetime - how many frames the line should persist
      */
     public static void addLine2D(Vector2f from, Vector2f to, Vector3f color, int lifetime) {
-        if (!isEnabled) return;
+//        if (!isEnabled) return;
         if (line2DS.size() >= MAX_LINES) {
             System.out.println("Max lines reached, not adding line");
             return;

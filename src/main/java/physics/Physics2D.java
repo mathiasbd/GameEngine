@@ -60,11 +60,13 @@ public class Physics2D {
             Raycast ray = new Raycast(origin, rayDir);
 
             for (Rigidbody2D other : bodies) {
-                if (other == rb) continue;  // skip self
-                Collider otherCol = other.getCollider();
-                if (otherCol == null || !otherCol.isSolid()) continue;
+                if (other == rb) continue;
+                if (other.getCollider() == null || !other.getCollider().isSolid()) continue;
+                GameObject otherObj = other.getGameObject();
+                if (!otherObj.getTag().equals("Floor")) continue;
 
                 RaycastResult res;
+                Collider otherCol = other.getCollider();
                 if (otherCol instanceof OBBCollider obb) {
                     res = RaycastManager.raycastOBB(ray, obb, new RaycastResult());
                 } else if (otherCol instanceof Circle circ) {
@@ -121,13 +123,14 @@ public class Physics2D {
         for (Vector2f origin : origins) {
             for (Vector2f dir : dirs) {
                 Raycast ray = new Raycast(origin, dir);
-
                 for (Rigidbody2D other : bodies) {
                     if (other == rb) continue;
-                    Collider otherCol = other.getCollider();
-                    if (otherCol == null || !otherCol.isSolid()) continue;
+                    if (other.getCollider() == null || !other.getCollider().isSolid()) continue;
+                    GameObject otherObj = other.getGameObject();
+                    if (!otherObj.getTag().equals("Wall") && !otherObj.getTag().equals("Floor")) continue;
 
                     RaycastResult res;
+                    Collider otherCol = other.getCollider();
                     if (otherCol instanceof OBBCollider obb) {
                         res = RaycastManager.raycastOBB(ray, obb, new RaycastResult());
                     } else if (otherCol instanceof Circle circ) {

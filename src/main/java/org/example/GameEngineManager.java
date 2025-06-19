@@ -61,9 +61,9 @@ public class GameEngineManager {
 
             if (deltaTime >= 0) {
                 window.startImGuiFrame();
-                physicsSystem.update(deltaTime);  // update physics simulation
+                physicsSystem.update(deltaTime);
+                currentScene.update(deltaTime);
                 DebugDraw.drawLines();
-                currentScene.update(deltaTime); // update current scene
                 window.endImGuiFrame();
                 updates++;
             }

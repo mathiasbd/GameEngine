@@ -131,7 +131,7 @@
           "y": 354.25003
         },
         "scale": {
-          "x": 105.0,
+          "x": 95.0,
           "y": 100.0
         },
         "rotation": 0.0
@@ -318,8 +318,8 @@
           "type": "physics.primitives.OBBCollider",
           "properties": {
             "halfSize": {
-              "x": 115.0,
-              "y": 20.0
+              "x": 120.0,
+              "y": 25.0
             },
             "rigidbody": {
               "bodyType": "STATIC",
@@ -442,7 +442,7 @@
           "properties": {
             "halfSize": {
               "x": 145.0,
-              "y": 20.0
+              "y": 25.0
             },
             "rigidbody": {
               "bodyType": "STATIC",
