@@ -24,7 +24,7 @@ public class ImGuiHierarchyWindow {
 
     /*
      * ImGuiHierarchyWindow controls the top part of the left window made with ImGui.
-     * It provides methods and utility that lets the user interact with gameobjects and components
+     * It provides methods and utility that lets the user interact with game objects and components
      * Author(s): Mathias
      */
 

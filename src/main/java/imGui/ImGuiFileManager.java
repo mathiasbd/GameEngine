@@ -8,11 +8,15 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class ImGuiFileManager {
+
+    /*
+     * This is a helper function that lets you look through a file directory
+     * Author(s): Mathias
+     */
+
     private List<File> folders = new ArrayList<>();
     private List<File> regularFiles = new ArrayList<>();
     private File currentDir = null;
-    private File selectedFile = null;
-    private String selectedAsset = null;
 
     private String label;
     private int flags;
@@ -20,6 +24,13 @@ public class ImGuiFileManager {
     private String dragPayloadType;
 
 
+    /*
+     * The constructor for the file manager
+     * @param String - The label at the top of the file directory
+     * @param int - The flags/settings for the file directory
+     * @param Consumer<File> - The function that is called when a file is clicked which passes the file to it
+     * @param String - The drag and drop payload type if there is any drag and drop
+     */
     public ImGuiFileManager(String label, int flags, Consumer<File> onSelect, String dragPayloadType) {
         this.label = label;
         this.flags = flags;
@@ -27,6 +38,10 @@ public class ImGuiFileManager {
         this.dragPayloadType = dragPayloadType;
     }
 
+    /*
+     * The function that initializes the directory placement
+     * @param String - The filepath that it should be initialized to
+     */
     public void initDirectory(String filepath) {
         currentDir = new File(filepath); // Or wherever you want to start
         File[] files = currentDir.listFiles();
@@ -43,6 +58,9 @@ public class ImGuiFileManager {
         }
     }
 
+    /*
+     * The function that shows the content in the current file directory
+     */
     public void showContent() {
         if(ImGui.treeNodeEx(label, flags)) {
             if (ImGui.button("..")) {
@@ -74,7 +92,10 @@ public class ImGuiFileManager {
             ImGui.treePop();
         }
     }
-
+    /*
+     * The function that is called when a file is clicked
+     * @param File - The file clicked
+     */
     private void fileClicked(File f) {
         onSelect.accept(f);
     }

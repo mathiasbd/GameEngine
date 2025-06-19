@@ -168,21 +168,25 @@ public class ImGuiAssetWindow {
      * and lets the user adjust lines to get the right dimensions for the spriteSheet or picture
      */
     private void adjustSpriteSheet() {
+        //Check whether selected asset is null
         String selectedAsset = spriteToAdjust;
         if(selectedAsset == null) {
             return;
         }
+        //Gets the texture from asset pool and sets the window size and creates it
         Texture texture = AssetPool.getTexture(selectedAsset);
         ImGui.setNextWindowSize(new ImVec2(texture.getWidth() + 16,
                 texture.getHeight() + 100));
         ImBoolean open = new ImBoolean(true);
         ImGui.begin("Adjust spriteSheet", open);
+        //Starts a child that has the image
         ImGui.beginChild("picture", texture.getWidth(), texture.getHeight(), true);
         float imageWidth = ImGui.getContentRegionAvailX();
         float imageHeight = ImGui.getContentRegionAvailY();
         ImVec2 pos = ImGui.getCursorScreenPos();
         ImGui.image(texture.getTexID(), ImGui.getContentRegionAvailX(), ImGui.getContentRegionAvailY(), 0, 1, 1,0);
         ImGui.endChild();
+        //Makes a new child for the sliders on left and then one for the right
         ImGui.beginChild("Sliders", texture.getWidth()*0.5f, 75, false);
         spriteWidth = ImGuiCommonFun.intSlider("Sprite Width", spriteWidth, 1, 500);
         spriteHeight = ImGuiCommonFun.intSlider("Sprite Height", spriteHeight, 1, 500);
@@ -195,6 +199,31 @@ public class ImGuiAssetWindow {
         xStart = ImGuiCommonFun.intSlider("x-Start", xStart, 0,100);
         ImGui.endChild();
 
+        //Draws the lines based on the values of the sliders
+        drawLines(pos, texture, imageWidth, imageHeight);
+
+        ImGui.end();
+        //If the window is closed add the adjustet sprite to the asset pool
+        if(!open.get()) {
+            if(AssetPool.getSpriteSheets().containsKey(selectedAsset)) {
+                System.out.println(AssetPool.getTexture(selectedAsset).getTexID());
+                System.out.println(selectedAsset);
+                AssetPool.addSpritesheet(selectedAsset,
+                        new SpriteSheet(AssetPool.getTexture(selectedAsset), spriteWidth, spriteHeight, numSprites, xSpacing, ySpacing, xStart));
+                System.out.println("Added " + AssetPool.getSpriteSheet(selectedAsset).getTexture());
+            }
+            spriteToAdjust = null;
+        }
+    }
+
+    /*
+     * This is a helper function that draws lines on the picture you want to adjust
+     * @param ImVec2 - The upper left corner position of the image
+     * @param Texture - The image texture
+     * @param float - The image width
+     * @param float - The image height
+     */
+    private void drawLines(ImVec2 pos, Texture texture, float imageWidth, float imageHeight) {
         float scaleX = imageWidth / (float) texture.getWidth();
         float scaleY = imageHeight / (float) texture.getHeight();
         for(int i = 0; i <= numSprites ; i++) {
@@ -224,17 +253,5 @@ public class ImGuiAssetWindow {
                 ImColor.rgb(0,0,255), 1.0f);
         ImGui.getWindowDrawList().addLine(pos.x, pos.y+(ySpacing+spriteHeight)*scaleY,ImGui.getItemRectMaxX(),pos.y+(ySpacing+spriteHeight)*scaleY,
                 ImColor.rgb(0,0,255), 1.0f);
-
-        ImGui.end();
-        if(!open.get()) {
-            if(AssetPool.getSpriteSheets().containsKey(selectedAsset)) {
-                System.out.println(AssetPool.getTexture(selectedAsset).getTexID());
-                System.out.println(selectedAsset);
-                AssetPool.addSpritesheet(selectedAsset,
-                        new SpriteSheet(AssetPool.getTexture(selectedAsset), spriteWidth, spriteHeight, numSprites, xSpacing, ySpacing, xStart));
-                System.out.println("Added " + AssetPool.getSpriteSheet(selectedAsset).getTexture());
-            }
-            spriteToAdjust = null;
-        }
     }
 }
