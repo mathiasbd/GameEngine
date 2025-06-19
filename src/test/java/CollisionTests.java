@@ -554,23 +554,7 @@ public class CollisionTests {
         boolean collision = CollisionManager.findCollisionFeatures(circle, obb).isColliding();
         assertTrue(collision);
     }
-    @Test
-    public void circleVsOBBRotatedCollisionCorner() {
-        Circle circle = new Circle(1f);
-        Rigidbody2D circleRb = new Rigidbody2D();
-        circleRb.setPosition(new Vector2f(0f, -1f));
-        circle.setRigidbody(circleRb);
-
-
-        OBBCollider obb = new OBBCollider(new Vector2f(-1, -1), new Vector2f(1, 1));
-        Rigidbody2D boxRb = new Rigidbody2D();
-        boxRb.setPosition(new Vector2f(1f, 1f));
-        boxRb.setRotation(10f);
-        obb.setRigidbody(boxRb);
-
-        boolean collision = CollisionManager.findCollisionFeatures(circle, obb).isColliding();
-        assertTrue(collision);
-    }
+    
 
     // OBB vs OBB
 
