@@ -20,8 +20,8 @@ public class SnowballSpawner extends Component {
     private final transient Random random = new Random();
     private transient float timeSinceLastSpawn = 0f;
     private transient float nextSpawnInterval;
-    private float minSpawnInterval = 0.2f;
-    private float maxSpawnInterval = 0.8f;
+    public float minSpawnInterval = 1f;
+    public float maxSpawnInterval = 2f;
     private int maxPoints = 3;
 
     @Override
@@ -90,8 +90,7 @@ public class SnowballSpawner extends Component {
         snowball.setTag("Snowball");
 
         if(gameObject.getComponent(SpriteRenderer.class)!=null) {
-            SpriteRenderer spr = gameObject.getComponent(SpriteRenderer.class);
-            System.out.println("Color: " + spr.getColor());
+            SpriteRenderer spr = new SpriteRenderer(gameObject.getComponent(SpriteRenderer.class));
             snowball.addComponent(spr);
         }
 

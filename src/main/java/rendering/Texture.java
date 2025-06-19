@@ -33,6 +33,9 @@ public class Texture {
      */
     public void init(String filepath) {
         // Resolve relative path to absolute path
+        if (texID != 0) {
+            glDeleteTextures(texID);
+        }
 
         // Generate texture id and bind it on the GPU
         texID = glGenTextures();

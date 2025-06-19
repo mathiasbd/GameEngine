@@ -21,6 +21,8 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
  * Author(s): Gabriel, Ilias, Ahmed, Mathias
  */
 public class DebugDraw {
+
+    private static boolean isEnabled = false;
     private static final int MAX_LINES = 1000;
     private static List<Line2D> line2DS = new ArrayList<>();
     // 6 floats per vertex, 2 vertices per line
@@ -146,6 +148,7 @@ public class DebugDraw {
      * @param lifetime - how many frames the line should persist
      */
     public static void addLine2D(Vector2f from, Vector2f to, Vector3f color, int lifetime) {
+        if (!isEnabled) return;
         if (line2DS.size() >= MAX_LINES) {
             System.out.println("Max lines reached, not adding line");
             return;

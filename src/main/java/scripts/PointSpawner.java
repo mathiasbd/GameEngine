@@ -69,7 +69,7 @@ public class PointSpawner extends Component {
         pointObject.setTag("Point");
 
         if(gameObject.getComponent(SpriteRenderer.class)!=null) {
-            SpriteRenderer spr = gameObject.getComponent(SpriteRenderer.class);
+            SpriteRenderer spr = new SpriteRenderer(gameObject.getComponent(SpriteRenderer.class));
             pointObject.addComponent(spr);
         }
 

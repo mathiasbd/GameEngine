@@ -17,6 +17,13 @@ public class SpriteRenderer extends Component {
         this.isDirty = true;
     }
 
+    public SpriteRenderer(SpriteRenderer component) {
+        this.color = new Vector4f(component.color);
+        this.sprite = component.sprite;
+        this.isDirty = component.isDirty;
+        this.lastTransform = component.lastTransform;
+    }
+
     // this method is used to start the sprite
     @Override
     public void start() {
