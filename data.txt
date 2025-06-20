@@ -650,10 +650,10 @@
       ]
     },
     {
-      "name": "Unnamed",
+      "name": "Box",
       "transform": {
         "position": {
-          "x": 493.75,
+          "x": 863.75,
           "y": 118.000015
         },
         "scale": {
@@ -676,6 +676,12 @@
               "w": 1.0
             },
             "sprite": {
+              "texture": {
+                "filepath": "\\assets\\Spritesheets\\Platform\\Box.png",
+                "texID": 7,
+                "width": 50,
+                "height": 50
+              },
               "texCoords": [
                 {
                   "x": 1.0,
@@ -702,7 +708,7 @@
           "properties": {
             "bodyType": "DYNAMIC",
             "position": {
-              "x": 493.75,
+              "x": 863.75,
               "y": 118.000015
             },
             "rotation": 0.0,
@@ -735,7 +741,7 @@
             "rigidbody": {
               "bodyType": "DYNAMIC",
               "position": {
-                "x": 493.75,
+                "x": 863.75,
                 "y": 118.000015
               },
               "rotation": 0.0,
@@ -913,6 +919,126 @@
           }
         }
       ]
+    },
+    {
+      "name": "Football",
+      "transform": {
+        "position": {
+          "x": 1023.75,
+          "y": 478.05002
+        },
+        "scale": {
+          "x": 100.0,
+          "y": 100.0
+        },
+        "rotation": 0.0
+      },
+      "zIndex": 0,
+      "inScene": true,
+      "tag": "None",
+      "components": [
+        {
+          "type": "components.SpriteRenderer",
+          "properties": {
+            "color": {
+              "x": 1.0,
+              "y": 1.0,
+              "z": 1.0,
+              "w": 1.0
+            },
+            "sprite": {
+              "texture": {
+                "filepath": "\\assets\\Spritesheets\\Platform\\Football.png",
+                "texID": 8,
+                "width": 50,
+                "height": 50
+              },
+              "texCoords": [
+                {
+                  "x": 1.0,
+                  "y": 1.0
+                },
+                {
+                  "x": 1.0,
+                  "y": 0.0
+                },
+                {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                {
+                  "x": 0.0,
+                  "y": 1.0
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "physics.collisions.Rigidbody2D",
+          "properties": {
+            "bodyType": "DYNAMIC",
+            "position": {
+              "x": 1023.75,
+              "y": 478.05002
+            },
+            "rotation": 0.0,
+            "mass": 1.0,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.15,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.Circle",
+          "properties": {
+            "radius": 50.0,
+            "rigidbody": {
+              "bodyType": "DYNAMIC",
+              "position": {
+                "x": 1023.75,
+                "y": 478.05002
+              },
+              "rotation": 0.0,
+              "mass": 1.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.15,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "isSolid": true
+          }
+        }
+      ]
     }
   ],
   "spriteSheets": {
@@ -1041,6 +1167,34 @@
       "xSpacing": 0,
       "ySpacing": 95,
       "startX": 40
+    },
+    "\\assets\\Spritesheets\\Platform\\Box.png": {
+      "texture": {
+        "filepath": "\\assets\\Spritesheets\\Platform\\Box.png",
+        "texID": 7,
+        "width": 50,
+        "height": 50
+      },
+      "spriteWidth": 50,
+      "spriteHeight": 50,
+      "numSprites": 1,
+      "xSpacing": 0,
+      "ySpacing": 0,
+      "startX": 0
+    },
+    "\\assets\\Spritesheets\\Platform\\Football.png": {
+      "texture": {
+        "filepath": "\\assets\\Spritesheets\\Platform\\Football.png",
+        "texID": 8,
+        "width": 50,
+        "height": 50
+      },
+      "spriteWidth": 50,
+      "spriteHeight": 50,
+      "numSprites": 1,
+      "xSpacing": 0,
+      "ySpacing": 0,
+      "startX": 0
     }
   }
 }
