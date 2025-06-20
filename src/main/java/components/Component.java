@@ -67,6 +67,16 @@ public abstract class Component {
                     field.set(this, val);
                 }
 
+                if (type.isEnum()) {
+                    Object enumValue = field.get(this);
+                    if (enumValue != null) {
+                        @SuppressWarnings("unchecked")
+                        Class<? extends Enum<?>> enumClass = (Class<? extends Enum<?>>) type;
+                        Enum<?> updated = ImGuiCommonFun.enumSelector(name, (Enum<?>) enumValue, enumClass);
+                        field.set(this, updated);
+                    }
+                }
+
                 if(isPrivate) {
                     field.setAccessible(false);
                 }

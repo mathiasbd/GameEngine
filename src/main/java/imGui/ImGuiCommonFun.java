@@ -202,4 +202,29 @@ public class ImGuiCommonFun {
         }
         return val;
     }
+
+    public static Enum<?> enumSelector(String label, Enum<?> currentValue, Class<? extends Enum<?>> enumClass) {
+        initColumn();
+        ImGui.text(label);
+        ImGui.nextColumn();
+        ImGui.beginGroup();
+
+        Enum<?>[] constants = enumClass.getEnumConstants();
+        Enum<?> selected = currentValue;
+
+        for (Enum<?> constant : constants) {
+            boolean isSelected = constant.equals(currentValue);
+            ImBoolean selectedWrapper = new ImBoolean(isSelected);
+
+            if (ImGui.checkbox(constant.name(), selectedWrapper)) {
+                if (selectedWrapper.get()) {
+                    selected = constant;
+                }
+            }
+        }
+
+        ImGui.endGroup();
+        ImGui.columns(1);
+        return selected;
+    }
 }
