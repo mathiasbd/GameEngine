@@ -31,7 +31,7 @@ public class PlayerController extends Component {
     public void update(float dt) {
         if (rb == null) return;
         rb.setFixedRotation(true);
-
+        rb.setRotation(0.0f);
         Vector2f vel = rb.getLinearVelocity();
 
         float h = 0f;
