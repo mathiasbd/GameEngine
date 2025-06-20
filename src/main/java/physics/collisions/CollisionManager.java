@@ -100,8 +100,10 @@ public class CollisionManager {
         // transform circle center into box local space
         Vector2f center = new Vector2f(circle.getCenter()).sub(obb.getRigidbody().getPosition());
         DTUMath.rotate(center, -obb.getRigidbody().getRotation(), new Vector2f());
+
         Vector2f half = obb.getHalfSize();
-        Vector2f min = new Vector2f(0,0), max = new Vector2f(half).mul(2f);
+        Vector2f min = new Vector2f(half).negate();
+        Vector2f max = new Vector2f(half);
         // find closest point on AABB to local center
         float cx = Math.max(min.x, Math.min(center.x, max.x));
         float cy = Math.max(min.y, Math.min(center.y, max.y));

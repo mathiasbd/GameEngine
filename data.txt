@@ -496,8 +496,8 @@
             "spawnY": 700.0,
             "minSpawnX": 50.0,
             "maxSpawnX": 1200.0,
-            "minSpawnInterval": 0.4,
-            "maxSpawnInterval": 1.0,
+            "minSpawnInterval": 28.0,
+            "maxSpawnInterval": 32.9,
             "maxPoints": 3
           }
         }
