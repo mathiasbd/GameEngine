@@ -117,6 +117,10 @@ public class Rigidbody2D extends Component {
         return position;
     }
 
+    public boolean isFixedRotation() {
+        return fixedRotation;
+    }
+
     /*
      * Sets the position directly (teleport).
      * @param position - new position vector
@@ -236,6 +240,11 @@ public class Rigidbody2D extends Component {
      */
     public void setAngularVelocity(float angularVelocity) {
         this.angularVelocity = angularVelocity;
+    }
+
+
+    public void setFixedRotation(boolean x ) {
+        this.fixedRotation = x;
     }
 
     /*

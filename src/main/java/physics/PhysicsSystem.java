@@ -13,6 +13,8 @@ import util.DTUMath;
 import java.util.ArrayList;
 import java.util.List;
 
+import static util.DTUMath.cross;
+
 /*
  * PhysicsSystem manages physics simulation: force application, collision detection,
  * impulse resolution, and positional correction for 2D rigid bodies.
@@ -124,40 +126,44 @@ public class PhysicsSystem {
     private void applyImpulse(Rigidbody2D r1, Rigidbody2D r2, CollisionManifold m) {
         boolean imm1 = r1.getBodyType() != BodyType.DYNAMIC;
         boolean imm2 = r2.getBodyType() != BodyType.DYNAMIC;
-        if (imm1 && imm2) return;  // no dynamic bodies
+        if (imm1 && imm2) return;  // no dynamic bodies involved
 
         float invMass1 = r1.getInverseMass();
         float invMass2 = r2.getInverseMass();
         float invMassSum = invMass1 + invMass2;
         if (invMassSum == 0) return;
 
-        // compute relative velocity along normal
+        // Compute relative velocity
         Vector2f rv = new Vector2f(r2.getLinearVelocity()).sub(r1.getLinearVelocity());
         Vector2f normal = new Vector2f(m.getNormal()).normalize();
-        if (rv.dot(normal) > 0) return;  // separating
+        float velAlongNormal = rv.dot(normal);
 
-        // restitution impulse
+        // Do not resolve if separating
+        if (velAlongNormal > 0) return;
+
+        // Restitution (bounciness)
         float e = Math.min(r1.getRestitution(), r2.getRestitution());
-        float j = -(1 + e) * rv.dot(normal) / invMassSum;
+
+        // Normal impulse scalar
+        float j = -(1 + e) * velAlongNormal / invMassSum;
         Vector2f impulse = new Vector2f(normal).mul(j);
-        // apply impulses to velocities and angular velocity
+
+        // Apply normal impulse to linear velocities
         if (r1.getBodyType() == BodyType.DYNAMIC) {
             r1.setVelocity(r1.getLinearVelocity().sub(new Vector2f(impulse).mul(invMass1)));
-            r1.setAngularVelocity(r1.getAngularVelocity());
         }
         if (r2.getBodyType() == BodyType.DYNAMIC) {
             r2.setVelocity(r2.getLinearVelocity().add(new Vector2f(impulse).mul(invMass2)));
-            r2.setAngularVelocity(r2.getAngularVelocity());
         }
 
-        // compute tangent
+        // --- Friction impulse ---
         Vector2f tangent = new Vector2f(rv).sub(new Vector2f(normal).mul(rv.dot(normal)));
-        //apply simplified  friction
+
         if (tangent.lengthSquared() > 0.0001f) {
             tangent.normalize();
 
             float jt = -rv.dot(tangent) / invMassSum;
-            float mu = (r1.getFriction() + r2.getFriction()) * 0.2f;
+            float mu = (r1.getFriction() + r2.getFriction()) * 0.5f;
             jt = Math.max(-j * mu, Math.min(jt, j * mu));
             Vector2f frictionImpulse = new Vector2f(tangent).mul(jt);
 
@@ -168,8 +174,28 @@ public class PhysicsSystem {
                 r2.setVelocity(r2.getLinearVelocity().add(new Vector2f(frictionImpulse).mul(invMass2)));
             }
         }
-    }
 
+        // --- Rotational impulse ONLY for DYNAMIC bodies ---
+        if (!m.getContactPoints().isEmpty()) {
+            for (Vector2f contactPoint : m.getContactPoints()) {
+                Vector2f ra = new Vector2f(contactPoint).sub(r1.getPosition());
+                Vector2f rb = new Vector2f(contactPoint).sub(r2.getPosition());
+
+                if (r1.getBodyType() == BodyType.DYNAMIC & !r1.isFixedRotation()) {
+                    float angularImpulse = cross(ra, impulse);
+                    float deltaAngularVel = angularImpulse / r1.getInertia();
+                    r1.setAngularVelocity(r1.getAngularVelocity() - deltaAngularVel);
+                }
+
+                if (r2.getBodyType() == BodyType.DYNAMIC & !r2.isFixedRotation()) {
+                    float angularImpulse = cross(rb, impulse);
+                    float deltaAngularVel = angularImpulse / r2.getInertia();
+                    r2.setAngularVelocity(r2.getAngularVelocity() + deltaAngularVel);
+                }
+            }
+        }
+
+    }
     /*
      * Corrects body positions based on penetration depth to reduce overlap.
      * @param r1 - first rigidbody

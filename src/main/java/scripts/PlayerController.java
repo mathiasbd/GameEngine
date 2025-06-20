@@ -24,11 +24,13 @@ public class PlayerController extends Component {
             throw new IllegalStateException("PlayerController requires a Rigidbody2D");
         }
         rb.setBodyType(Rigidbody2D.BodyType.DYNAMIC);
+        rb.setFixedRotation(true);
     }
 
     @Override
     public void update(float dt) {
         if (rb == null) return;
+        rb.setFixedRotation(true);
 
         Vector2f vel = rb.getLinearVelocity();
 
