@@ -124,48 +124,38 @@ public class PhysicsSystem {
      * @param m - collision manifold containing contact normal and points
      */
     private void applyImpulse(Rigidbody2D r1, Rigidbody2D r2, CollisionManifold m) {
-        boolean imm1 = r1.getBodyType() != BodyType.DYNAMIC;
-        boolean imm2 = r2.getBodyType() != BodyType.DYNAMIC;
-        if (imm1 && imm2) return;  // no dynamic bodies involved
+        boolean imm1 = (r1.getBodyType() != BodyType.DYNAMIC);
+        boolean imm2 = (r2.getBodyType() != BodyType.DYNAMIC);
+        if (imm1 && imm2) return;
 
         float invMass1 = r1.getInverseMass();
         float invMass2 = r2.getInverseMass();
         float invMassSum = invMass1 + invMass2;
-        if (invMassSum == 0) return;
+        if (invMassSum == 0.0f) return;
 
-        // Compute relative velocity
-        Vector2f rv = new Vector2f(r2.getLinearVelocity()).sub(r1.getLinearVelocity());
-        Vector2f normal = new Vector2f(m.getNormal()).normalize();
-        float velAlongNormal = rv.dot(normal);
+        Vector2f relativeVelocity = new Vector2f(r2.getLinearVelocity()).sub(r1.getLinearVelocity());
+        Vector2f relativeNormal = new Vector2f(m.getNormal()).normalize();
+        if (relativeVelocity.dot(relativeNormal) > 0.0f) return;
 
-        // Do not resolve if separating
-        if (velAlongNormal > 0) return;
-
-        // Restitution (bounciness)
         float e = Math.min(r1.getRestitution(), r2.getRestitution());
+        float j = -(1.0f + e) * relativeVelocity.dot(relativeNormal) / invMassSum;
+        Vector2f impulse = new Vector2f(relativeNormal).mul(j);
 
-        // Normal impulse scalar
-        float j = -(1 + e) * velAlongNormal / invMassSum;
-        Vector2f impulse = new Vector2f(normal).mul(j);
+        // Friction
+        Vector2f tangent = new Vector2f(relativeVelocity)
+                .sub(new Vector2f(relativeNormal).mul(relativeVelocity.dot(relativeNormal)));
 
-        // Apply normal impulse to linear velocities
-        if (r1.getBodyType() == BodyType.DYNAMIC) {
-            r1.setVelocity(r1.getLinearVelocity().sub(new Vector2f(impulse).mul(invMass1)));
-        }
-        if (r2.getBodyType() == BodyType.DYNAMIC) {
-            r2.setVelocity(r2.getLinearVelocity().add(new Vector2f(impulse).mul(invMass2)));
-        }
-
-        // --- Friction impulse ---
-        Vector2f tangent = new Vector2f(rv).sub(new Vector2f(normal).mul(rv.dot(normal)));
-
-        if (tangent.lengthSquared() > 0.0001f) {
+        if (tangent.lengthSquared() > 0.001f) {
             tangent.normalize();
 
-            float jt = -rv.dot(tangent) / invMassSum;
-            float mu = (r1.getFriction() + r2.getFriction()) * 0.5f;
-            jt = Math.max(-j * mu, Math.min(jt, j * mu));
-            Vector2f frictionImpulse = new Vector2f(tangent).mul(jt);
+            float impulseAlongTangent = -relativeVelocity.dot(tangent);
+            impulseAlongTangent /= invMassSum;
+
+            float mu = (r1.getFriction() + r2.getFriction()) * 0.1f;
+            float maxFriction = j * mu;
+            impulseAlongTangent = Math.max(-maxFriction, Math.min(impulseAlongTangent, maxFriction));
+
+            Vector2f frictionImpulse = new Vector2f(tangent).mul(impulseAlongTangent);
 
             if (r1.getBodyType() == BodyType.DYNAMIC) {
                 r1.setVelocity(r1.getLinearVelocity().sub(new Vector2f(frictionImpulse).mul(invMass1)));
@@ -175,27 +165,52 @@ public class PhysicsSystem {
             }
         }
 
-        // --- Rotational impulse ONLY for DYNAMIC bodies ---
-        if (!m.getContactPoints().isEmpty()) {
-            for (Vector2f contactPoint : m.getContactPoints()) {
-                Vector2f ra = new Vector2f(contactPoint).sub(r1.getPosition());
-                Vector2f rb = new Vector2f(contactPoint).sub(r2.getPosition());
-
-                if (r1.getBodyType() == BodyType.DYNAMIC & !r1.isFixedRotation()) {
-                    float angularImpulse = cross(ra, impulse);
-                    float deltaAngularVel = angularImpulse / r1.getInertia();
-                    r1.setAngularVelocity(r1.getAngularVelocity() - deltaAngularVel);
-                }
-
-                if (r2.getBodyType() == BodyType.DYNAMIC & !r2.isFixedRotation()) {
-                    float angularImpulse = cross(rb, impulse);
-                    float deltaAngularVel = angularImpulse / r2.getInertia();
-                    r2.setAngularVelocity(r2.getAngularVelocity() + deltaAngularVel);
-                }
-            }
+        List<Vector2f> vecMPoint1 = new ArrayList<>();
+        List<Vector2f> vecMPoint2 = new ArrayList<>();
+        for (Vector2f mPoint : m.getContactPoints()) {
+            vecMPoint1.add(new Vector2f(mPoint).sub(r1.getPosition()));
+            vecMPoint2.add(new Vector2f(mPoint).sub(r2.getPosition()));
         }
 
+
+        if (!vecMPoint1.isEmpty() && j != 0.0f) {
+            float friction = (r1.getFriction() + r2.getFriction())*0.5f;
+            r1.addTorque(-friction*r1.getAngularVelocity());
+            r2.addTorque(-friction*r2.getAngularVelocity());
+//            System.out.println("Impulse: " + impulse + " vecMPoint: " + vecMPoint1.get(0));
+            float angularMoment1 = 0.0f;
+            float torque1 = 0.0f;
+            int count1 = 0;
+            for(Vector2f vecMPoint : vecMPoint1) {
+                torque1 += DTUMath.cross(vecMPoint, r1.getForceAccumulator());
+                angularMoment1 += DTUMath.cross(vecMPoint, impulse);
+                count1++;
+            }
+            float angularMoment2 = 0.0f;
+            float torque2 = 0.0f;
+            int count2 = 0;
+            for(Vector2f vecMPoint : vecMPoint2) {
+                torque2 += DTUMath.cross(vecMPoint, r2.getForceAccumulator());
+                angularMoment2 += DTUMath.cross(vecMPoint, impulse);
+                count2++;
+            }
+
+            // Only apply to dynamic bodies
+            if (r1.getBodyType() == BodyType.DYNAMIC) {
+                r1.addTorque(-torque1*8);
+                float angularVelocity1 = (angularMoment1 / r1.getInertia());
+                r1.setVelocity(new Vector2f(r1.getLinearVelocity()).sub(new Vector2f(impulse).mul(invMass1)));
+                r1.setAngularVelocity(r1.getAngularVelocity()-angularVelocity1*4);
+            }
+            if (r2.getBodyType() == BodyType.DYNAMIC) {
+                r2.addTorque(-torque2*8);
+                float angularVelocity2 = (angularMoment2 / r2.getInertia());
+                r2.setVelocity(new Vector2f(r2.getLinearVelocity()).add(new Vector2f(impulse).mul(invMass2)));
+                r2.setAngularVelocity(r2.getAngularVelocity()+angularVelocity2*4);
+            }
+        }
     }
+
     /*
      * Corrects body positions based on penetration depth to reduce overlap.
      * @param r1 - first rigidbody
