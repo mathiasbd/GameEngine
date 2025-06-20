@@ -28,7 +28,7 @@ public class PlayerHealth extends Component {
         if (scene == null) {
             System.err.println("Scene is null in PlayerHealth");
         }
-        rb.setBodyType(Rigidbody2D.BodyType.KINEMATIC);
+        rb.setBodyType(Rigidbody2D.BodyType.DYNAMIC);
     }
 
     @Override

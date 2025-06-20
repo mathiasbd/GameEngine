@@ -109,7 +109,7 @@ public class PhysicsSystem {
 
         // integrate velocities into positions
         for (Rigidbody2D body : rb) {
-            if (body.getBodyType() != BodyType.STATIC) {
+            if (body.getBodyType() == BodyType.DYNAMIC) {
                 body.physicsUpdate(fixedUpdate);
             }
         }
@@ -204,7 +204,7 @@ public class PhysicsSystem {
      */
     public void addRigidbody(Rigidbody2D body) {
         rb.add(body);
-        if (body.getBodyType() != BodyType.STATIC) {
+        if (body.getBodyType() == BodyType.DYNAMIC) {
             fr.add(body, gravity);
         }
     }

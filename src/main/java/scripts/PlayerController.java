@@ -13,7 +13,7 @@ public class PlayerController extends Component {
     public float sprintSpeed = 35.0f;
     public float actualSpeed = walkSpeed;
 
-    public float jumpStrength = 50.0f;
+    public float jumpStrength = 200.0f;
     public float rayLength = 150f;
     private Rigidbody2D rb;
 
@@ -23,7 +23,7 @@ public class PlayerController extends Component {
         if (rb == null) {
             throw new IllegalStateException("PlayerController requires a Rigidbody2D");
         }
-        rb.setBodyType(Rigidbody2D.BodyType.KINEMATIC);
+        rb.setBodyType(Rigidbody2D.BodyType.DYNAMIC);
     }
 
     @Override
