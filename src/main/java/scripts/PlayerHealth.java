@@ -1,8 +1,10 @@
 package scripts;
 
 import components.Component;
+import components.SpriteRenderer;
 import org.example.GameEngineManager;
 import org.example.GameObject;
+import org.joml.Vector4f;
 import physics.Physics2D;
 import physics.collisions.Rigidbody2D;
 import scenes.Scene;
@@ -14,6 +16,8 @@ public class PlayerHealth extends Component {
     private int currentHealth = maxHealth;
     private Rigidbody2D rb;
     private Scene scene;
+    private float damageTimer = 0f;
+    private boolean hurt = false;
     @Override
     public void start() {
         rb = gameObject.getComponent(Rigidbody2D.class);
@@ -35,6 +39,12 @@ public class PlayerHealth extends Component {
                 takeDamage(1);
                 scene.removeGameObject(go);
             }
+            if(damageTimer > 0 && hurt) {
+                damageTimer-=0.1f;
+            } else if(hurt) {
+                gameObject.getComponent(SpriteRenderer.class).setColor(new Vector4f(1,1,1,1));
+                hurt = false;
+            }
         }
     }
 
@@ -44,6 +54,9 @@ public class PlayerHealth extends Component {
         if (currentHealth <= 0) {
             onDeath();
         }
+        gameObject.getComponent(SpriteRenderer.class).setColor(new Vector4f(1,0,0,1));
+        damageTimer = 2f;
+        hurt = true;
     }
 
     private void onDeath() {
