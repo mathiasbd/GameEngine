@@ -43,12 +43,12 @@ public class LevelScene extends Scene {
      * @param gameObjects - list of GameObjects to initialize
      */
     @Override
-    public void init(List<GameObject> gameObjects) {
+    public void init() {
         this.physicsSystem = GameEngineManager.getPhysicsSystem();
         this.physicsSystem.reset();
         this.camera = new Camera(new Vector2f());
         this.imGuiLayer = new ImGuiLayer();
-        this.gameObjects = gameObjects;
+        //this.gameObjects = gameObjects;
         for (GameObject go : this.gameObjects) {
             go.start();
             Transform transform = go.getTransform();
@@ -92,8 +92,6 @@ public class LevelScene extends Scene {
         if (physicsSystem != null) {
             physicsSystem.update(dt);
         }
-
-        imGuiLayer.process(this);
         this.renderer.render();
     }
 

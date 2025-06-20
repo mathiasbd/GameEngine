@@ -42,11 +42,10 @@ public class LevelEditorScene extends Scene {
      * @param gameObjects - list of GameObjects managed by this scene
      */
     @Override
-    public void init(List<GameObject> gameObjects) {
+    public void init() {
         loadResources();
         this.camera = new Camera(new Vector2f());
-        this.imGuiLayer = new ImGuiLayer();
-        this.gameObjects = gameObjects;
+        //this.gameObjects = gameObjects;
     }
 
     /*
@@ -110,7 +109,6 @@ public class LevelEditorScene extends Scene {
                 dragDropper.setDraggedObject(null);
             }
         }
-        imGuiLayer.process(this);
         this.renderer.render();
     }
 

@@ -794,6 +794,123 @@
           }
         }
       ]
+    },
+    {
+      "name": "Unnamed",
+      "transform": {
+        "position": {
+          "x": 517.5,
+          "y": 127.45001
+        },
+        "scale": {
+          "x": 100.0,
+          "y": 100.0
+        },
+        "rotation": 0.0
+      },
+      "zIndex": 0,
+      "inScene": true,
+      "tag": "None",
+      "components": [
+        {
+          "type": "components.SpriteRenderer",
+          "properties": {
+            "color": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0,
+              "w": 1.0
+            },
+            "sprite": {
+              "texCoords": [
+                {
+                  "x": 1.0,
+                  "y": 1.0
+                },
+                {
+                  "x": 1.0,
+                  "y": 0.0
+                },
+                {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                {
+                  "x": 0.0,
+                  "y": 1.0
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "physics.collisions.Rigidbody2D",
+          "properties": {
+            "bodyType": "DYNAMIC",
+            "position": {
+              "x": 517.5,
+              "y": 127.45001
+            },
+            "rotation": 0.0,
+            "mass": 3.0,
+            "restitution": 1.0,
+            "forceAcc": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "linearVelocity": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "angularVelocity": 0.0,
+            "linearDamping": 0.05,
+            "angularDamping": 0.15,
+            "fixedRotation": false,
+            "torque": 0.0,
+            "inertia": 1.0,
+            "friction": 0.5
+          }
+        },
+        {
+          "type": "physics.primitives.OBBCollider",
+          "properties": {
+            "halfSize": {
+              "x": 50.0,
+              "y": 50.0
+            },
+            "rigidbody": {
+              "bodyType": "DYNAMIC",
+              "position": {
+                "x": 517.5,
+                "y": 127.45001
+              },
+              "rotation": 0.0,
+              "mass": 3.0,
+              "restitution": 1.0,
+              "forceAcc": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "linearVelocity": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "angularVelocity": 0.0,
+              "linearDamping": 0.05,
+              "angularDamping": 0.15,
+              "fixedRotation": false,
+              "torque": 0.0,
+              "inertia": 1.0,
+              "friction": 0.5
+            },
+            "offset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "isSolid": true
+          }
+        }
+      ]
     }
   ],
   "spriteSheets": {

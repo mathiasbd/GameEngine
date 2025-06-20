@@ -149,9 +149,13 @@ public class RenderBatch implements Comparable<RenderBatch> {
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(3);
         glDrawElements(GL_TRIANGLES, this.numberSprites * 6, GL_UNSIGNED_INT, 0);
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
+        glDisableVertexAttribArray(3);
         glBindVertexArray(0);
         for (int i = 0; i < texture.size(); i++) {
             texture.get(i).unbind();

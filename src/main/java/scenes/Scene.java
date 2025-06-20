@@ -60,7 +60,7 @@ public abstract class Scene {
      * Initializes the scene with a list of GameObjects.
      * @param gameObjects - the list of GameObjects to initialize
      */
-    public abstract void init(List<GameObject> gameObjects);
+    public abstract void init();
 
     /*
      * Updates the scene logic based on time elapsed.
@@ -116,6 +116,12 @@ public abstract class Scene {
             renderer.removeSprite(go.getComponent(SpriteRenderer.class));
         }
         gameObjects.remove(i);
+    }
+
+    public void clearRenderBatch() {
+        for(int i = 0; i < gameObjects.size(); i++) {
+            removeGameObjectFromScene(i);
+        }
     }
 
     /*

@@ -15,12 +15,7 @@ import java.util.List;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.*;
 
 /*
  * GameEngineManager handles the main game loop, scene management, and window events.
@@ -32,6 +27,7 @@ public class GameEngineManager {
     private static Scene currentScene;
     private static String currentSceneName;
     private static PhysicsSystem physicsSystem;
+    private static ImGuiLayer imGuiLayer;
 
     /*
      * Constructs the GameEngineManager with the given WindowManager, sets up physics,
@@ -40,6 +36,7 @@ public class GameEngineManager {
      */
     public GameEngineManager(WindowManager window) {
         this.window = window;
+        imGuiLayer = new ImGuiLayer();
         physicsSystem = new PhysicsSystem(0.048f, new Vector2f(0.0f, -9.82f)); // 60 FPS timestep and gravity
         changeScene("EditorScene", new ArrayList<>()); // load initial scene
         loop(); // start game loop
@@ -55,18 +52,23 @@ public class GameEngineManager {
         int frames = 0, updates = 0;
 
         while (!glfwWindowShouldClose(window.getWindow())) {
-            DebugDraw.beginFrame();
+            glViewport(0, 0, window.getWidth(), window.getHeight());
+            glDisable(GL_SCISSOR_TEST);
             glClearColor(0.25f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            DebugDraw.beginFrame();
 
             if (deltaTime >= 0) {
-                window.startImGuiFrame();
                 physicsSystem.update(deltaTime);
                 currentScene.update(deltaTime);
                 DebugDraw.drawLines();
-                window.endImGuiFrame();
                 updates++;
             }
+
+            window.startImGuiFrame();
+            imGuiLayer.process(currentScene);
+            window.endImGuiFrame();
+
 
             frames++;
             glfwSwapBuffers(window.getWindow()); // present frame
@@ -93,15 +95,16 @@ public class GameEngineManager {
         switch (sceneName) {
             case "EditorScene":
                 currentScene = new LevelEditorScene();
-                currentScene.init(gameObjects);
                 currentScene.load();
+                currentScene.init();
                 currentScene.start();
                 currentSceneName = "EditorScene";
                 break;
             case "GameScene":
                 currentScene.saveExit();
                 currentScene = new LevelScene();
-                currentScene.init(gameObjects);
+                currentScene.load();
+                currentScene.init();
                 currentScene.start();
                 currentSceneName = "GameScene";
                 break;

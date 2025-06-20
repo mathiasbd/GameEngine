@@ -321,7 +321,7 @@ public class ImGuiHierarchyWindow {
         if(go.getComponent(SpriteRenderer.class) == null) {
             Sprite sprite = new Sprite();
             SpriteRenderer sr = new SpriteRenderer();
-            sr.setColor(new Vector4f(0,0,0,1));
+            sr.setColor(new Vector4f(1,1,1,1));
             sr.setSprite(sprite);
             currentScene.getGameObjects().get(i).addComponent(sr);
             //If the object is already in the scene manually add the sprite to the renderer
