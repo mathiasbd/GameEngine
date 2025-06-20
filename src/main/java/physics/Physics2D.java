@@ -34,6 +34,10 @@ public class Physics2D {
         Collider collider = rb.getCollider();
         float halfsizeX = 0, halfsizeY = 0;
 
+        if(collider == null) {
+            return false;
+        }
+
         // determine bounds from collider type
         if (collider instanceof OBBCollider obb) {
             halfsizeX = obb.getHalfSize().x;
@@ -97,6 +101,10 @@ public class Physics2D {
         Vector2f position = rb.getPosition();
         Collider collider = rb.getCollider();
         float halfsizeX = 0, halfsizeY = 0;
+
+        if(collider == null) {
+            return false;
+        }
 
         // determine bounds from collider type
         if (collider instanceof OBBCollider obb) {
