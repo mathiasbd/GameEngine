@@ -140,14 +140,6 @@ public class PhysicsSystem {
         float e = Math.min(r1.getRestitution(), r2.getRestitution());
         float j = -(1 + e) * rv.dot(normal) / invMassSum;
         Vector2f impulse = new Vector2f(normal).mul(j);
-
-        // apply friction (simplified)
-        Vector2f tangent = new Vector2f(rv).sub(new Vector2f(normal).mul(rv.dot(normal))).normalize();
-        float jt = -rv.dot(tangent) / invMassSum;
-        float mu = (r1.getFriction() + r2.getFriction()) * 0.5f;
-        jt = Math.max(-j * mu, Math.min(jt, j * mu));
-        Vector2f frictionImpulse = new Vector2f(tangent).mul(jt);
-
         // apply impulses to velocities and angular velocity
         if (r1.getBodyType() == BodyType.DYNAMIC) {
             r1.setVelocity(r1.getLinearVelocity().sub(new Vector2f(impulse).mul(invMass1)));
@@ -156,6 +148,25 @@ public class PhysicsSystem {
         if (r2.getBodyType() == BodyType.DYNAMIC) {
             r2.setVelocity(r2.getLinearVelocity().add(new Vector2f(impulse).mul(invMass2)));
             r2.setAngularVelocity(r2.getAngularVelocity());
+        }
+
+        // compute tangent
+        Vector2f tangent = new Vector2f(rv).sub(new Vector2f(normal).mul(rv.dot(normal)));
+        //apply simplified  friction
+        if (tangent.lengthSquared() > 0.0001f) {
+            tangent.normalize();
+
+            float jt = -rv.dot(tangent) / invMassSum;
+            float mu = (r1.getFriction() + r2.getFriction()) * 0.2f;
+            jt = Math.max(-j * mu, Math.min(jt, j * mu));
+            Vector2f frictionImpulse = new Vector2f(tangent).mul(jt);
+
+            if (r1.getBodyType() == BodyType.DYNAMIC) {
+                r1.setVelocity(r1.getLinearVelocity().sub(new Vector2f(frictionImpulse).mul(invMass1)));
+            }
+            if (r2.getBodyType() == BodyType.DYNAMIC) {
+                r2.setVelocity(r2.getLinearVelocity().add(new Vector2f(frictionImpulse).mul(invMass2)));
+            }
         }
     }
 

@@ -19,14 +19,14 @@ import util.AssetPool;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+ * ImGuiHierarchyWindow controls the top part of the left window made with ImGui.
+ * It provides methods and utility that lets the user interact with game objects and components
+ * Author(s): Mathias
+ */
 public class ImGuiHierarchyWindow {
 
-    /*
-     * ImGuiHierarchyWindow controls the top part of the left window made with ImGui.
-     * It provides methods and utility that lets the user interact with game objects and components
-     * Author(s): Mathias
-     */
+
 
     private int objectToEditName = -1;
     private ImString newObjectName = new ImString(64);

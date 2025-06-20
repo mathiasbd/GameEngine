@@ -11,6 +11,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+/*
+ * GameObject represents an entity in the game world.
+ * Each GameObject holds its own Transform, list of Components, tag, z-index, and scene state.
+ * Author(s): Gabriel, Ilias, Ahmed, Mathias
+ */
 
 public class GameObject {
     private String name;
@@ -20,7 +25,10 @@ public class GameObject {
 
     public Transform transform;
     public String tag;
-
+    /*
+     * Constructor with name only, creates default Transform.
+     * @param name - name of the GameObject
+     */
     public GameObject(String name) {
         this.name = name;
         this.components = new ArrayList<Component>();
@@ -30,6 +38,13 @@ public class GameObject {
         this.tag = "None";
     }
 
+    /*
+     * Constructor with Transform, z-index and scene state.
+     * @param name - name of the GameObject
+     * @param transform - initial Transform
+     * @param zIndex - rendering order
+     * @param inScene - whether in scene
+     */
     public GameObject(String name, Transform transform, int zIndex, boolean inScene) {
         this.name = name;
         this.components = new ArrayList<Component>();
@@ -39,6 +54,14 @@ public class GameObject {
         this.tag = "None";
     }
 
+    /*
+     * Full constructor including tag.
+     * @param name - name of the GameObject
+     * @param transform - initial Transform
+     * @param zIndex - rendering order
+     * @param inScene - whether in scene
+     * @param tag - user-defined tag
+     */
     public GameObject(String name, Transform transform, int zIndex, boolean inScene, String tag) {
         this.name = name;
         this.components = new ArrayList<Component>();
@@ -47,7 +70,11 @@ public class GameObject {
         this.inScene = inScene;
         this.tag = tag;
     }
-
+    /*
+     * Retrieves a component.
+     * @param componentClass - class of the desired component
+     * @return matching Component instance or null if not found
+     */
     public <T extends Component> T getComponent(Class<T> componentClass) {
         for (Component c : components) {
             if (componentClass.isAssignableFrom(c.getClass())) {
@@ -62,7 +89,10 @@ public class GameObject {
         return null;
     }
 
-
+    /*
+     * Removes a component of the specified type.
+     * @param componentClass - class of the component to remove
+     */
 
     public <t extends Component> void removeComponent(Class <t> componentClass) {
         for (int i=0; i< components.size(); i++) {
@@ -73,18 +103,26 @@ public class GameObject {
             }
         }
     }
-
+    /*
+     * Adds a new component to the GameObject.
+     * @param c - component to add
+     */
     public void addComponent(Component c) {
         this.components.add(c);
         c.gameObject = this;
     }
-
+    /*
+     * Updates all components each frame.
+     * @param dt - delta time in seconds
+     */
     public void update(float dt) {
         for (int i=0; i< components.size(); i++) {
             components.get(i).update(dt);
         }
     }
-
+    /*
+     * Starts all components (called once on scene load).
+     */
     public void start() {
         if(inScene) {
             for (int i=0; i< components.size(); i++) {
@@ -92,7 +130,7 @@ public class GameObject {
             }
         }
     }
-
+    /* Getter and Setter methods */
     public void setTransform(Transform transform) {
         this.transform = transform;
     }
@@ -136,7 +174,9 @@ public class GameObject {
     public void setzIndex(int zIndex) {
         this.zIndex = zIndex;
     }
-
+    /*
+     * Gameobjects Equality check based on name, transform, zIndex, and components.
+     */
     @Override
     public boolean equals(Object obj) {
         if(obj == null) {return false;}
@@ -153,7 +193,9 @@ public class GameObject {
         }
         return false;
     }
-
+    /*
+     * Displays GameObject properties using ImGui for debugging & editor support.
+     */
     public void imGui() {
         this.zIndex = ImGuiCommonFun.intSlider("Z-Index", zIndex, -5, 5);
 

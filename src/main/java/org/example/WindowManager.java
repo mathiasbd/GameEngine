@@ -21,7 +21,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 /*
  * WindowManager handles GLFW window creation, ImGui setup, and the render loop context.
  * It provides initialization, frame lifecycle, and cleanup methods.
- * Author(s): Ahmed & Ilias & Mathias & Gabriel
+ * Author(s): Ahmed, Ilias, Mathias, Gabriel
  */
 public class WindowManager {
     private long window;

@@ -12,16 +12,28 @@ import org.joml.Vector4f;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-
+/*
+ * Component is the base abstract class for all behaviors that can be attached to GameObjects.
+ * Author(s): Gabriel, Ilias, Ahmed, Mathias
+ */
 public abstract class Component {
 
     public transient GameObject gameObject = null;
+    /*
+     * Called once when the component is first initialized in the scene.
+     * Override for custom startup logic.
+     */
     public void start() {
 
     }
-
+    /*
+     * Called every frame to update component behavior.
+     * @param dt - delta time in seconds
+     */
     public abstract void update(float dt);
-
+    /*
+     *  generates ImGui UI controls dynamically for  component's fields.
+     */
     public void imGui() {
         try {
             Field[] fields = this.getClass().getDeclaredFields();

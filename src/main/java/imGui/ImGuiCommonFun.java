@@ -13,13 +13,13 @@ import org.joml.Vector4f;
 import scenes.Scene;
 
 import java.util.ArrayList;
-
+/*
+ * This class helps reduce code by creating functions that generate a widget for the UI
+ * Author(s): Mathias
+ */
 public class ImGuiCommonFun {
 
-    /*
-     * This class helps reduce code by creating functions that generate a widget for the UI
-     * Author(s): Mathias
-     */
+
 
     /*
      * Creates an item for a menu

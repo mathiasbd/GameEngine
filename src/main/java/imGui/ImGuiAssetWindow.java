@@ -15,14 +15,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+/*
+ * ImGuiAssetWindow controls the bottom part of the left window made with ImGui.
+ * It provides methods and utility that lets the user find assets and drag and
+ * drop them to an asset pool section
+ * Author(s): Mathias
+ */
 public class ImGuiAssetWindow {
-    /*
-     * ImGuiAssetWindow controls the bottom part of the left window made with ImGui.
-     * It provides methods and utility that lets the user find assets and drag and
-     * drop them to an asset pool section
-     * Author(s): Mathias
-     */
+
 
     private File previewFile = null;
     private String spriteToAdjust = null;

@@ -5,7 +5,10 @@ import rendering.Texture;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+ * SpriteSheet handles slicing an image into individual sprites based on a fixed grid layout.
+ * Author(s):  Gabriel, Ilias,
+ */
 public class SpriteSheet {
     private Texture texture;
     private List<Sprite> sprites = new ArrayList<>();
@@ -16,6 +19,16 @@ public class SpriteSheet {
     private int ySpacing;
     private int startX;
 
+    /*
+     * Constructs a SpriteSheet and  slices the texture into individual sprites.
+     * @param texture - source Texture
+     * @param spriteWidth - width of each sprite in pixels
+     * @param spriteHeight - height of each sprite in pixels
+     * @param numSprites - total number of sprites to generate
+     * @param xSpacing - horizontal spacing between sprites
+     * @param ySpacing - vertical spacing between sprites
+     * @param startX - initial horizontal offset for slicing
+     */
     public SpriteSheet(Texture texture, int spriteWidth, int spriteHeight, int numSprites, int xSpacing, int ySpacing, int startX) {
         this.texture = texture;
         this.spriteWidth = spriteWidth;
@@ -50,6 +63,7 @@ public class SpriteSheet {
             } // if its finished with a row, moves to the next row
         }
     }
+    /* Getters  */
 
     public Sprite getSprite(int index) {
         return sprites.get(index);

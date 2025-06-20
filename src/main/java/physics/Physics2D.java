@@ -67,7 +67,6 @@ public class Physics2D {
                 if (other == rb) continue;
                 if (other.getCollider() == null || !other.getCollider().isSolid()) continue;
                 GameObject otherObj = other.getGameObject();
-                if (!otherObj.getTag().equals("Floor")) continue;
 
                 RaycastResult res;
                 Collider otherCol = other.getCollider();

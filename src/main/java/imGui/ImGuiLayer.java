@@ -15,14 +15,24 @@ import util.DebugDraw;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+ * ImGuiLayer handles the GUI rendering for the editor interface.
+ * It manages the toolbar, scene hierarchy window, and asset window for the level editor.
+ * Author(s): Mathias
+ */
 public class ImGuiLayer {
     private ImGuiHierarchyWindow imGuiHierarchyWindow = new ImGuiHierarchyWindow();
     private ImGuiAssetWindow imGuiAssetWindow = new ImGuiAssetWindow();
-
+    /*
+     * Constructor. Initializes asset window resources.
+     */
     public ImGuiLayer() {
         imGuiAssetWindow.init();
     }
+    /*
+     * Processes ImGui rendering each frame based on the current scene.
+     * @param currentScene - the currently active Scene
+     */
     public void process(Scene currentScene) {
         //Initialize toolbar height and call toolbar function
         float toolbarHeight = 30.0f;
@@ -61,7 +71,11 @@ public class ImGuiLayer {
             ImGui.end();
         }
     }
-
+    /*
+     * Renders the top toolbar window
+     * @param currentScene - current scene
+     * @param toolbarHeight - height of toolbar
+     */
     private void toolbar(Scene currentScene, float toolbarHeight) {
         // TOOLBAR WINDOW
         //Init position size and style

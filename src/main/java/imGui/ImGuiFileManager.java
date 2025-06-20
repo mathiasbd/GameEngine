@@ -6,13 +6,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
+/*
+ * This is a helper function that lets you look through a file directory
+ * Author(s): Mathias
+ */
 public class ImGuiFileManager {
 
-    /*
-     * This is a helper function that lets you look through a file directory
-     * Author(s): Mathias
-     */
 
     private List<File> folders = new ArrayList<>();
     private List<File> regularFiles = new ArrayList<>();
