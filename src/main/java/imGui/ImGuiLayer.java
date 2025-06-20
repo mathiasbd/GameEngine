@@ -5,16 +5,13 @@ import imgui.ImVec2;
 import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiStyleVar;
 import imgui.flag.ImGuiWindowFlags;
-import imgui.internal.flag.ImGuiItemFlags;
 import org.example.GameEngineManager;
-import org.example.GameObject;
-import scenes.LevelEditorScene;
-import scenes.LevelScene;
+import scenes.EditorScene;
 import scenes.Scene;
 import util.DebugDraw;
 
 import java.util.ArrayList;
-import java.util.List;
+
 /*
  * ImGuiLayer handles the GUI rendering for the editor interface.
  * It manages the toolbar, scene hierarchy window, and asset window for the level editor.
@@ -39,7 +36,7 @@ public class ImGuiLayer {
         toolbar(currentScene, toolbarHeight);
 
         // SIDEBAR WINDOW
-        if(currentScene.getClass() == LevelEditorScene.class) {
+        if(currentScene.getClass() == EditorScene.class) {
             //Init position and size
             float sidebarPosX = ImGui.getMainViewport().getPosX();
             float sidebarPosY = ImGui.getMainViewport().getPosY() + toolbarHeight;

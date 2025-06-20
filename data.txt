@@ -496,8 +496,8 @@
             "spawnY": 700.0,
             "minSpawnX": 50.0,
             "maxSpawnX": 1200.0,
-            "minSpawnInterval": 28.0,
-            "maxSpawnInterval": 32.9,
+            "minSpawnInterval": 1.0,
+            "maxSpawnInterval": 0.5,
             "maxPoints": 3
           }
         }
@@ -653,8 +653,8 @@
       "name": "Box",
       "transform": {
         "position": {
-          "x": 863.75,
-          "y": 118.000015
+          "x": 756.25,
+          "y": 132.70001
         },
         "scale": {
           "x": 100.0,
@@ -708,8 +708,8 @@
           "properties": {
             "bodyType": "DYNAMIC",
             "position": {
-              "x": 863.75,
-              "y": 118.000015
+              "x": 756.25,
+              "y": 132.70001
             },
             "rotation": 0.0,
             "mass": 1.0,
@@ -741,8 +741,8 @@
             "rigidbody": {
               "bodyType": "DYNAMIC",
               "position": {
-                "x": 863.75,
-                "y": 118.000015
+                "x": 756.25,
+                "y": 132.70001
               },
               "rotation": 0.0,
               "mass": 1.0,
@@ -924,8 +924,8 @@
       "name": "Football",
       "transform": {
         "position": {
-          "x": 1023.75,
-          "y": 478.05002
+          "x": 946.25,
+          "y": 439.30005
         },
         "scale": {
           "x": 100.0,
@@ -979,8 +979,8 @@
           "properties": {
             "bodyType": "DYNAMIC",
             "position": {
-              "x": 1023.75,
-              "y": 478.05002
+              "x": 946.25,
+              "y": 439.30005
             },
             "rotation": 0.0,
             "mass": 1.0,
@@ -1009,8 +1009,8 @@
             "rigidbody": {
               "bodyType": "DYNAMIC",
               "position": {
-                "x": 1023.75,
-                "y": 478.05002
+                "x": 946.25,
+                "y": 439.30005
               },
               "rotation": 0.0,
               "mass": 1.0,

@@ -3,8 +3,8 @@ package org.example;
 import imGui.ImGuiLayer;
 import org.joml.Vector2f;
 import physics.PhysicsSystem;
-import scenes.LevelEditorScene;
-import scenes.LevelScene;
+import scenes.EditorScene;
+import scenes.GameScene;
 import scenes.Scene;
 import util.DebugDraw;
 import util.Time;
@@ -79,7 +79,7 @@ public class GameEngineManager {
             initialTime = endTime;
         }
 
-        if (currentScene.getClass() == LevelEditorScene.class) {
+        if (currentScene.getClass() == EditorScene.class) {
             currentScene.saveExit(); // save changes on exit if in editor
         }
         window.closeWindow();
@@ -94,7 +94,7 @@ public class GameEngineManager {
         System.out.println("Changing scene to: " + sceneName);
         switch (sceneName) {
             case "EditorScene":
-                currentScene = new LevelEditorScene();
+                currentScene = new EditorScene();
                 currentScene.load();
                 currentScene.init();
                 currentScene.start();
@@ -102,7 +102,7 @@ public class GameEngineManager {
                 break;
             case "GameScene":
                 currentScene.saveExit();
-                currentScene = new LevelScene();
+                currentScene = new GameScene();
                 currentScene.load();
                 currentScene.init();
                 currentScene.start();

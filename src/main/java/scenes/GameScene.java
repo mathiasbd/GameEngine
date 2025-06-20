@@ -1,21 +1,15 @@
 package scenes;
 
-import scripts.PlayerController;
 import imGui.ImGuiLayer;
 import org.example.Camera;
 import org.example.GameEngineManager;
 import org.example.GameObject;
 import org.example.Transform;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
 import physics.PhysicsSystem;
-import physics.primitives.AABBCollider;
-import physics.primitives.Circle;
 import physics.primitives.Collider;
 import physics.primitives.OBBCollider;
 import physics.collisions.Rigidbody2D;
-import util.DTUMath;
-import util.DebugDraw;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +19,7 @@ import java.util.List;
  * of GameObjects.
  * Author(s): Gabriel, Ilias, Mathias, Ahmed
  */
-public class LevelScene extends Scene {
+public class GameScene extends Scene {
     private static List<GameObject> gameObjectsToLoad = null;
     private ImGuiLayer imGuiLayer;
     private PhysicsSystem physicsSystem;
@@ -33,7 +27,7 @@ public class LevelScene extends Scene {
     /*
      * Constructs the LevelScene and outputs initialization log.
      */
-    public LevelScene() {
+    public GameScene() {
         System.out.println("Inside the game scene");
     }
 

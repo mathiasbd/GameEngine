@@ -1,21 +1,13 @@
 package scenes;
 
 import components.SpriteRenderer;
-import components.SpriteSheet;
 import imGui.ImGuiLayer;
 import input.MouseHandler;
 import org.example.*;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
-import physics.PhysicsSystem;
-import physics.primitives.AABBCollider;
-import physics.primitives.Circle;
 import physics.primitives.Collider;
-import physics.primitives.OBBCollider;
 import physics.collisions.Rigidbody2D;
 import util.AssetPool;
-import util.DTUMath;
-import util.DebugDraw;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +17,14 @@ import java.util.List;
  * GameObjects with drag-and-drop and physics collider visualization.
  * Author(s): Gabriel, Ilias, Mathias, Ahmed
  */
-public class LevelEditorScene extends Scene {
+public class EditorScene extends Scene {
     private GameObject draggedObject = null;
     private ImGuiLayer imGuiLayer;
 
     /*
      * Constructs the LevelEditorScene and outputs initialization log.
      */
-    public LevelEditorScene() {
+    public EditorScene() {
         System.out.println("Inside the level editing scene");
     }
 
